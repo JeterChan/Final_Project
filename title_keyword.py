@@ -52,7 +52,7 @@ def grab_yahoo_usersearch(topic):
     i = 0
     count = 0
     print('載入資料開始...')
-    while count<10:
+    while count<1:
         i = i+1
         elements = driver.find_elements(By.CSS_SELECTOR, '#stream-container-scroll-template > li> div > div > div > div > h3')
         s_num = len(elements)
@@ -118,8 +118,6 @@ def break_word(text):
     print("Initializing drivers ... POS")
     pos_driver = CkipPosTagger(model="bert-base", device=-1)
     print("Initializing drivers ... NER")
-    ner_driver = CkipNerChunker(model="bert-base", device=-1)
-    print("Initializing drivers ... all done")
     print()
 
     ws = ws_driver(text)
@@ -146,6 +144,14 @@ def break_word(text):
     
 
     get_keyword(ws_file)
+
+def remove_blank(ws_file):
+    with open("D:/Project/selenium/nba/nba_ws.txt","w",encoding="utf-8") as ws_noblank:
+
+        for line in ws_file:
+            if line.strip():
+                ws_noblank.write(line)
+        ws_noblank.close()
 
 def get_keyword(ws_file):
     kw_file = open("D:/Project/selenium/nba/nba_kw.txt","w",encoding="utf-8")
