@@ -71,6 +71,7 @@ def grab_yahoo_usersearch(topic):
     titles = soup.select('#stream-container-scroll-template > li> div > div > div > div > h3')
     driver.close()
 
+    file = open(r"D:\Project\selenium\nba.txt","w",encoding='utf-8')
     title_list = []
     count = 1
     for i,title in enumerate(titles):
@@ -78,17 +79,14 @@ def grab_yahoo_usersearch(topic):
             print(count)
             print(title.text)
             title_list.append(title.text)
-            
+            file.write(title.text.strip()+"\n") # 爬蟲完存成txt檔
+
         count+=1
     
+    break_word(title_list) #呼叫斷詞function
+    remove_blank()
+    get_keyword()
     
-    title_df = pd.DataFrame(title_list,columns=['Title']) # 將 title_list 轉成 dataframe
-    title_df.to_csv("D:/Project/selenium/nba/nba_title.csv",index=False,encoding='utf-8')
-    break_word(title_list)
-
-    # file.close()
-
-
 
 def clean(sentence_ws, sentence_pos):
   short_with_pos = []
@@ -110,6 +108,7 @@ def clean(sentence_ws, sentence_pos):
       short_sentence.append(f"{word_ws}")
   return (" ".join(short_sentence), " ".join(short_with_pos))
 
+# ckip 斷詞
 def break_word(text):
 
     # Initialize drivers
@@ -123,8 +122,8 @@ def break_word(text):
     ws = ws_driver(text)
     pos = pos_driver(ws)
 
-    ws_file = open("D:/Project/selenium/nba/nba_ws.txt","r+",encoding='utf-8') # 'r+' 代表可讀可寫
-    pos_file = open("D:/Project/selenium/nba/nba_pos.txt","w",encoding='utf-8')
+    ws_file = open(r"D:/Project/selenium/nba/nba_ws.txt","w",encoding='utf-8') # 'r+' 代表可讀可寫
+    pos_file = open(r"D:/Project/selenium/nba/nba_pos.txt","w",encoding='utf-8')
 
     print()
     print('=====')
@@ -141,21 +140,24 @@ def break_word(text):
         print(res)
         pos_file.write(res+"\n")
         print('=====')
+
     
 
-    get_keyword(ws_file)
+# 解決斷詞後會有空行問題
+def remove_blank():
+    with open("D:/Project/selenium/nba/nba_ws.txt","r",encoding="utf-8") as ws_hasblank , open("D:/Project/selenium/nba/nba_ws_v2.txt","w",encoding="utf-8") as ws_noblank:
 
-def remove_blank(ws_file):
-    with open("D:/Project/selenium/nba/nba_ws.txt","w",encoding="utf-8") as ws_noblank:
-
-        for line in ws_file:
+        for line in ws_hasblank:
             if line.strip():
                 ws_noblank.write(line)
-        ws_noblank.close()
-
-def get_keyword(ws_file):
-    kw_file = open("D:/Project/selenium/nba/nba_kw.txt","w",encoding="utf-8")
     
+    
+
+# 抓關鍵字
+def get_keyword():
+    kw_file = open("D:/Project/selenium/nba/nba_kw.txt","w",encoding="utf-8")
+    ws_file = open("D:/Project/selenium/nba/nba_ws_v2.txt","r",encoding="utf-8")
+
     kw_model = KeyBERT()
     for doc in ws_file:
         keywords = kw_model.extract_keywords(doc,keyphrase_ngram_range=(1,1),use_mmr=True, diversity=0.2,top_n=3)
@@ -163,8 +165,6 @@ def get_keyword(ws_file):
             kw_file.write(keyword[0]+" ")
         kw_file.write("\n")
         print(keywords)
-    
-
     kw_file.close()
 
 if __name__ == '__main__':
