@@ -52,7 +52,7 @@ def grab_yahoo_usersearch(topic):
     i = 0
     count = 0
     print('載入資料開始...')
-    while count<1:
+    while count<10: # 設定爬蟲次數
         i = i+1
         elements = driver.find_elements(By.CSS_SELECTOR, '#stream-container-scroll-template > li> div > div > div > div > h3')
         s_num = len(elements)
@@ -71,7 +71,8 @@ def grab_yahoo_usersearch(topic):
     titles = soup.select('#stream-container-scroll-template > li> div > div > div > div > h3')
     driver.close()
 
-    file = open(r"D:\Project\selenium\nba\nba.txt","w",encoding='utf-8')
+    ### 看爬蟲出來的結果
+    # file = open(topic+".txt","w",encoding='utf-8')
     title_list = []
     count = 1
     for i,title in enumerate(titles):
@@ -79,14 +80,14 @@ def grab_yahoo_usersearch(topic):
             print(count)
             print(title.text)
             title_list.append(title.text)
-            file.write(title.text.strip()+"\n") # 爬蟲完存成txt檔
+            # file.write(title.text.strip()+"\n") # 爬蟲完存成txt檔
 
         count+=1
 
-    data = pd.DataFrame(title_list,columns=['Title'])
+    data = pd.DataFrame(title_list,columns=['Title']) # 創建dataframe
     ws_list = break_word(title_list) #呼叫斷詞function
-    get_keyword(ws_list,data) # 呼叫抓關鍵字的函式
-    
+    data = get_keyword(ws_list,data) # 呼叫抓關鍵字的函式
+    data.to_csv(topic+'.csv',index=False,encoding='utf-8') # 把 data 存成 csv 檔
     
 
 def clean(sentence_ws, sentence_pos):
@@ -122,10 +123,11 @@ def break_word(text):
     ws = ws_driver(text)
     pos = pos_driver(ws)
 
-    ws_file = open(r"D:/Project/selenium/nba/nba_ws.txt","w",encoding='utf-8')
-    pos_file = open(r"D:/Project/selenium/nba/nba_pos.txt","w",encoding='utf-8')
+    ### 可以拿來看斷詞後的結果如何
+    # ws_file = open("ws.txt","w",encoding='utf-8')
+    # pos_file = open("pos.txt","w",encoding='utf-8')
 
-    ws_list = []
+    ws_list = [] # 用來儲存斷詞結果的list
 
     print()
     print('=====')
@@ -133,15 +135,15 @@ def break_word(text):
     for sentence, sentence_ws, sentence_pos in zip(text, ws, pos):
         print("原文：")
         print(sentence)
-        (short, res) = clean(sentence_ws, sentence_pos)
+        (short, res) = clean(sentence_ws, sentence_pos) # 清理不需要的字詞
         print("斷詞後：")
         print(short)
         ws_list.append(short)
-        ws_file.write(short+"\n")
+        # ws_file.write(short+"\n")
         print()
         print("斷詞後+詞性標注：")
         print(res)
-        pos_file.write(res+"\n")
+        # pos_file.write(res+"\n")
         print('=====')
     print(ws_list)
 
@@ -149,7 +151,7 @@ def break_word(text):
 
 # 抓關鍵字
 def get_keyword(ws_list,data):
-    kw_file = open("D:/Project/selenium/nba/nba_kw.txt","w",encoding="utf-8")
+    # kw_file = open("kw.txt","w",encoding="utf-8")
     data = data.reindex(columns=['Title','Keyword_1','Keyword_2','Keyword_3'],fill_value='0') # 新增 Keyword 欄位,預測值為 '0'
 
     kw_model = KeyBERT()
@@ -158,18 +160,18 @@ def get_keyword(ws_list,data):
     for doc in ws_list:
         keywords = kw_model.extract_keywords(doc,keyphrase_ngram_range=(1,1),use_mmr=True, diversity=0.2,top_n=3)
         for keyword in keywords: #跑三次，因top_n=3, 抓出來的關鍵字個數多少就會跑幾次，至多三次
-            kw_file.write(keyword[0]+" ") # keyword[0]是string
+            # kw_file.write(keyword[0]+" ") # keyword[0]是string
             data.loc[row,'Keyword_'+str(column)] = keyword[0] # 將關鍵字一筆一筆加入keyword欄位,從keyword_1~keyword_3
             column += 1 # 移動欄位 Keyword_1 => Keyword_2 => Keyword_3
 
-        kw_file.write("\n")
+        # kw_file.write("\n")
         column = 1 # 新增完一個標題的關鍵字後,將欄位移回Keyword_1    
         row += 1 # 往下一標題繼續新增關鍵字
     
         print(keywords)
+    return data
     
-    data.to_csv('D:/Project/selenium/nba/nba.csv',index=False,encoding='utf-8') # 把 data 存成 csv 檔
-    kw_file.close()
+    # kw_file.close()
 
 if __name__ == '__main__':
     topic = 'NBA'
