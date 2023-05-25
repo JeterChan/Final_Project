@@ -71,7 +71,7 @@ def grab_yahoo_usersearch(topic):
     titles = soup.select('#stream-container-scroll-template > li> div > div > div > div > h3')
     driver.close()
 
-    file = open(r"D:\Project\selenium\nba.txt","w",encoding='utf-8')
+    file = open(r"D:\Project\selenium\nba\nba.txt","w",encoding='utf-8')
     title_list = []
     count = 1
     for i,title in enumerate(titles):
@@ -82,10 +82,11 @@ def grab_yahoo_usersearch(topic):
             file.write(title.text.strip()+"\n") # 爬蟲完存成txt檔
 
         count+=1
+
+    data = pd.DataFrame(title_list,columns=['Title'])
+    ws_list = break_word(title_list) #呼叫斷詞function
+    get_keyword(ws_list,data) # 呼叫抓關鍵字的函式
     
-    break_word(title_list) #呼叫斷詞function
-    remove_blank()
-    get_keyword()
     
 
 def clean(sentence_ws, sentence_pos):
@@ -116,14 +117,15 @@ def break_word(text):
     ws_driver = CkipWordSegmenter(model="bert-base", device=-1)
     print("Initializing drivers ... POS")
     pos_driver = CkipPosTagger(model="bert-base", device=-1)
-    print("Initializing drivers ... NER")
     print()
 
     ws = ws_driver(text)
     pos = pos_driver(ws)
 
-    ws_file = open(r"D:/Project/selenium/nba/nba_ws.txt","w",encoding='utf-8') # 'r+' 代表可讀可寫
+    ws_file = open(r"D:/Project/selenium/nba/nba_ws.txt","w",encoding='utf-8')
     pos_file = open(r"D:/Project/selenium/nba/nba_pos.txt","w",encoding='utf-8')
+
+    ws_list = []
 
     print()
     print('=====')
@@ -134,37 +136,39 @@ def break_word(text):
         (short, res) = clean(sentence_ws, sentence_pos)
         print("斷詞後：")
         print(short)
+        ws_list.append(short)
         ws_file.write(short+"\n")
         print()
         print("斷詞後+詞性標注：")
         print(res)
         pos_file.write(res+"\n")
         print('=====')
+    print(ws_list)
 
-    
-
-# 解決斷詞後會有空行問題
-def remove_blank():
-    with open("D:/Project/selenium/nba/nba_ws.txt","r",encoding="utf-8") as ws_hasblank , open("D:/Project/selenium/nba/nba_ws_v2.txt","w",encoding="utf-8") as ws_noblank:
-
-        for line in ws_hasblank:
-            if line.strip():
-                ws_noblank.write(line)
-    
-    
+    return ws_list # 回傳斷詞後的list, 不會有空行的問題  
 
 # 抓關鍵字
-def get_keyword():
+def get_keyword(ws_list,data):
     kw_file = open("D:/Project/selenium/nba/nba_kw.txt","w",encoding="utf-8")
-    ws_file = open("D:/Project/selenium/nba/nba_ws_v2.txt","r",encoding="utf-8")
+    data = data.reindex(columns=['Title','Keyword_1','Keyword_2','Keyword_3'],fill_value='0') # 新增 Keyword 欄位,預測值為 '0'
 
     kw_model = KeyBERT()
-    for doc in ws_file:
+    row = 0 # 從第 0 列開始
+    column = 1 # 從第 1 行開始 
+    for doc in ws_list:
         keywords = kw_model.extract_keywords(doc,keyphrase_ngram_range=(1,1),use_mmr=True, diversity=0.2,top_n=3)
-        for keyword in keywords: #跑三次，因top_n=3
-            kw_file.write(keyword[0]+" ")
+        for keyword in keywords: #跑三次，因top_n=3, 抓出來的關鍵字個數多少就會跑幾次，至多三次
+            kw_file.write(keyword[0]+" ") # keyword[0]是string
+            data.loc[row,'Keyword_'+str(column)] = keyword[0] # 將關鍵字一筆一筆加入keyword欄位,從keyword_1~keyword_3
+            column += 1 # 移動欄位 Keyword_1 => Keyword_2 => Keyword_3
+
         kw_file.write("\n")
+        column = 1 # 新增完一個標題的關鍵字後,將欄位移回Keyword_1    
+        row += 1 # 往下一標題繼續新增關鍵字
+    
         print(keywords)
+    
+    data.to_csv('D:/Project/selenium/nba/nba.csv',index=False,encoding='utf-8') # 把 data 存成 csv 檔
     kw_file.close()
 
 if __name__ == '__main__':
