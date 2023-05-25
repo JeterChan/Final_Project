@@ -21,14 +21,13 @@ from keybert import KeyBERT
 import pandas as pd
 
 
-#下面這一串資料是在把通知關掉
-options = webdriver.ChromeOptions()  
-prefs = {'profile.default_content_setting_values':{'notifications': 2}}
-options.add_experimental_option('prefs', prefs)
-options.add_argument("disable-infobars")
-driver = webdriver.Chrome(executable_path=r"D:\Project\selenium\chromedriver.exe",chrome_options=options)
-
 def grab_yahoo_usersearch(topic):
+    #下面這一串資料是在把通知關掉
+    options = webdriver.ChromeOptions()  
+    prefs = {'profile.default_content_setting_values':{'notifications': 2}}
+    options.add_experimental_option('prefs', prefs)
+    options.add_argument("disable-infobars")
+    driver = webdriver.Chrome(executable_path=r"D:\Project\selenium\chromedriver.exe",chrome_options=options)
     options = webdriver.ChromeOptions()  
     prefs = {'profile.default_content_setting_values':{'notifications': 2}}
     options.add_experimental_option('prefs', prefs)
