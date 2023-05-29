@@ -104,18 +104,33 @@ def check_duplicate(topic,date): # 過濾掉資料庫內已經有的
                 print('重複標題：', line)
 
 
-def copy_to_db(topic,date): # 新爬出的內容放進資料庫
+def copy_to_db(title):
+    # 新爬出的內容放進資料庫
+    uri = "mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority"
 
-    with open("C:\\Users\\User\\python-workspace\\專題\\資料\\運動\\" + topic + "\\"+ date  + topic + ".txt", 'r',encoding='utf-8') as file:
-        lines = file.readlines()
-    with open("C:\\Users\\User\\python-workspace\\專題\\資料\\運動\\" + topic + "\\"+ topic + ".txt", 'r',encoding='utf-8') as file:
-        db_line  = file.readlines()
+# Create a new client and connect to the server
+    client = MongoClient(uri, server_api=ServerApi('1'))
 
-    with open("C:\\Users\\User\\python-workspace\\專題\\資料\\運動\\" + topic + "\\"+ topic + ".txt", 'w',encoding='utf-8') as output_file:
-        for line in db_line:
-           output_file.write(line)  
-        for line in lines:
-           output_file.write(line)   
+# Send a ping to confirm a successful connection
+    try:
+        
+        client.admin.command('ping')
+        print("Pinged your deployment. You successfully connected to MongoDB!")
+    # 获取要插入的数据
+        data = {
+    "title": title
+}
+
+# 选择要插入数据的数据库和集合
+        db = client["News"]
+        collection = db["Sport"]
+
+# 插入数据
+        collection.insert_one(data)
+
+
+    except Exception as e:
+        print(e)
 
 
 def add_to_excel(topic, subtopic,date):
