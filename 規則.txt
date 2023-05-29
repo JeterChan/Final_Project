@@ -127,7 +127,7 @@ def clean(sentence_ws, sentence_pos):
       short_sentence.append(f"{word_ws}")
   return (" ".join(short_sentence), " ".join(short_with_pos))
  
-洋基、紅襪:
+洋基、紅襪、金鶯、藍鳥、守護者、白襪、皇家、雙城、太空人、運動家、水手、天使、遊騎兵、大都會、勇士、費城人、馬林魚、國民、酒人、紅雀、紅人、小熊、海盜、響尾蛇、道奇、落磯、巨人、教士:
 def clean(sentence_ws, sentence_pos):
   short_with_pos = []
   short_sentence = []
@@ -148,4 +148,3 @@ def clean(sentence_ws, sentence_pos):
       short_sentence.append(f"{word_ws}")
   return (" ".join(short_sentence), " ".join(short_with_pos))
   
-金鶯:
