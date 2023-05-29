@@ -3,14 +3,13 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys 
-import requests
-import json
-import pandas as pd
 import openpyxl
 from pymongo import MongoClient
 
 #爬蟲用
 from bs4 import BeautifulSoup 
+
+import time
 
 
 
