@@ -7,17 +7,11 @@ import requests
 import json
 import pandas as pd
 import openpyxl
+from pymongo import MongoClient
 
 #爬蟲用
 from bs4 import BeautifulSoup 
 
-#情緒分析用
-from snownlp import SnowNLP
-
-import time
-
-#資料夾路徑
-#C:\Users\user\OneDrive\桌面\專題
 
 
 #下面這一串資料是在把通知關掉
