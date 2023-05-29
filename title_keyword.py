@@ -20,6 +20,8 @@ from keybert import KeyBERT
 # 資料處理
 import pandas as pd
 
+# 抓當天日期
+from datetime import date
 
 def grab_yahoo_usersearch(topic):
     #下面這一串資料是在把通知關掉
@@ -51,7 +53,7 @@ def grab_yahoo_usersearch(topic):
     i = 0
     count = 0
     print('載入資料開始...')
-    while count<10: # 設定爬蟲次數
+    while count<30: # 設定爬蟲次數
         i = i+1
         elements = driver.find_elements(By.CSS_SELECTOR, '#stream-container-scroll-template > li> div > div > div > div > h3')
         s_num = len(elements)
@@ -86,7 +88,7 @@ def grab_yahoo_usersearch(topic):
     data = pd.DataFrame(title_list,columns=['Title']) # 創建dataframe
     ws_list = break_word(title_list) #呼叫斷詞function
     data = get_keyword(ws_list,data) # 呼叫抓關鍵字的函式
-    data.to_csv(topic+'.csv',index=False,encoding='utf-8') # 把 data 存成 csv 檔
+    return data
     
 
 def clean(sentence_ws, sentence_pos):
@@ -124,7 +126,7 @@ def break_word(text):
 
     ### 可以拿來看斷詞後的結果如何
     # ws_file = open("ws.txt","w",encoding='utf-8')
-    # pos_file = open("pos.txt","w",encoding='utf-8')
+    pos_file = open("pos.txt","w",encoding='utf-8')
 
     ws_list = [] # 用來儲存斷詞結果的list
 
@@ -142,7 +144,7 @@ def break_word(text):
         print()
         print("斷詞後+詞性標注：")
         print(res)
-        # pos_file.write(res+"\n")
+        pos_file.write(res+"\n")
         print('=====')
     print(ws_list)
 
@@ -174,5 +176,6 @@ def get_keyword(ws_list,data):
 
 if __name__ == '__main__':
     topic = 'NBA'
-    grab_yahoo_usersearch(topic)
-    
+    data = grab_yahoo_usersearch(topic)
+    today = date.today()
+    data.to_csv(str(today)+'-'+topic+'.csv',index=False,encoding='utf-8') # 把 data 存成 csv 檔
