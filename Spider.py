@@ -4,11 +4,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys 
 import openpyxl
-from pymongo import MongoClient
-
+from pymongo import MongoClient, ServerApi
 #爬蟲用
 from bs4 import BeautifulSoup 
-
 import time
 
 
