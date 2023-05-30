@@ -198,7 +198,7 @@ def get_keyword(filtered_title_list):
     return keywords
 
 def dataframe(filtered_title_list,URLs,keywords):
-    data = pd.DataFrame({'Title': filtered_title_list, 'Category': URLs,'Keyword':keywords}) # 創建dataframe    
+    data = pd.DataFrame({'Title': filtered_title_list, 'URL': URLs,'Keyword':keywords}) # 創建dataframe    
     return data
 
 def copy_to_db(data):
