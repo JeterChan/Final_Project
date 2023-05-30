@@ -20,6 +20,9 @@ print("Initializing drivers ... WS")
 ws_driver = CkipWordSegmenter(model="bert-base", device=-1)
 print("Initializing drivers ... POS")
 pos_driver = CkipPosTagger(model="bert-base", device=-1)
+print("Initializing drivers ... NER")
+ner_driver = CkipNerChunker(model="bert-base", device=-1)
+print("Initializing drivers ... all done")
 print()
 
 #下面這一串資料是在把通知關掉
