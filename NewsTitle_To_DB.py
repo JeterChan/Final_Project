@@ -223,12 +223,13 @@ def copy_to_db(data):
         print("Pinged your deployment. You successfully connected to MongoDB!")
         # 获取要插入的数据
 
-        for row in data.iterrows():
+        for index,row in data.iterrows():
             # 取得標題和網址的值
-            title = row[0]
-            url = row[1]
-            keyword = row[2]
-            data = {
+            title = row['Title']  
+            url = row['URL']  
+            keyword = row['Keyword']
+            insert_data = {
+            "topic":topic,
             "subtopic":subtopic,
             "title": title,
             "url":url,
@@ -246,6 +247,7 @@ def main(subtopic):
     copy_to_db(dataframe(filtered_title_list,URLs,keywords))
 
 if __name__ == '__main__':
+    topic="運動"
     subtopics = ['棒球','中職','美職','日職','韓職','中信兄弟','味全龍','統一獅','樂天桃猿','富邦悍將','台鋼雄鷹','MLB 洋基','MLB 紅襪','MLB 光芒','MLB 金鶯','MLB 藍鳥','MLB 守護者','MLB 白襪','MLB 皇家','MLB 老虎','MLB 雙城','MLB 太空人','MLB 運動家','MLB 水手','MLB 天使','MLB 遊騎兵','MLB 大都會','MLB 勇士','MLB 費城人','MLB 馬林魚','MLB 國民','MLB 釀酒人','MLB 紅雀','MLB 紅人','MLB 小熊','MLB 海盜','MLB 響尾蛇','MLB 道奇','MLB 落磯','MLB 巨人','MLB 教士']
     for subtopic in subtopics:
         main(subtopic)
