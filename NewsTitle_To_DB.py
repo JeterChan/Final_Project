@@ -197,13 +197,10 @@ def get_keyword(filtered_title_list):
 
     for doc in ws_list:
         keywords = kw_model.extract_keywords(doc,keyphrase_ngram_range=(1,1),use_mmr=True, diversity=0.2,top_n=3)
-        print(keywords)
-    # 提取關鍵字列表
-    keyword_list = []
-    for keyword, _ in keywords:
-        keyword_list.append(keyword) 
-
-    return keyword_list
+        doc_keywords = [keyword for keyword, score in keywords]
+        keywords.append(" ".join(doc_keywords))
+        
+    return keywords
 
 def dataframe(filtered_title_list,URLs,keywords):
     data = pd.DataFrame({'Title': filtered_title_list, 'URL': URLs,'Keyword':keywords}) # 創建dataframe    
