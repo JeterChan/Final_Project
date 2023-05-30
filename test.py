@@ -12,6 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys 
+from selenium.common.exceptions import NoSuchElementException
 
 # Initialize drivers
 print("Initializing drivers ... WS")
@@ -235,21 +236,22 @@ def grab_yahoo_title_URL(filtered_title_list):
     URLs = []
     
     for title in filtered_title_list:
-        print("目前標題："+title)
-        #找到關鍵字的element 並且將關鍵字輸入
-        elem = driver.find_element(By.NAME, "p")
-        elem.clear()
-        ActionChains(driver).double_click(elem).perform()
-        elem.send_keys(title)
-        elem.send_keys(Keys.RETURN)
-        time.sleep(5)
+       print("目前標題："+title)
+       try:
+            elem = driver.find_element(By.NAME, "p")
+            elem.clear()
+            ActionChains(driver).double_click(elem).perform()
+            elem.send_keys(title)
+            elem.send_keys(Keys.RETURN)
+            time.sleep(5)
 
-        elem_title = driver.find_element(By.CLASS_NAME,"StreamMegaItem")
-        ActionChains(driver).click(elem_title).perform()
-
-        current_url = driver.current_url
-        URLs.append(current_url) 
-        print("Current URL:", current_url)
+            elem_title = driver.find_element(By.CLASS_NAME, "StreamMegaItem")
+            ActionChains(driver).click(elem_title).perform()
+            current_url = driver.current_url
+            URLs.append(current_url)
+            print("Current URL:", current_url)
+        except NoSuchElementException:
+            URLs.append("")  # 找不到網址時添加空白字串
     
     return(URLs)
 
