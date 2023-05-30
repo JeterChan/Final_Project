@@ -99,7 +99,7 @@ def check_duplicate(title_list): # 過濾掉資料庫內已經有的
 # 遍歷手上的資料清單
     for title in title_list:
         # 在資料庫中查找與當前標題相符的資料
-        result = collection.find_one({'Title': title})
+        result = collection.find_one({'Title': title, 'Subtopic': subtopic})
         
         # 如果找不到相符的資料，則將當前標題添加到篩選後的資料清單
         if result is None:
