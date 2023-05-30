@@ -225,9 +225,9 @@ def copy_to_db(data):
 
         for row in data.iterrows():
             # 取得標題和網址的值
-            title = row['Title']
-            url = row['URL']
-            keyword = row['Keyword']
+            title = row[0]
+            url = row[1]
+            keyword = row[2]
             data = {
             "subtopic":subtopic,
             "title": title,
