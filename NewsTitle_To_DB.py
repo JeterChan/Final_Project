@@ -11,7 +11,7 @@ import pandas as pd
 from bs4 import BeautifulSoup 
 import time
 from ckip_transformers import __version__
-from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger
+from ckip_transformers.nlp import CkipWordSegmenter, CkipPosTagger, CkipNerChunker
 # KeyBert
 from keybert import KeyBERT
 
