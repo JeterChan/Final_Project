@@ -195,11 +195,12 @@ def get_keyword(filtered_title_list):
 
     kw_model = KeyBERT()
 
+    keywords = []
     for doc in ws_list:
-        keywords = kw_model.extract_keywords(doc,keyphrase_ngram_range=(1,1),use_mmr=True, diversity=0.2,top_n=3)
-        doc_keywords = [keyword for keyword, score in keywords]
+        keywords_score = kw_model.extract_keywords(doc,keyphrase_ngram_range=(1,1),use_mmr=True, diversity=0.2,top_n=3)
+        doc_keywords = [keyword for keyword, score in keywords_score]
         keywords.append(" ".join(doc_keywords))
-        
+
     return keywords
 
 def dataframe(filtered_title_list,URLs,keywords):
