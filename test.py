@@ -254,30 +254,6 @@ def grab_yahoo_title_URL(title):
     driver.quit()
     return URLs, image_url
 
-
-def grab_yahoo_photo(title):
-    options = webdriver.ChromeOptions()  
-    prefs = {'profile.default_content_setting_values': {'notifications': 2}}
-    options.add_experimental_option('prefs', prefs)
-    options.add_argument("disable-infobars")
-    driver = webdriver.Chrome(executable_path=r"C:\Users\User\python-workspace\專題\chromedriver.exe", chrome_options=options)
-
-    driver.get('https://tw.news.yahoo.com/baseball/')
-    time.sleep(5)
-
-    soup = BeautifulSoup(driver.page_source, 'lxml')
-    driver.close()
-
-    # 選取第一個標題旁的照片元素
-    image = soup.select_one('.Cf')
-
-    if image and image.find('img'):
-        image_url = image.find('img')['src']
-    else:
-        image_url = "none"
-
-    return(image_url)
-
 def get_data():
     # 读取Excel文件
     df = pd.read_excel('資料庫.xlsx')
