@@ -251,28 +251,32 @@ def grab_yahoo_title_URL(filtered_title_list):
             URLs.append(current_url)
             print("Current URL:", current_url)
         except NoSuchElementException:
-            URLs.append("")  # 找不到網址時添加空白字串
+            URLs.append("404")  # 找不到網址時添加空白字串
     
     return(URLs)
 
 def get_data():
     # 读取Excel文件
     df = pd.read_excel('資料庫.xlsx')
-
-    # 提取每列的数据
-    topic = df['主題']
-    subtopic = df['次主題']
-    title = df['標題']
-    URLs=grab_yahoo_title_URL(title)
-    keywords=get_keyword(subtopic,title)  
     
-    # 创建新的DataFrame
-    data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URLs,'Keyword':keywords})#
-
-    # 打印结果
-    print(data)
-    return data
+    for _, row in df.iterrows():
+        # 提取每列的数据
+        topic = row['主題']
+        subtopic = row['次主題']
+        title = row['標題']
+        URL=grab_yahoo_title_URL(title)
+        keywords=get_keyword(subtopic,title)  
+        # 打印结果
+        print("Topic:", topic)
+        print("Subtopic:", subtopic)
+        print("Title:", title)
+        print("URL:", URL)
+        print("Keyword:", keywords)
+        # 创建新的DataFrame
+        data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Keyword':keywords})#
+        # 打印结果
+        print(data)
+        copy_to_db(data)
 
 if __name__ == '__main__':
-    data=get_data()
-    copy_to_db(data)  
+    get_data() 
