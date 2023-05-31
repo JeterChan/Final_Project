@@ -12,6 +12,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys 
+from bs4 import BeautifulSoup
 
 # Initialize drivers
 print("Initializing drivers ... WS")
@@ -51,13 +52,15 @@ def copy_to_db(data):
             topic = row['Topic']  
             subtopic = row['Subtopic']  
             title = row['Title']  
-            url = row['URL']  
+            url = row['URL'] 
+            image = row['Image'] 
             keyword = row['Keyword']  
             insert_data = {
             "topic":topic,
             "subtopic":subtopic,
             "title": title,
             "url":url,
+            "image":image,
             "keyword":keyword
             }
          # 插入数据
@@ -74,7 +77,7 @@ def clean(subtopic, sentence_ws, sentence_pos):
         stop_word = set(['MLB','影','圖']) # 停用詞
         for ws, pos in zip(sentence_ws, sentence_pos):
             # 只留名詞和動詞
-            is_N_or_V = pos.startswith("N") or pos.startswith("V") 
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
             # 去掉名詞裡的某些詞性
             is_not_stop_pos = pos not in stop_pos
             # 去掉"中職"這個詞
@@ -85,6 +88,102 @@ def clean(subtopic, sentence_ws, sentence_pos):
             if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
                 short_with_pos.append(f"{ws}({pos})")
                 short_sentence.append(f"{ws}")
+    elif subtopic in ['中職']:
+        stop_pos = set(['Nep', 'Nh', 'Neqa','Ncd','Nd','Neu']) #詞性不保留
+        stop_word = set(['中職','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = pos not in stop_pos
+            # 去掉"中職"這個詞
+            is_not_stop_word = ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = len(ws) != 1
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                short_with_pos.append(f"{ws}({pos})")
+                short_sentence.append(f"{ws}")
+    elif subtopic in ['棒球']:
+        stop_pos = set(['Neu', 'Nh', 'Neqa','Nep','Nd']) # 詞性不保留
+        stop_word = set(['影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = pos not in stop_pos
+            # 去掉"中職"這個詞
+            is_not_stop_word = ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = len(ws) != 1
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                short_with_pos.append(f"{ws}({pos})")
+                short_sentence.append(f"{ws}")
+    elif subtopic in ['日職']:
+        stop_pos = set(['Neqa','Nf','Neu','Ng','Ncd','Nh','Nep','Nd']) # 詞性不保留
+        stop_word = set(['日職','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = pos not in stop_pos
+            # 去掉"中職"這個詞
+            is_not_stop_word = ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = len(ws) != 1
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                short_with_pos.append(f"{ws}({pos})")
+                short_sentence.append(f"{ws}")
+    elif subtopic in ['韓職']:
+        stop_pos = set(['Neu','Nf','Nh','Ng','Nes','Nep','Neqa','Nd']) # 詞性不保留
+        stop_word = set(['影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = pos not in stop_pos
+            # 去掉"中職"這個詞
+            is_not_stop_word = ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = len(ws) != 1
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                short_with_pos.append(f"{ws}({pos})")
+                short_sentence.append(f"{ws}")
+    elif subtopic in ['中信兄弟','味全龍','統一獅','樂天桃猿','富邦悍將','台鋼雄鷹']:
+        stop_pos = set(['Neu','Nf','Nh','Ng','Nes','Nep','Neqa','Nd']) # 詞性不保留
+        stop_word = set(['中職','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = pos not in stop_pos
+            # 去掉"中職"這個詞
+            is_not_stop_word = ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = len(ws) != 1
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                short_with_pos.append(f"{ws}({pos})")
+                short_sentence.append(f"{ws}")
+    elif subtopic in ['MLB 洋基','MLB 紅襪','MLB 光芒','MLB 金鶯','MLB 藍鳥','MLB 守護者','MLB 白襪','MLB 皇家','MLB 老虎','MLB 雙城','MLB 太空人','MLB 運動家','MLB 水手','MLB 天使','MLB 遊騎兵','MLB 大都會','MLB 勇士','MLB 費城人','MLB 馬林魚','MLB 國民','MLB 釀酒人','MLB 紅雀','MLB 紅人','MLB 小熊','MLB 海盜','MLB 響尾蛇','MLB 道奇','MLB 落磯','MLB 巨人','MLB 教士']:
+        stop_pos = set(['Neu','Nf','Nh','Ng','Nes','Nep','Neqa','Nd','Ncd']) # 
+        stop_word = set(['MLB','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = pos not in stop_pos
+            # 去掉"中職"這個詞
+            is_not_stop_word = ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = len(ws) != 1
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                short_with_pos.append(f"{ws}({pos})")
+                short_sentence.append(f"{ws}")            
     return (" ".join(short_sentence), " ".join(short_with_pos))
 
 # ckip 斷詞
@@ -117,19 +216,17 @@ def get_keyword(subtopic,title):
 
 def grab_yahoo_title_URL(title):
     options = webdriver.ChromeOptions()  
-    prefs = {'profile.default_content_setting_values':{'notifications': 2}}
+    prefs = {'profile.default_content_setting_values': {'notifications': 2}}
     options.add_experimental_option('prefs', prefs)
     options.add_argument("disable-infobars")
-    driver = webdriver.Chrome(executable_path=r"C:\Users\User\python-workspace\專題\chromedriver.exe",chrome_options=options)
+    driver = webdriver.Chrome(executable_path=r"C:\Users\User\python-workspace\專題\chromedriver.exe", chrome_options=options)
 
     driver.get('https://tw.news.yahoo.com/')
     time.sleep(5)
 
-    #讀取已經存在的記事本檔案，並將標題依序餵入後，點擊新聞取得網址，返回上一頁，
     URLs = []
-    
-    
-    #print("目前標題："+title)
+    image_url = "none"
+
     try:
         elem = driver.find_element(By.NAME, "p")
         elem.clear()
@@ -138,15 +235,48 @@ def grab_yahoo_title_URL(title):
         elem.send_keys(Keys.RETURN)
         time.sleep(5)
 
+        soup = BeautifulSoup(driver.page_source, 'lxml')
+
+        # 選取第一個標題旁的照片元素
+        image = soup.select_one('.Cf')
+
         elem_title = driver.find_element(By.CLASS_NAME, "StreamMegaItem")
         ActionChains(driver).click(elem_title).perform()
         current_url = driver.current_url
         URLs.append(current_url)
-        print("Current URL:", current_url)
+
+        if image and image.find('img'):
+            image_url = image.find('img')['src']
+
     except Exception:
-        URLs.append("404")  # 找不到網址時添加空白字串
+        URLs.append("404")
+    
     driver.quit()
-    return(URLs)
+    return URLs, image_url
+
+
+def grab_yahoo_photo(title):
+    options = webdriver.ChromeOptions()  
+    prefs = {'profile.default_content_setting_values': {'notifications': 2}}
+    options.add_experimental_option('prefs', prefs)
+    options.add_argument("disable-infobars")
+    driver = webdriver.Chrome(executable_path=r"C:\Users\User\python-workspace\專題\chromedriver.exe", chrome_options=options)
+
+    driver.get('https://tw.news.yahoo.com/baseball/')
+    time.sleep(5)
+
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+    driver.close()
+
+    # 選取第一個標題旁的照片元素
+    image = soup.select_one('.Cf')
+
+    if image and image.find('img'):
+        image_url = image.find('img')['src']
+    else:
+        image_url = "none"
+
+    return(image_url)
 
 def get_data():
     # 读取Excel文件
@@ -157,16 +287,17 @@ def get_data():
         topic = row['主題']
         subtopic = row['次主題']
         title = row['標題']
-        URL=grab_yahoo_title_URL(title)
+        URL,Image=grab_yahoo_title_URL(title)
         keywords=get_keyword(subtopic,title)  
         # 打印结果
         print("Topic:", topic)
         print("Subtopic:", subtopic)
         print("Title:", title)
         print("URL:", URL)
+        print("Image:", Image)
         print("Keyword:", keywords)
         # 创建新的DataFrame
-        data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Keyword':keywords})#
+        data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Image':Image,'Keyword':keywords})#
         # 打印结果
         print(data)
         copy_to_db(data)
