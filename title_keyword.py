@@ -23,7 +23,7 @@ import pandas as pd
 # 抓當天日期
 from datetime import date
 
-def grab_yahoo_usersearch(topic):
+def grab_yahoo_usersearch(subtopic):
     #下面這一串資料是在把通知關掉
     options = webdriver.ChromeOptions()  
     prefs = {'profile.default_content_setting_values':{'notifications': 2}}
@@ -43,7 +43,7 @@ def grab_yahoo_usersearch(topic):
     elem = driver.find_element(By.NAME, "p")
     elem.clear()
     ActionChains(driver).double_click(elem).perform()
-    elem.send_keys(topic)
+    elem.send_keys(subtopic)
     elem.send_keys(Keys.RETURN)
     time.sleep(5)
 
@@ -53,7 +53,7 @@ def grab_yahoo_usersearch(topic):
     i = 0
     count = 0
     print('載入資料開始...')
-    while count<30: # 設定爬蟲次數
+    while count<3: # 設定爬蟲次數
         i = i+1
         elements = driver.find_elements(By.CSS_SELECTOR, '#stream-container-scroll-template > li> div > div > div > div > h3')
         s_num = len(elements)
@@ -86,33 +86,117 @@ def grab_yahoo_usersearch(topic):
         count+=1
 
     data = pd.DataFrame(title_list,columns=['Title']) # 創建dataframe
-    ws_list = break_word(title_list) #呼叫斷詞function
+    ws_list = break_word(subtopic,title_list) #呼叫斷詞function
     data = get_keyword(ws_list,data) # 呼叫抓關鍵字的函式
     return data
     
 
-def clean(sentence_ws, sentence_pos):
-  short_with_pos = []
-  short_sentence = []
-  stop_pos = set(['Nep', 'Nh']) # 這 2 種詞性不保留 - 代名詞、指定代名詞
-  stop_word = set([topic]) # 停用詞-topic
-  for word_ws, word_pos in zip(sentence_ws, sentence_pos):
-    # 只留名詞和動詞
-    is_N_or_V = word_pos.startswith("V") or word_pos.startswith("N")
-    # 去掉名詞裡的某些詞性
-    is_not_stop_pos = word_pos not in stop_pos
-    # 去掉"中職"這個詞
-    is_not_stop_word = word_ws not in stop_word
-    # 只剩一個字的詞也不留
-    is_not_one_charactor = not (len(word_ws) == 1)
-    # 組成串列
-    if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
-      short_with_pos.append(f"{word_ws}({word_pos})")
-      short_sentence.append(f"{word_ws}")
-  return (" ".join(short_sentence), " ".join(short_with_pos))
+def clean(subtopic,sentence_ws, sentence_pos):
+    short_with_pos = []
+    short_sentence = []
+    if subtopic in ['NBA']:
+        stop_pos = set(['Neu','Neqa','Nh','Nep','Nd']) # 詞性不保留
+        stop_word = set(['NBA','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+                # 只留名詞
+                is_N_or_V = pos.startswith("N")
+                # 去掉名詞裡的某些詞性
+                is_not_stop_pos = pos not in stop_pos
+                # 去掉"中職"這個詞
+                is_not_stop_word = ws not in stop_word
+                # 只剩一個字的詞也不留
+                is_not_one_charactor = len(ws) != 1
+                # 組成串列
+                if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                    short_with_pos.append(f"{ws}({pos})")
+                    short_sentence.append(f"{ws}")
+    elif subtopic in ['T1']:
+        stop_pos = set(['Neu','Neqa','Nh','Nep','Nd']) # 詞性不保留
+        stop_word = set(['T1','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+                # 只留名詞
+                is_N_or_V = pos.startswith("N")
+                # 去掉名詞裡的某些詞性
+                is_not_stop_pos = pos not in stop_pos
+                # 去掉"中職"這個詞
+                is_not_stop_word = ws not in stop_word
+                # 只剩一個字的詞也不留
+                is_not_one_charactor = len(ws) != 1
+                # 組成串列
+                if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                    short_with_pos.append(f"{ws}({pos})")
+                    short_sentence.append(f"{ws}")
+    elif subtopic in ['PLG']:
+        stop_pos = set(['Neu','Neqa','Nh','Nep','Nd']) # 詞性不保留
+        stop_word = set(['PLG','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+                # 只留名詞
+                is_N_or_V = pos.startswith("N")
+                # 去掉名詞裡的某些詞性
+                is_not_stop_pos = pos not in stop_pos
+                # 去掉"中職"這個詞
+                is_not_stop_word = ws not in stop_word
+                # 只剩一個字的詞也不留
+                is_not_one_charactor = len(ws) != 1
+                # 組成串列
+                if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                    short_with_pos.append(f"{ws}({pos})")
+                    short_sentence.append(f"{ws}")
+    elif subtopic in ['金州勇士',"波士頓塞爾蒂克","布魯克林籃網","紐約尼克","費城76人","多倫多暴龍","芝加哥公牛","克里夫蘭騎士",
+                      "底特律活塞","印第安那溜馬","密爾瓦基公鹿","亞特蘭大老鷹","夏洛特黃蜂","邁阿密熱火","奧蘭多魔術","華盛頓巫師",
+                      "洛杉磯快艇","洛杉磯湖人","鳳凰城太陽","沙加緬度國王","丹佛金塊","明尼蘇達灰狼","奧克拉荷馬雷霆","波特蘭拓荒者",
+                      "猶他爵士","達拉斯獨行俠","休士頓火箭","曼斐斯灰熊","紐奧良鵜鶘","聖安東尼奧馬刺",]:
+        stop_pos = set(['Nh','Nep','VH','VK','VC']) # 詞性不保留
+        stop_word = set(['NBA','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+                # 只留名詞
+                is_N_or_V = pos.startswith("N") or pos.startswith("V")
+                # 去掉名詞裡的某些詞性
+                is_not_stop_pos = pos not in stop_pos
+                # 去掉"中職"這個詞
+                is_not_stop_word = ws not in stop_word
+                # 只剩一個字的詞也不留
+                is_not_one_charactor = len(ws) != 1
+                # 組成串列
+                if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                    short_with_pos.append(f"{ws}({pos})")
+                    short_sentence.append(f"{ws}")
+    elif subtopic in ['新北國王','臺北富邦勇士','桃園璞園領航猿','福爾摩沙台新夢想家','高雄17直播鋼鐵人','新竹街口攻城獅']:
+        stop_pos = set(['Nh','Nep','VH','VK','VC']) # 詞性不保留
+        stop_word = set(['PLG','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+                # 只留名詞
+                is_N_or_V = pos.startswith("N") or pos.startswith("V")
+                # 去掉名詞裡的某些詞性
+                is_not_stop_pos = pos not in stop_pos
+                # 去掉"中職"這個詞
+                is_not_stop_word = ws not in stop_word
+                # 只剩一個字的詞也不留
+                is_not_one_charactor = len(ws) != 1
+                # 組成串列
+                if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                    short_with_pos.append(f"{ws}({pos})")
+                    short_sentence.append(f"{ws}")
+    elif subtopic in ['新北中信特攻','臺南台鋼獵鷹','高雄全家海神','台灣啤酒英熊','臺中太陽','桃園永豐雲豹']:
+        stop_pos = set(['Nh','Nep','VH','VHC','VC']) # 詞性不保留
+        stop_word = set(['T1','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+                # 只留名詞
+                is_N_or_V = pos.startswith("N") or pos.startswith("V")
+                # 去掉名詞裡的某些詞性
+                is_not_stop_pos = pos not in stop_pos
+                # 去掉"中職"這個詞
+                is_not_stop_word = ws not in stop_word
+                # 只剩一個字的詞也不留
+                is_not_one_charactor = len(ws) != 1
+                # 組成串列
+                if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                    short_with_pos.append(f"{ws}({pos})")
+                    short_sentence.append(f"{ws}")                
+    return (" ".join(short_sentence), " ".join(short_with_pos))
 
 # ckip 斷詞
-def break_word(text):
+def break_word(subtopic,text):
 
     # Initialize drivers
     print("Initializing drivers ... WS")
@@ -136,7 +220,7 @@ def break_word(text):
     for sentence, sentence_ws, sentence_pos in zip(text, ws, pos):
         print("原文：")
         print(sentence)
-        (short, res) = clean(sentence_ws, sentence_pos) # 清理不需要的字詞
+        (short, res) = clean(subtopic,sentence_ws, sentence_pos) # 清理不需要的字詞
         print("斷詞後：")
         print(short)
         ws_list.append(short)
@@ -175,7 +259,8 @@ def get_keyword(ws_list,data):
     # kw_file.close()
 
 if __name__ == '__main__':
-    topic = 'NBA'
-    data = grab_yahoo_usersearch(topic)
-    today = date.today()
-    data.to_csv(str(today)+'-'+topic+'.csv',index=False,encoding='utf-8') # 把 data 存成 csv 檔
+    subtopics = ['新北中信特攻']
+    for subtopic in subtopics:
+        data = grab_yahoo_usersearch(subtopic)
+        today = date.today()
+        data.to_csv(str(today)+'-'+subtopic+'.csv',index=False,encoding='utf-8') # 把 data 存成 csv 檔
