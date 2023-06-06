@@ -257,4 +257,20 @@ if subtopic in ['美職']:
                 # 組成串列
                 if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
                     short_with_pos.append(f"{ws}({pos})")
-                    short_sentence.append(f"{ws}")                  
+                    short_sentence.append(f"{ws}")   
+    elif subtopic in ['氣象']:
+        stop_pos = set(['Neu','Nf']) # 
+        stop_word = set(['準氣象','氣象','快訊','影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+                # 只留名詞
+                is_N_or_V = pos.startswith("N") #or pos.startswith("V")
+                # 去掉名詞裡的某些詞性
+                is_not_stop_pos = pos not in stop_pos
+                # 去掉"中職"這個詞
+                is_not_stop_word = ws not in stop_word
+                # 只剩一個字的詞也不留
+                is_not_one_charactor = len(ws) != 1
+                # 組成串列
+                if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                    short_with_pos.append(f"{ws}({pos})")
+                    short_sentence.append(f"{ws}")
