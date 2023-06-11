@@ -1,4 +1,6 @@
 斷詞+取關鍵字規則
+
+****用關鍵字爬蟲
 if subtopic in ['美職']:
         stop_pos = set(['Neu','Neqa','Nh','Nep','Nd']) # 詞性不保留
         stop_word = set(['MLB','影','圖']) # 停用詞
@@ -274,3 +276,200 @@ if subtopic in ['美職']:
                 if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
                     short_with_pos.append(f"{ws}({pos})")
                     short_sentence.append(f"{ws}")
+                    
+                    
+ *****用URL爬蟲                   
+                    
+                    
+if subtopic in ['棒球']:
+        stop_pos = set(['Neu', 'Nh', 'Neqa','Nep','Nd']) # 詞性不保留
+        stop_word = set(['影','圖']) # 停用詞
+        for ws, pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = pos.startswith("N") #or pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = pos not in stop_pos
+            # 去掉"中職"這個詞
+            is_not_stop_word = ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = len(ws) != 1
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+                short_with_pos.append(f"{ws}({pos})")
+                short_sentence.append(f"{ws}")
+    elif subtopic in ['籃球','網球','高爾夫球']:
+        stop_pos = set(["Nd",'Neu','Nes','Nh']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['美食消費']:
+        stop_pos = set(["Nd",'Neu','Nes','Nh','V_2','Nf','Ncd']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['旅遊交通']:  
+        stop_pos = set(['Neu','Nep','Nh']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['文教']: 
+        stop_pos = set([]) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['兩性親子']: 
+        stop_pos = set(['Neu','Nd','Neqa']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") #or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['新奇']:
+        stop_pos = set(['Ng']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            #is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}") 
+    elif subtopic in ['亞澳', '中港澳', '歐非', '美洲']: 
+        stop_pos = set(['Ncd','Neu','Neqa']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") #or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['日韓娛樂']:
+        stop_pos = set(['Neqa','Neu','VJ','Nf']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}") 
+    elif subtopic in ['藝人動態']:
+        stop_pos = set(['Neu','VF','Nh','Ng']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['音樂']: 
+        stop_pos = set(['Neu','Neqa','Ng']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}")
+    elif subtopic in ['電影戲劇','大台北', '北台灣','中部離島', '南台灣', '東台灣','科技新知', '遊戲相關', '3C家電', '手機iOS', '手機Android','養生飲食', '癌症', '塑身減重', '慢性病']: 
+        stop_pos = set(['Neu','Neqa']) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}") 
