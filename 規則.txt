@@ -388,9 +388,9 @@ if subtopic in ['棒球']:
             # 去掉停用詞
             #is_not_stop_word = word_ws not in stop_word
             # 只剩一個字的詞也不留
-            is_not_one_charactor = not (len(word_ws) == 1)
+            #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos  : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}") 
     elif subtopic in ['亞澳', '中港澳', '歐非', '美洲']: 
@@ -406,7 +406,7 @@ if subtopic in ['棒球']:
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos  : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}")
     elif subtopic in ['日韓娛樂']:
@@ -422,7 +422,7 @@ if subtopic in ['棒球']:
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}") 
     elif subtopic in ['藝人動態']:
@@ -438,7 +438,7 @@ if subtopic in ['棒球']:
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos  : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}")
     elif subtopic in ['音樂']: 
@@ -454,7 +454,7 @@ if subtopic in ['棒球']:
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}")
     elif subtopic in ['電影戲劇','大台北', '北台灣','中部離島', '南台灣', '東台灣','科技新知', '遊戲相關', '3C家電', '手機iOS', '手機Android','養生飲食', '癌症', '塑身減重', '慢性病']: 
@@ -470,6 +470,6 @@ if subtopic in ['棒球']:
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
-                short_sentence.append(f"{word_ws}") 
+                short_sentence.append(f"{word_ws}")
