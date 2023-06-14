@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>NewsFilter</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/favicon.png" rel="icon">
+  <link href="/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{url_for('static',filename='bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='swiper-bundle.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='aos.css')}}" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+  <!--  Main CSS File -->
+  <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">
+
+
+</head>
+
+<body>
+  <nav class="navbar navbar-light custom-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="/index">NewsFilter.</a>
+    </div>
+  </nav>
+
+  <main id="main">
+
+    <!-- ======= Works Section ======= -->
+    <section class="section site-portfolio">
+      <div class="container">
+        <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up">
+          <div class="item web col-sm-12 col-md-6 col-lg-6 mb-4" >
+            <a href='/hot_package' class="item-wrap fancybox">
+              <div class="w3-card w3-container w3-center" style="min-height:300px; background-color:lightgray">
+                <br><h1>熱門組合包</h1><br>
+                <i class="fa fa-search w3-margin-bottom w3-text-theme" style="font-size:120px"></i>
+              </div>
+            </a>
+          </div>
+
+          <div class="item photography col-sm-12 col-md-6 col-lg-6 mb-4">
+            <a href="/log_in" class="item-wrap fancybox">
+              <div class="w3-card w3-container w3-center" style="min-height:300px">
+                <br><h1>登入</h1><br>
+                <i class="fa fa-edit w3-margin-bottom w3-text-theme" style="font-size:120px"></i>                
+              </div>              
+            </a>
+          </div>
+        </div>
+          
+        </div>
+      </div>
+    </section><!-- End  Works Section -->
+
+   
+
+  </main><!-- End #main -->
+
+  <!-- Vendor JS Files -->
+  <script src="{{url_for('static', filename='aos.js')}}"></script>
+  <script src="{{url_for('static', filename='bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='isotope.pkgd.min.js')}}"></script>
+  <script src="{{url_for('static', filename='swiper-bundle.min.js')}}"></script>
+
+
+  <!--  Main JS File -->
+  <script src="{{url_for('static', filename='main.js')}}"></script>
+
+  </body>
+</html>
