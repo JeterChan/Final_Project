@@ -31,6 +31,7 @@ h5,
 h6,
 .font-heading {
   font-family: "Raleway", sans-serif;
+  font-weight: bold;
 }
 
 .section {
@@ -511,13 +512,40 @@ h6,
 
 /* login-html */
 .form-floating{
-  width: 50%;   
+  width: 30%;   
   margin: 5px 0 22px 0;  
   display: inline-block;
 }
 
-.w3-container-login{
+.login{
+  height: 480px;
+}
+
+.register{
+  height: 600px;
+}
+
+.login, .register{
   position: fixed;
   width: 100%;
-  top: 15%;
+  top: 5%;
+  /* border:2px solid 	#9D9D9D;
+  border-radius: 20px;
+  background-color: lightgray; */
+  display: flex;
+  justify-content: center;
 }
+
+.form-floating label{
+  font-size: 16px;
+}
+
+.btn{
+  text-align: center;
+  height: 50px;
+}
+
+.cs-btn{
+  width: 30%;
+}
+
