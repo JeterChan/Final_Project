@@ -18,6 +18,8 @@
 
   <!-- Vendor CSS Files -->
   <link href="{{url_for('static',filename='bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='swiper-bundle.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='aos.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -87,10 +89,10 @@
   </main><!-- End #main -->
 
   <!-- Vendor JS Files -->
-  <!-- <script src="assets/vendor/aos/aos.js"></script> -->
+  <script src="{{url_for('static', filename='aos.js')}}"></script>
   <script src="{{url_for('static', filename='bootstrap.bundle.min.js')}}"></script>
-  <!-- <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script> -->
+  <script src="{{url_for('static', filename='isotope.pkgd.min.js')}}"></script>
+  <script src="{{url_for('static', filename='swiper-bundle.min.js')}}"></script>
 
 
   <!-- Template Main JS File -->
