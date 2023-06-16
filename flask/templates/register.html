@@ -38,39 +38,50 @@
 
     <div class="container-fluid  text-center">
         <div class="row">
+            <!-- Flash 訊息顯示區域 -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <ul class="flash-messages">
+                  {% for message in messages %}
+                    <label>{{ message }}</label>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
             <div class="col-sm-12 col-md-12 col-lg-12 mb-4 mt-5">
                 <h1><b>會員註冊</b></h1><br>
-                <form>
+                <form method="POST" action="/register">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="username" placeholder="username">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="username">
                         <label for="username">使用者名稱</label>
                     </div>
                     <br>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="email" placeholder="email">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="email">
                         <label for="email">Email</label>
                     </div>     
                     <br>
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="password" placeholder="password">
+                        <input type="text" class="form-control" id="password" name="password" placeholder="password">
                         <label for="password">輸入密碼</label>
                     </div>
                     <br> 
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="password-repeat" placeholder="password-repeat">
+                        <input type="text" class="form-control" id="password-repeat" name="password-repeat" placeholder="password-repeat">
                         <label for="password-repeat">請再次輸入密碼</label>
                     </div>    
                 
-                </form>
+                
 
-            </div>
+            
             <!-- Button -->
-            <form>
-                <div class="d-grid gap-2 col-6 mx-auto cs-btn">
-                    <input type="button" value="註冊" class="btn btn-success btn-lg" id="submit">
-                    <a class="btn btn-success btn-lg" href="/log-in" role="button">已經有帳號</a>
-                </div>
-            </form>            
+            
+                    <div class="d-grid gap-2 col-6 mx-auto cs-btn">
+                        <input type="submit" value="註冊" class="btn btn-success btn-lg" id="submit">
+                        <a class="btn btn-success btn-lg" href="/log_in" role="button">已經有帳號</a>
+                    </div>
+                </form> 
+            </div>           
         </div>
     </div>
 </body>
