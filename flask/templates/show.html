@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>show</title>
+
+    <!-- Favicons -->
+    <link href="{{url_for('static',filename='img/favicon.png')}}" rel="icon">
+    <link href="{{url_for('static',filename='img/apple-touch-icon.png')}}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/swiper-bundle.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/aos.css')}}" rel="stylesheet">
+    <link href="{{url_for('static',filename='css/bootstrap-icons.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-light custom-navbar">
+            <div class="container">
+                <a class="navbar-brand" href="/index">NewsFilter.</a>
+            </div>
+        </nav>
+
+        <main id="main">
+            <section class="section site-portfolio">
+                
+                <div class="container">
+                    <div class="col-md-12 col-lg-6 mb-4 mb-lg-0 mt-3" data-aos="fade-up">
+                        <h1>主題包名稱</h1>
+                        <h1 class="package_title">{{package_title}}</h1> <!-- 要抓主題包的名稱 -->
+                    </div> 
+                </div>    
+
+                <!-- 主題包資訊 -->
+                    <div class="container package-info pt-3">
+                        <div class="row" id="information">         
+                            <div class="col-sm-12 col-md-12 col-lg-4 col ps-5">
+                                <strong class="fs-3 align-middle">主題：</strong>
+                                <span id="topic">{{topic}}</span>
+                            </div>  
+                            
+                            <div class="col-sm-12 col-md-12 col-lg-4 col">
+                                <strong class="fs-3 align-middle">次主題：</strong>
+                                <span id="subtopic">{{subtopic}}</span>
+                            </div>
+
+                            <div class="col-sm-12 col-md-12 col-lg-4 col">
+                                <strong class="fs-3 align-middle">關鍵字：</strong>
+                                <span id="keyword">{{keyword}}</span>
+                            </div>
+
+                        </div><hr>
+                    </div>
+                    <!-- end of class package-info -->
+                        
+                    
+                <div class="container">
+                    <div id="portfolio-grid" class="row no-gutter pt-3" data-aos="fade-up" data-aos-delay="200">
+                        <!-- 新聞 block -->
+                        <div class="item exercise col-sm-6 col-md-4 col-lg-4 mb-4">
+                          <a href="#" class="item-wrap fancybox"> <!-- href 新聞網址 -->
+                            <div class="work-info">
+                                <!-- 主題 -->
+                                <!-- 次主題 -->
+                                <!-- 關鍵字 -->
+                            </div>
+                                <!-- 照片 class='img-fluid'-->
+                          </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+
+            
+
+        <script src="{{url_for('static', filename='js/aos.js')}}"></script>
+        <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{url_for('static', filename='js/isotope.pkgd.min.js')}}"></script>
+        <script src="{{url_for('static', filename='js/swiper-bundle.min.js')}}"></script>
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+        <script src="{{url_for('static', filename='js/main.js')}}"></script>
+        <script src="{{url_for('static', filename='js/show.js')}}"></script>
+    </body>
+</html>
