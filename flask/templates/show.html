@@ -37,8 +37,7 @@
                 
                 <div class="container">
                     <div class="col-md-12 col-lg-6 mb-4 mb-lg-0 mt-3" data-aos="fade-up">
-                        <h1>主題包名稱</h1>
-                        <h1 class="package_title">{{package_title}}</h1> <!-- 要抓主題包的名稱 -->
+                        <h1 id="package_title">主題包：{{package_title}}</h1> <!-- 要抓主題包的名稱 -->
                     </div> 
                 </div>    
 
@@ -46,18 +45,15 @@
                     <div class="container package-info pt-3">
                         <div class="row" id="information">         
                             <div class="col-sm-12 col-md-12 col-lg-4 col ps-5">
-                                <strong class="fs-3 align-middle">主題：</strong>
-                                <span id="topic">{{topic}}</span>
+                                <span class="align-middle" id="topic">主題：{{topic}}</span>
                             </div>  
                             
                             <div class="col-sm-12 col-md-12 col-lg-4 col">
-                                <strong class="fs-3 align-middle">次主題：</strong>
-                                <span id="subtopic">{{subtopic}}</span>
+                                <span class="align-middle" id="subtopic">次主題：{{subtopic}}</span>
                             </div>
 
                             <div class="col-sm-12 col-md-12 col-lg-4 col">
-                                <strong class="fs-3 align-middle">關鍵字：</strong>
-                                <span id="keyword">{{keyword}}</span>
+                                <span class="align-middle" id="keyword">關鍵字：{{keyword}}</span>
                             </div>
 
                         </div><hr>
@@ -68,14 +64,12 @@
                 <div class="container">
                     <div id="portfolio-grid" class="row no-gutter pt-3" data-aos="fade-up" data-aos-delay="200">
                         <!-- 新聞 block -->
-                        <div class="item exercise col-sm-6 col-md-4 col-lg-4 mb-4">
-                          <a href="#" class="item-wrap fancybox"> <!-- href 新聞網址 -->
+                        <div class="item {{topic}} col-sm-6 col-md-4 col-lg-4 mb-4">
+                          <a href="{{news_url}}" class="item-wrap fancybox"> <!-- news_url -->
                             <div class="work-info">
-                                <!-- 主題 -->
-                                <!-- 次主題 -->
-                                <!-- 關鍵字 -->
+                                <span class="news-title" id="news-title">{{title}}</span>
                             </div>
-                                <!-- 照片 class='img-fluid'-->
+                                <img class="img"  src="{{img_url}}"><!--img_url-->
                           </a>
                         </div>
                     </div>
@@ -94,6 +88,5 @@
         <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
         <script src="{{url_for('static', filename='js/main.js')}}"></script>
-        <script src="{{url_for('static', filename='js/show.js')}}"></script>
     </body>
 </html>

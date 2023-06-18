@@ -10,24 +10,24 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="/favicon.png" rel="icon">
-  <link href="/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="{{url_for('static',filename='img/favicon.png')}}" rel="icon">
+  <link href="{{url_for('static',filename='img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="{{url_for('static',filename='bootstrap.min.css')}}" rel="stylesheet">
-  <link href="{{url_for('static',filename='swiper-bundle.min.css')}}" rel="stylesheet">
-  <link href="{{url_for('static',filename='aos.css')}}" rel="stylesheet">
-  <link href="{{url_for('static',filename='bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='css/swiper-bundle.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='css/aos.css')}}" rel="stylesheet">
+  <link href="{{url_for('static',filename='css/bootstrap-icons.css')}}" rel="stylesheet">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
   </head>
 
   <!--  Main CSS File -->
-  <link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
 
 
 </head>
@@ -36,6 +36,7 @@
     <nav class="navbar navbar-light custom-navbar">
         <div class="container">
           <a class="navbar-brand" href="/index">NewsFilter.</a>
+          <a class="btn btn-lg btn-outline-dark login-btn" href="/log_in" role="button">Login</a>
         </div>
     </nav>
 
@@ -44,11 +45,11 @@
             
             <div class="container">
               <div class="row mb-5 align-items-center">
-                <div class="col-md-12 col-lg-6 mb-4 mb-lg-0" data-aos="fade-up">
-                  <h1>熱門組合包</h1>
+                <div class="col-md-12 col-lg-6 mb-4 mb-lg-0 mt-3" data-aos="fade-up">
+                  <h1>熱門主題包</h1>
                 </div>
 
-                <!-- 運動 -->
+                <!-- 分類 -->
                 <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
                   <div id="filters" class="filters">
                     <a href="#" data-filter="*" class="active">All</a>
@@ -58,23 +59,28 @@
                   </div>
                 </div>
               </div>
+
+              <!-- 運動 -->
               <div id="portfolio-grid" class="row no-gutter" data-aos="fade-up" data-aos-delay="200">
-                <div class="item exercise col-sm-6 col-md-4 col-lg-4 mb-4">
-                  <a href="#" class="item-wrap fancybox">
+                <!-- 主題包的框架 顯示空白是正常的-->
+                <div class="item {{subtopic}} col-sm-6 col-md-4 col-lg-4 mb-4">
+                  <a href="/show" class="item-wrap fancybox">
                     <div class="work-info">
-                      <h2>NBA</h2>
-                      <span>運動</span>
+                      <h2>{{topic}}</h2>
+                      <span>{{subtopic}}</span>
                     </div>
-                    <img class="img-fluid" src="/nba.jpg">
+                    <img class="img" src="{{img_url}}">
                   </a>
                 </div>
+
+                <!-- 下面是做死的 -->
                 <div class="item exercise col-sm-6 col-md-4 col-lg-4 mb-4">
                   <a href="#" class="item-wrap fancybox">
                     <div class="work-info">
                       <h2>MLB</h2>
                       <span>運動</span>
                     </div>
-                    <img class="img-fluid" src="/mlb.jpg">
+                    <img class="img" src="img/mlb.jpg">
                   </a>
                 </div>
                 <div class="item exercise col-sm-6 col-md-4 col-lg-4 mb-4">
@@ -83,7 +89,7 @@
                       <h2>中職</h2>
                       <span>運動</span>
                     </div>
-                    <img class="img-fluid" src="/cpbl.jpg">
+                    <img class="img" src="img/cpbl.jpg">
                   </a>
                 </div>
 
@@ -94,7 +100,7 @@
                         <h2>美食</h2>
                         <span>生活</span>
                       </div>
-                      <img class="img-fluid" src="/food.jpg">
+                      <img class="img" src="img/food.jpg">
                     </a>
                 </div>
 
@@ -104,7 +110,7 @@
                         <h2>旅遊</h2>
                         <span>生活</span>
                       </div>
-                      <img class="img-fluid" src="/travel.jpg">
+                      <img class="img" src="img/travel.jpg">
                     </a>
                 </div>
 
@@ -114,7 +120,7 @@
                         <h2>天氣</h2>
                         <span>生活</span>
                       </div>
-                      <img class="img-fluid" src="/weather.jpg">
+                      <img class="img" src="img/weather.jpg">
                     </a>
                 </div>
 
@@ -125,7 +131,7 @@
                         <h2>亞洲</h2>
                         <span>國際</span>
                       </div>
-                      <img class="img-fluid" src="/asia.jpg">
+                      <img class="img" src="img/asia.jpg">
                     </a>
                 </div>
 
@@ -135,7 +141,7 @@
                         <h2>美洲</h2>
                         <span>國際</span>
                       </div>
-                      <img class="img-fluid" src="/america.jpg">
+                      <img class="img" src="img/america.jpg">
                     </a>
                 </div>
 
@@ -145,24 +151,23 @@
                         <h2>歐洲</h2>
                         <span>國際</span>
                       </div>
-                      <img class="img-fluid" src="/europe.jpg">
+                      <img class="img" src="img/europe.jpg">
                     </a>
                 </div>
-
               </div>
             </div>
         </section>    
     </main>
         
-<!-- Vendor JS Files -->
-<script src="{{url_for('static', filename='aos.js')}}"></script>
-<script src="{{url_for('static', filename='bootstrap.bundle.min.js')}}"></script>
-<script src="{{url_for('static', filename='isotope.pkgd.min.js')}}"></script>
-<script src="{{url_for('static', filename='swiper-bundle.min.js')}}"></script>
+  <!-- Vendor JS Files -->
+  <script src="{{url_for('static', filename='js/aos.js')}}"></script>
+  <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/isotope.pkgd.min.js')}}"></script>
+  <script src="{{url_for('static', filename='js/swiper-bundle.min.js')}}"></script>
 
 
   <!--  Main JS File -->
-  <script src="{{url_for('static', filename='main.js')}}"></script>
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
 
 </body>
 
