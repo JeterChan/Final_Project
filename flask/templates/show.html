@@ -64,14 +64,17 @@
                 <div class="container">
                     <div id="portfolio-grid" class="row no-gutter pt-3" data-aos="fade-up" data-aos-delay="200">
                         <!-- 新聞 block -->
-                        <div class="item {{topic}} col-sm-6 col-md-4 col-lg-4 mb-4">
-                          <a href="{{news_url}}" class="item-wrap fancybox"> <!-- news_url -->
-                            <div class="work-info">
-                                <span class="news-title" id="news-title">{{title}}</span>
-                            </div>
-                                <img class="img"  src="{{img_url}}"><!--img_url-->
-                          </a>
+                        {% for news in news_list %}
+                        <div class="item {{ topic }} col-sm-6 col-md-4 col-lg-4 mb-4">
+                            <a href="{{ news.news_url }}" class="item-wrap fancybox">
+                                <div class="work-info">
+                                    <span class="news-title" id="news-title">{{ news.title }}</span>
+                                </div>
+                                <img class="img" src="{{ news.img_url }}">
+                            </a>
                         </div>
+                        {% endfor %}
+
                     </div>
                 </div>
             </section>
