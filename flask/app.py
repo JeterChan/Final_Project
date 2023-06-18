@@ -109,7 +109,7 @@ def register():
 
 
 @app.route('/show/<topic>/<subtopic>')
-@login_required
+#@login_required
 def show(topic, subtopic):
     db = myclient["News"]
     collection = db[topic]
