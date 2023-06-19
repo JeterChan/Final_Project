@@ -35,14 +35,14 @@
         <main id="main">
             <section class="section site-portfolio">
                 
-                <div class="container">
+                <div class="container" style="width: 1200px;">
                     <div class="col-md-12 col-lg-6 mb-4 mb-lg-0 mt-3" data-aos="fade-up">
                         <h1 id="package_title">主題包：{{package_title}}</h1> <!-- 要抓主題包的名稱 -->
                     </div> 
                    
 
                 <!-- 主題包資訊 -->
-                    <div class="container package-info pt-3">
+                    <div class="pt-3" style="background-color:lightblue">
                         <div class="row" id="information">         
                             <div class="col-sm-12 col-md-12 col-lg-4 col">
                                 <span class="align-middle topic fs-3" id="topic">主題：{{topic}}</span>
@@ -58,26 +58,22 @@
 
                         </div><hr>
                     </div>
-                </div> 
-                    <!-- end of class package-info -->
-                        
+                 
+                    <!-- end of class package-info -->                      
                     
-                <div class="container">
-                    <div id="portfolio-grid" class="row no-gutter pt-3" data-aos="fade-up" data-aos-delay="200">
+                
+                    <div class="row no-gutter pt-3" data-aos="fade-up" data-aos-delay="200">
                         <!-- 新聞 block -->
                         {% for news in news_list %}
-                        <div class="item col-sm-6 col-md-4 col-lg-4 mb-4">
+                        <div class="item col-sm-6 col-md-4 col-lg-4 mb-4 text-center">
                             <a href="{{ news.news_url }}" class="item-wrap fancybox">
-                                <div class="work-info">
-                                    <span class="news-title" id="news-title">{{ news.title }}</span>
-                                </div>
-                                <div class="img-wrapper">
-                                    <img class="img" src="{{ news.img_url }}">
-                                </div>                                
+                                <div class="work-info show-info">
+                                    <span>{{ news.title }}</span>
+                                </div>                               
+                                <img class="img w3-center" src="{{ news.img_url }}">                                                               
                             </a>
                         </div>
                         {% endfor %}
-
                     </div>
                 </div>
             </section>
