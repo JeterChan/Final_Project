@@ -6,6 +6,7 @@ import json
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from flask import jsonify
+import pymysql
  
 myclient = pymongo.MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
 
@@ -42,6 +43,24 @@ def user_loader(user_id):
     user = User.query.get(int(user_id)) 
     return user  # 返回用戶對象
 
+def connect_db():
+    # 資料庫設定
+    db_settings = {
+        "host": "finalproject.cluster-cnfzqwsf4fd2.ap-southeast-2.rds.amazonaws.com",
+        "port": 3306,
+        "user": "ncumis",
+        "password": "ncumis12345",
+        "db": "Final_Project",
+        "charset": "utf8"
+    }
+    try:
+        # 建立Connection物件
+        conn = pymysql.connect(**db_settings)
+        return conn
+    except Exception as ex:
+        print(ex)
+        
+
 # 建立網站首頁的回應方式
 @app.route("/")
 def index(): # 用來回應網站首頁連線的函式
@@ -53,11 +72,19 @@ def homepage():
 
 @app.route("/hot_package")
 def hot_package():
+    conn=connect_db()
+    # 建立Cursor物件
+    with conn.cursor() as cursor:
+        # 查詢資料SQL語法
+        command = "SELECT * FROM Final_Project.官方組合包"
+        # 執行指令
+        cursor.execute(command)
+        # 取得所有資料
+        package_list = cursor.fetchall()
+    
     # topic, subtopic, img_url 資料庫抓資料
     return render_template('hot_package.html',
-                           topic="",
-                           subtopic="",
-                           img_url="")
+                           package_list=package_list)
 
 @app.route("/choose_function",methods=["GET","POST"])
 def choose_function():
@@ -108,14 +135,13 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/show/<topic>/<subtopic>')
+@app.route('/show/<topic>/<subtopic>/<keyword>')
 #@login_required
-def show(topic, subtopic):
+def show_with_kw(topic, subtopic,keyword):
     db = myclient["News"]
     collection = db[topic]
-    #data = collection.find({'subtopic': subtopic})
     news_list = []
-    data = list(collection.find({'subtopic': subtopic}))
+    data = list(collection.find({'subtopic': subtopic , 'title': {'$regex': keyword, '$options': 'i'}}))
     reversed_data = list(reversed(data))
 
     for document in reversed_data:
@@ -130,7 +156,31 @@ def show(topic, subtopic):
                            package_title='組合包名稱',
                            topic=topic,
                            subtopic=subtopic,
-                           keyword='',
+                           keyword=keyword,
+                           news_list=news_list)
+
+@app.route('/show/<topic>/<subtopic>')
+#@login_required
+def show_without_kw(topic, subtopic):
+    db = myclient["News"]
+    collection = db[topic]
+    news_list = []
+    data = list(collection.find({'subtopic': subtopic }))
+    reversed_data = list(reversed(data))
+
+    for document in reversed_data:
+        news = {
+            'title': document['title'],
+            'news_url': document['url'],
+            'img_url': document['image'],
+        }
+        news_list.append(news)
+
+    return render_template('show.html', 
+                           package_title='組合包名稱',
+                           topic=topic,
+                           subtopic=subtopic,
+                           keyword="無",
                            news_list=news_list)
 
 
