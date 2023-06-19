@@ -113,10 +113,12 @@ def register():
 def show(topic, subtopic):
     db = myclient["News"]
     collection = db[topic]
-    data = collection.find({'subtopic': subtopic})
+    #data = collection.find({'subtopic': subtopic})
     news_list = []
+    data = list(collection.find({'subtopic': subtopic}))
+    reversed_data = list(reversed(data))
 
-    for document in reversed(data):
+    for document in reversed_data:
         news = {
             'title': document['title'],
             'news_url': document['url'],
@@ -140,7 +142,7 @@ GOOGLE_OAUTH2_CLIENT_ID = '774374692298-jtj2he5qpci5mdblvaucvgolgastlo8t.apps.go
 def log_in():
     if request.method == 'POST':
         input_email = request.form['email']
-        input_password = request.form['password']
+        input_password = request.form['pwd']
 
         # email、password為空，驗證失敗轉回登入頁面
         if not input_email or not input_password:
