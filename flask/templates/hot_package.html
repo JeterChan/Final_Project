@@ -50,7 +50,7 @@
                 </div>
 
                 <!-- 分類 -->
-                <div class="col-md-12 col-lg-6 text-start text-lg-end" data-aos="fade-up" data-aos-delay="100">
+                <div class="col-md-12 col-lg-6 text-start text-end" data-aos="fade-up" data-aos-delay="100">
                   <div id="filters" class="filters">
                     <a href="#" data-filter="*" class="active">All</a>
                     <a href="#" data-filter=".運動">運動</a>
@@ -71,7 +71,7 @@
                 <div class="item {{package[2]}} col-sm-6 col-md-4 col-lg-4 mb-4">
                   {% if package[4] == None %}
                   <a href="{{ url_for('show_without_kw', topic=package[2], subtopic=package[3]) }}" class="item-wrap fancybox">
-                      <div class="work-info">
+                      <div class="work-info hot-info">
                         <h2> {{package[3]}} </h2>
                         <span>{{package[2]}} </span>
                       </div>
@@ -79,7 +79,7 @@
                   </a>
                   {% else %}
                   <a href="{{ url_for('show_with_kw', topic=package[2], subtopic=package[3],keyword=package[4]) }}" class="item-wrap fancybox">
-                      <div class="work-info">
+                      <div class="work-info hot-info">
                         <h2> {{package[4]}} </h2>
                         <span>{{package[2]}} {{package[3]}}</span>
                       </div>
