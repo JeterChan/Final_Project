@@ -49,7 +49,7 @@ def grab_yahoo_usersearch(spider_url):
     i = 0
     count = 0
     print('載入資料開始...')
-    while count<1:
+    while count<10:
         i = i+1
         elements = driver.find_elements(By.CSS_SELECTOR,  'h3')
         s_num = len(elements)
@@ -96,21 +96,7 @@ def check_duplicate(topic,subtopic,title_list,URL_list,image_list): # 過濾掉�
     # 連接到 MongoDB
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
     db = client["News"]
-
-    if topic in ["生活"] :
-        collection = db["Life"]
-    elif topic in ["運動"] :
-        collection = db["Sport"]
-    elif topic in ["國際"] :
-        collection = db["International"]
-    elif topic in ["娛樂"] :
-        collection = db["Entertainment"]
-    elif topic in ["社會地方"] :
-        collection = db["Social"]
-    elif topic in ["科技"] :
-        collection = db["Technology"]
-    elif topic in ["健康"] :
-        collection = db["Health"]
+    collection = db[topic]
 
     filtered_title = []
     filtered_url=[]
@@ -155,9 +141,9 @@ def clean(subtopic, sentence_ws, sentence_pos):
             # 去掉"中職"這個詞
             is_not_stop_word = ws not in stop_word
             # 只剩一個字的詞也不留
-            is_not_one_charactor = len(ws) != 1
+            #is_not_one_charactor = len(ws) != 1
             # 組成串列
-            if is_N_or_V and is_not_stop_pos and is_not_stop_word and is_not_one_charactor:
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
                 short_with_pos.append(f"{ws}({pos})")
                 short_sentence.append(f"{ws}")
     elif subtopic in ['籃球','網球','高爾夫球']:
@@ -249,11 +235,11 @@ def clean(subtopic, sentence_ws, sentence_pos):
             # 去掉名詞裡的某些詞性
             is_not_stop_pos = word_pos not in stop_pos
             # 去掉停用詞
-            #is_not_stop_word = word_ws not in stop_word
+            is_not_stop_word = word_ws not in stop_word
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos  : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos  and is_not_stop_word: #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}") 
     elif subtopic in ['亞澳', '中港澳', '歐非', '美洲']: 
@@ -269,7 +255,7 @@ def clean(subtopic, sentence_ws, sentence_pos):
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos  : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}")
     elif subtopic in ['日韓娛樂']:
@@ -285,7 +271,7 @@ def clean(subtopic, sentence_ws, sentence_pos):
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word: #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}") 
     elif subtopic in ['藝人動態']:
@@ -301,7 +287,7 @@ def clean(subtopic, sentence_ws, sentence_pos):
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos  : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word: #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}")
     elif subtopic in ['音樂']: 
@@ -317,7 +303,7 @@ def clean(subtopic, sentence_ws, sentence_pos):
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word : #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}")
     elif subtopic in ['電影戲劇','大台北', '北台灣','中部離島', '南台灣', '東台灣','科技新知', '遊戲相關', '3C家電', '手機iOS', '手機Android','養生飲食', '癌症', '塑身減重', '慢性病']: 
@@ -333,7 +319,23 @@ def clean(subtopic, sentence_ws, sentence_pos):
             # 只剩一個字的詞也不留
             #is_not_one_charactor = not (len(word_ws) == 1)
             # 組成串列
-            if is_N_or_V and is_not_stop_pos : #and is_not_one_charactor
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word: #and is_not_one_charactor
+                short_with_pos.append(f"{word_ws}({word_pos})")
+                short_sentence.append(f"{word_ws}") 
+    elif subtopic in ["股市匯市","房地產","產業動態","理財就業"]:
+        stop_pos = set([]) # 
+        stop_word = set(['影','圖']) # 停用詞
+        for word_ws, word_pos in zip(sentence_ws, sentence_pos):
+            # 只留名詞和動詞
+            is_N_or_V = word_pos.startswith("N") or word_pos.startswith("V") 
+            # 去掉名詞裡的某些詞性
+            is_not_stop_pos = word_pos not in stop_pos
+            # 去掉停用詞
+            is_not_stop_word = word_ws not in stop_word
+            # 只剩一個字的詞也不留
+            #is_not_one_charactor = not (len(word_ws) == 1)
+            # 組成串列
+            if is_N_or_V and is_not_stop_pos and is_not_stop_word: #and is_not_one_charactor
                 short_with_pos.append(f"{word_ws}({word_pos})")
                 short_sentence.append(f"{word_ws}") 
     return (" ".join(short_sentence), " ".join(short_with_pos))
@@ -377,23 +379,7 @@ def copy_to_db(topic,data):
     client = MongoClient(uri)
     # 选择要插入数据的数据库和集合
     db = client["News"]
-
-    if topic in ["生活"] :
-        collection = db["Life"]
-    elif topic in ["運動"] :
-        collection = db["Sport"]
-    elif topic in ["國際"] :
-        collection = db["International"]
-    elif topic in ["娛樂"] :
-        collection = db["Entertainment"]
-    elif topic in ["社會地方"] :
-        collection = db["Social"]
-    elif topic in ["科技"] :
-        collection = db["Technology"]
-    elif topic in ["健康"] :
-        collection = db["Health"]
-
-    #collection = db["TEST"]
+    collection = db[topic]
 # Send a ping to confirm a successful connection
     try:
         
@@ -430,7 +416,7 @@ def main(topic,subtopic,spider_url):
         copy_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords))
 
 if __name__ == '__main__':
-    topics=["健康"] #"運動","生活","國際","娛樂","社會地方","科技",
+    topics=["運動","生活","國際","娛樂","社會地方","科技","健康"] #
     for topic in topics:
         if topic in ["運動"]:
             subtopics = ["棒球", "籃球", "網球", "高爾夫球"]
@@ -439,7 +425,7 @@ if __name__ == '__main__':
                         "https://tw.news.yahoo.com/tennis/",
                         "https://tw.news.yahoo.com/tennis/"]
         elif topic in ["生活"]:
-             subtopics = ["美食消費", "旅遊交通", "文教", "兩性親子","新奇"]#
+             subtopics = ["美食消費", "旅遊交通", "文教", "兩性親子","新奇"]
              spider_urls=["https://tw.news.yahoo.com/consumption/",
                          "https://tw.news.yahoo.com/travel/",
                          "https://tw.news.yahoo.com/art-edu/",
@@ -473,13 +459,19 @@ if __name__ == '__main__':
                          "https://tw.news.yahoo.com/applephone/",
                          "https://tw.news.yahoo.com/androidphone/"]
         elif topic in ["健康"]:
-             subtopics = ["養生飲食", "癌症", "塑身減重", "慢性病"]#
+             subtopics = ["養生飲食", "癌症", "塑身減重", "慢性病"]
              spider_urls=["https://tw.news.yahoo.com/fitness/",
                           "https://tw.news.yahoo.com/cancer/",
                           "https://tw.news.yahoo.com/beauty/",
                           "https://tw.news.yahoo.com/disease/"
                          ]
-
+        elif topic in ["財經"]:
+             subtopics = ["股市匯市","房地產","產業動態","理財就業"]
+             spider_urls=["https://tw.news.yahoo.com/stock/",
+                          "https://tw.news.yahoo.com/real-estate/",
+                          "https://tw.news.yahoo.com/industry/",
+                          "https://tw.news.yahoo.com/money-career/"
+                         ]
         for subtopic, spider_url in zip(subtopics, spider_urls):
             print(f"Processing topic: {topic},subtopic: {subtopic}")
             main(topic, subtopic, spider_url)
