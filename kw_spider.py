@@ -72,33 +72,23 @@ def grab_yahoo_usersearch(subtopic):
     print("載入資料結束...")
 
     soup = BeautifulSoup(driver.page_source, 'lxml')
-
+    print(soup)
     titles = soup.select('#stream-container-scroll-template > li> div > div > div > div > h3')
-    URLs_elem = soup.select('#stream-container-scroll-template > li> div > div > div > div > h3 > a')
-    images = soup.select('.Cf')
-
+    driver.close()
     title_list = []
-    URL_list = []
-    image_list = []
-
     count = 1
-    for title,URL,image in zip(titles,URLs_elem,images):
+    for i,title in enumerate(titles):
         if (count%4)!=2: # 篩掉廣告
+            print(count)
+            print(title.text)
             title_list.append(title.text)
-            URL = 'https://tw.news.yahoo.com/'+URL['href']
-            URL_list.append(URL)
-            if image and image.find('img'):
-                image_list.append(image.find('img')['src'])
-            else:
-                image_list.append("None")
 
         count+=1
-    driver.close()
-    
-    return title_list,URL_list,image_list
+
+    return title_list
     
 
-def check_duplicate(topic,subtopic,title_list,URL_list,image_list): # 過濾掉資料庫內已經有的
+def check_duplicate(topic,subtopic,title_list): # 過濾掉資料庫內已經有的
     # 連接到 MongoDB
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
     db = client["News"]
@@ -109,32 +99,64 @@ def check_duplicate(topic,subtopic,title_list,URL_list,image_list): # 過濾掉�
         collection = db["Sport"]
 
     filtered_title = []
-    filtered_url=[]
-    filtered_image=[]
-
+    
 # 遍歷手上的資料清單
-    for title,url,image in zip(title_list,URL_list,image_list):
+    for title in title_list:
         # 在資料庫中查找與當前標題相符的資料
         result = collection.find_one({'subtopic': subtopic,'title': title})
         
         # 如果找不到相符的資料，則將當前標題添加到篩選後的資料清單
         if result is None:
             filtered_title.append(title)
-            filtered_url.append(url)
-            filtered_image.append(image)
 
     # 印出篩選後的資料清單
-    #print("原本 :",title_list)
-    #print("篩選後 :",filtered_title)
-    #print("原本 :",URL_list)
-    #print("篩選後 :",filtered_url)
-    #print("原本 :",image_list)
-    #print("篩選後 :",filtered_image)
+    print("原本 :",title_list)
+    print("篩選後 :",filtered_title)
     # 關閉與 MongoDB 的連接
     client.close()
-    return filtered_title,filtered_url,filtered_image
+    return filtered_title
 
 
+def grab_yahoo_title_URL(title):
+    options = webdriver.ChromeOptions()  
+    prefs = {'profile.default_content_setting_values':{'notifications': 2}}
+    options.add_experimental_option('prefs', prefs)
+    options.add_argument("disable-infobars")
+    driver = webdriver.Chrome(executable_path=r"C:\Users\User\python-workspace\專題\chromedriver.exe",chrome_options=options)
+
+    driver.get('https://tw.news.yahoo.com/')
+    time.sleep(5)
+
+    #讀取已經存在的記事本檔案，並將標題依序餵入後，點擊新聞取得網址，返回上一頁，
+    URLs = []
+    image_url = "none"
+
+    try:
+        elem = driver.find_element(By.NAME, "p")
+        elem.clear()
+        ActionChains(driver).double_click(elem).perform()
+        elem.send_keys(title)
+        elem.send_keys(Keys.RETURN)
+        time.sleep(5)
+
+        soup = BeautifulSoup(driver.page_source, 'lxml')
+
+        # 選取第一個標題旁的照片元素
+        image = soup.select_one('.Cf')
+
+        elem_title = driver.find_element(By.CLASS_NAME, "StreamMegaItem")
+        ActionChains(driver).click(elem_title).perform()
+        current_url = driver.current_url
+        URLs.append(current_url)
+
+        if image and image.find('img'):
+            image_url = image.find('img')['src']
+
+    except Exception:
+        URLs.append("404")
+    
+    driver.quit()
+    return URLs, image_url
 
 def clean(subtopic, sentence_ws, sentence_pos):
     short_with_pos = []
@@ -475,9 +497,9 @@ def copy_to_db(topic,data):
         print(e) 
 
 def main(topic,subtopic):
-    title_list,URL_list,image_list=grab_yahoo_usersearch(subtopic)
-    filtered_title_list,filtered_URL_list,filtered_image_list=check_duplicate(topic,subtopic,title_list,URL_list,image_list)
-    for title,URL,image_url in zip(filtered_title_list,filtered_URL_list,filtered_image_list):
+    filtered_title_list=check_duplicate(topic,subtopic,grab_yahoo_usersearch(subtopic))
+    for title in filtered_title_list:
+        URL,image_url=grab_yahoo_title_URL(title)
         keywords=get_keyword(subtopic, title)
         copy_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords))
 
