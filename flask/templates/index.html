@@ -1,76 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Communews</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+  
+  <!-- Bootstrap css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="C:\Users\Admin\Desktop\python-flask\static\css\main.css" rel="stylesheet">
 
-  <!-- Favicons -->
-  <link href="{{url_for('static',filename='img/44300.jpg')}}" rel="icon">
+  <!-- GoogleFont -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap" rel="stylesheet">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=https://fonts.googleapis.com/css?family=Inconsolata:400,500,600,700|Raleway:400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="{{url_for('static',filename='css/bootstrap.min.css')}}" rel="stylesheet">
-  <link href="{{url_for('static',filename='css/swiper-bundle.min.css')}}" rel="stylesheet">
-  <link href="{{url_for('static',filename='css/aos.css')}}" rel="stylesheet">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-
-
-  <!--  Main CSS File -->
-  <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet">
-
-
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-  <nav class="navbar navbar-light custom-navbar">
-    <div class="container">
-      <a class="navbar-brand" href="/index">Communews.</a>
-    </div>
-  </nav>
-
-   <!-- ======= Works Section ======= -->
-    <section class="section site-portfolio">
-      <div class="container">
-        <div class="row index-btn" data-aos="fade-up">
-          <div class="item col mb-4" >
-            <a href='/hot_package'>
-              <button class="w3-container w3-center">
-                <span class="primary-btn">熱門組合包</span><br>
-                <p class="fa fa-search w3-margin-bottom w3-text-theme" style="font-size:140px"></p>
-              </button>
-            </a>
-          </div>
-
-          <div class="item col mb-4" >
-            <a href='/log_in'>
-              <button class="w3-container w3-center">
-                <span class="primary-btn">登入</span><br>
-                <p class="fa fa-search w3-margin-bottom w3-text-theme" style="font-size:140px"></p>
-              </button>
-            </a>
-          </div>                   
+  <header>
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container-fluid">
+        <div class="">
+          <a class="navbar-brand" href="index.html">
+            <img src="C:\Users\Admin\Desktop\python-flask\static\img\44300.png" class="logo">
+            Communews
+          </a>
+        </div>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>   
+  
+        <div class="d-flex justify-content-end collapse navbar-collapse navigation" id="navbarSupportedContent">
+          <form class="search-block d-flex m-auto" role="search">
+            <input class="form-control me-2" type="search" placeholder="搜尋" aria-label="Search">
+            <button class="btn btn-outline-success btnSearch" type="submit">搜尋</button>
+          </form>
+            <a class="nav-link" aria-current="page" href="#">首頁</a>
+            <a class="btnLogin" href="log_in.html" role="button"><p>Login</p></a>
         </div>
       </div>
-    </section><!-- End  Works Section -->
+    </nav>
+  </header>
 
-  <!-- Vendor JS Files -->
-  <script src="{{url_for('static', filename='js/aos.js')}}"></script>
-  <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script>
-  <script src="{{url_for('static', filename='js/isotope.pkgd.min.js')}}"></script>
-  <script src="{{url_for('static', filename='js/swiper-bundle.min.js')}}"></script>
+  <!-- Card section -->
+  <div class="container-fluid bg-secondary-subtle" style="margin-top: 100px;height: 100%;">
+    <div class="row">
+      <div class="col-sm-12 col-md-6 col-lg-6 card-block">
+        <div class="card h-100 pb-2" style="width: 675px;">
+          <div class="row">
+            <div class="col col-md-4">
+              <img src="C:\Users\Admin\Desktop\python-flask\static\img\asia.jpg" class="img-fluid rounded-start ">
+              <div class="avg-rating py-1 ms-2">
+                <span id="avg-stars"></span> <!-- 呈現平均評分數 -->
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>                
+              </div>
+            </div>
+            <!-- card 內容 -->
+            <div class="col-md-8">
+              <div class="card-body">
+                <a class="card-title" href="{{title url}}" style="font-size: 22px;">{{MLB》大谷、神鱒背靠背炸裂！「打者翔平」日美通算200轟達陣}}</a>
+                <p class="card-text">{{天使二刀流球星大谷翔平6月份狂轟猛炸，今天客場出戰洛磯再度炸裂，敲出本季第25發全壘打，穩居大聯盟全壘打王，日美通算200轟里程碑達陣，更與「神鱒」楚奧特（Mike Trout）背靠背開轟，助隊取得4：2領先。 }}</p>
+                <a href="{{url_for()}}" class="card-link" target="_blank">{{ptt-link}}</a>
+              </div>
 
+              <!-- 評分 -->
+              <form class="rating">
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                </div>
+              </form>
 
-  <!--  Main JS File -->
-  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+            </div>
+          </div>
+        </div>
+      </div> 
 
-  </body>
+    </div>
+  </div>
+  
+  
+
+  <!-- Bootstrap js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <script src="C:\Users\Admin\Desktop\python-flask\static\js\index.js" defer></script>
+</body>
+
 </html>
