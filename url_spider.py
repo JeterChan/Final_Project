@@ -403,7 +403,7 @@ def copy_to_db(topic,data):
             url = row['URL'] 
             image = row['Image'] 
             keyword = row['Keyword']
-            content=row['Contnet']
+            content=row['Content']
             summary=row['Summary']  
             insert_data = {
             "topic":topic,
