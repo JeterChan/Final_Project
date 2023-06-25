@@ -108,7 +108,7 @@ body{
 .col img{
     aspect-ratio: 5/3;
     /* max-width:  350px;*/
-    height: 90%; 
+    height: 100%; 
 
     object-position: 5px 5px;
     object-fit: cover;
@@ -132,56 +132,8 @@ body{
 .card-title:hover{
     text-decoration: underline;
 }
+
 /* rating */
-/* .rating{
-    position: relative;
-    display: flex;
-    bottom: 10px;
-    transform: rotateY(180deg);    
-}
-
-
-.rating input{
-    display: none;
-}
-
-.rating label{
-    display: block;
-    cursor: pointer;
-    width: 100%;
-    background-color: #ccc;
-}
-
-.rating label::before{
-    content: '\f005';
-    font-family: fontAwesome;
-    position: relative;
-    display: block;
-    font-size: 30px;
-    color: rgba(255, 255, 255, 0.8);
-    left: 10px;
-}
-
-.rating label::after{
-    content: '\f005';
-    font-family: fontAwesome;
-    position: absolute;
-    display: block;
-    font-size: 30px;
-    color: yellow;
-    top: 0;
-    opacity: 0;
-    transition: .5s;
-    text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
-    padding-left: 10px;   
-}
-
-.rating label:hover:after,
-.rating label:hover ~ label:after,
-.rating input:checked ~ label:after{
-    opacity: 1;
-} */
-
 .rating{
     position: relative;
     text-align: center;
@@ -207,45 +159,21 @@ body{
 }
 
 
-.avg-rating i{
-    font-size: 24px;
-    color: #ff9c1a;
+.like {
+    width: 48px;
+    height: 48px;
     position: relative;
-    left: 10px;    
+    top: 5px;
+    cursor: pointer;
+    display: inline-block;
+    
 }
 
-.avg-stars {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translateY(-10px) translateX(-5px);
-    z-index: -9;
-    font: 3em Arial, Helvetica, sans-serif;
-    color: #ebebeb8e;
-    pointer-events: none;
- }
-/* another stars */
-/* .rating {
-    position: relative;
-    width: 180px;
-    background: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: .3em;
-    padding: 5px;
-    overflow: hidden;
-    border-radius: 20px;
-    box-shadow: 0 0 2px #b3acac;
- }
- 
- .star {
-    font-size: 1.3em;
-    cursor: pointer;
-    color: #dabd18b2;
-    transition: filter linear .3s;
- }
- 
- .star:hover {
-    filter: drop-shadow(1px 1px 4px gold);
- } */
+.like-no {
+    background: url("../img/dislike.svg") no-repeat;
+}
+
+.like-yes {
+    background: url("../img/like.svg") no-repeat;
+}
+
