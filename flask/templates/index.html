@@ -51,14 +51,15 @@
 
   <!-- Card section -->
   <div class="container bg-secondary-subtle" style="margin-top: 100px;width: 1350px; height: 100%;">
-                  
-        
+                          
     <div class="row bg-danger-subtle">
+
       <form class="bg-success-subtle">
         <div class="like like-no"></div>
         <span class="topic fs-1"># 熱門 - {{topic}}</span>
       </form>
 
+      <!-- start of column -->
       <div class="col-sm-12 col-md-6 col-lg-6 card-block">
         
         <!-- Card section -->
@@ -78,58 +79,23 @@
               </div>
 
                <!-- 評分 -->
-              <form class="rating">
-                <div class="stars">                  
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
+              <form class="{{news_id}} rating">                 
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
                   <span id="stars-score"></span>
-                </div>
               </form>
 
             </div>
           </div>
         </div>
       </div> 
+      <!-- end of column -->
 
-      <div class="col-sm-12 col-md-6 col-lg-6 card-block">
-        
-        <!-- Card section -->
-        <div class="card h-100 pb-2" style="width: 675px;">
-          <div class="row">
-            <div class="col col-md-4 pb-1">
-              <a href="{{ news_url }}">
-                <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start ">
-              </a>         
-            </div>
-            <!-- card 內容 -->
-            <div class="col-md-8">
-              <div class="card-body">
-                <a class="card-title" href="{{title_url}}" style="font-size: 22px;">{{news_title}}</a>
-                <p class="card-text">{{news_summary}}</p>
-                <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
-              </div>
-
-               <!-- 評分 -->
-              <form class="rating">
-                <div class="stars">                  
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <i class="fa-solid fa-star"></i>
-                  <span id="stars-score"></span>
-                </div>
-              </form>
-
-            </div>
-          </div>
-        </div>
-      </div> 
-
-    </div>
+    </div> 
+    <!-- end of row -->
   </div>
   
 
