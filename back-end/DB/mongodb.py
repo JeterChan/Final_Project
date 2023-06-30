@@ -25,7 +25,7 @@ def check_duplicate(topic,subtopic,title_list,URL_list,image_list): # 過濾掉�
     client.close()
     return filtered_title,filtered_url,filtered_image
 
-def copy_to_db(topic,data):
+def save_to_db(topic,data):
     # 新爬出的內容放進資料庫
     uri = "mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority"
 
@@ -68,3 +68,34 @@ def copy_to_db(topic,data):
             collection.insert_one(insert_data)
     except Exception as e:
         print(e) 
+
+def copy_to_db():
+    # 連接到 MongoDB
+    client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
+    source_db = client["TodayNews"]
+    target_db = client["News"]
+
+    # 获取集合名称列表
+    collection_names = source_db.list_collection_names()
+    # 打印集合名称
+    for collection_name in collection_names:
+        print(collection_name)
+    
+    for collection_name in collection_names:
+        # 获取源集合中的所有文档
+        source_collection = source_db[collection_name]
+        documents = source_collection.find()
+
+        # 将文档插入到目标集合
+        target_collection = target_db[collection_name]
+        target_collection.insert_many(documents)
+
+def clean_todaydb():
+    client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
+    db = client["TodayNews"]
+    # 获取集合名称列表
+    collection_names = db.list_collection_names()
+    for collection_name in collection_names:
+        collection = db[collection_name]
+        # 清除集合中的所有文档
+        collection.delete_many({})
