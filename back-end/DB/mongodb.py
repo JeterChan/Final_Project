@@ -26,12 +26,8 @@ def check_duplicate(topic,subtopic,title_list,URL_list,image_list): # 過濾掉�
     return filtered_title,filtered_url,filtered_image
 
 def save_to_db(topic,data):
-    # 新爬出的內容放進資料庫
-    uri = "mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority"
-
-# Create a new client and connect to the server
-    client = MongoClient(uri)
-    # 选择要插入数据的数据库和集合
+    # 連接到 MongoDB
+    client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
     db = client["TodayNews"]
     collection = db[topic]
 # Send a ping to confirm a successful connection
@@ -39,35 +35,51 @@ def save_to_db(topic,data):
         
         client.admin.command('ping')
         print("Pinged your deployment. You successfully connected to MongoDB!")
-        # 获取要插入的数据
-
-        for index,row in data.iterrows():
-            # 取得標題和網址的值
-            topic = row['Topic']  
-            subtopic = row['Subtopic']  
-            title = row['Title']  
-            url = row['URL'] 
-            image = row['Image'] 
-            keyword = row['Keyword']
-            content=row['Content']
-            summary=row['Summary'] 
-            emotion_value=row['Emotion_value'] 
-            insert_data = {
-            "topic":topic,
-            "subtopic":subtopic,
-            "title": title,
-            "url":url,
-            "image":image,
-            "keyword":keyword,
-            "content":content,
-            "summary":summary,
-            "emotion_value":emotion_value,
-            "views":0
-            }
+        if topic == "關鍵每一天":
+            # 获取要插入的数据
+            for index,row in data.iterrows():
+                # 取得標題和網址的值
+                topic = row['Topic']  
+                subtopic = row['Subtopic']
+                keyword = row['Keyword']
+                date=row['Date'] 
+                insert_data = {
+                "topic":topic,
+                "subtopic":subtopic,
+                "keyword":keyword,
+                "date":date
+                }
+        else:
+            # 获取要插入的数据
+            for index,row in data.iterrows():
+                # 取得標題和網址的值
+                topic = row['Topic']  
+                subtopic = row['Subtopic']  
+                title = row['Title']  
+                url = row['URL'] 
+                image = row['Image'] 
+                keyword = row['Keyword']
+                content=row['Content']
+                summary=row['Summary'] 
+                emotion_value=row['Emotion_value'] 
+                insert_data = {
+                "topic":topic,
+                "subtopic":subtopic,
+                "title": title,
+                "url":url,
+                "image":image,
+                "keyword":keyword,
+                "content":content,
+                "summary":summary,
+                "emotion_value":emotion_value,
+                "views":0
+                }
          # 插入数据
             collection.insert_one(insert_data)
     except Exception as e:
         print(e) 
+    # 關閉與 MongoDB 的連接
+    client.close()
 
 def copy_to_db():
     # 連接到 MongoDB
@@ -89,6 +101,8 @@ def copy_to_db():
         # 将文档插入到目标集合
         target_collection = target_db[collection_name]
         target_collection.insert_many(documents)
+    # 關閉與 MongoDB 的連接
+    client.close()
 
 def clean_todaydb():
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
@@ -99,3 +113,32 @@ def clean_todaydb():
         collection = db[collection_name]
         # 清除集合中的所有文档
         collection.delete_many({})
+    # 關閉與 MongoDB 的連接
+    client.close()
+
+def get_all_data():
+    title_list=[]
+    client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
+    db = client["TodayNews"]
+    # 获取集合名称列表
+    collection_names = db.list_collection_names()
+    for collection_name in collection_names:
+        # 获取源集合中的所有文档
+        collection = db[collection_name]
+        for document in collection.find():
+            title_list.append(document['title'])
+    # 關閉與 MongoDB 的連接
+    client.close()
+    return title_list
+
+def get_col_data(collection_name):
+    title_list=[]
+    client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
+    db = client["TodayNews"]
+    # 获取源集合中的所有文档
+    collection = db[collection_name]
+    for document in collection.find():
+        title_list.append(document['title'])
+    # 關閉與 MongoDB 的連接
+    client.close()
+    return title_list
