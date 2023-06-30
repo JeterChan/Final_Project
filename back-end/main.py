@@ -13,7 +13,7 @@ from Keyword.url_keyword import url_get_keyword
 # 資料處理
 import pandas as pd
 #資料庫
-from DB.mongodb import copy_to_db,check_duplicate
+from DB.mongodb import save_to_db,check_duplicate,copy_to_db,clean_todaydb
 #停用詞
 stops = []
 with open('Summarize\stopWord_summar.txt', 'r', encoding='utf-8-sig') as f:
@@ -40,7 +40,7 @@ def kw(topic,subtopic):
         processed_summary=HanziConv.toSimplified(summary)
         emotion_value=c.predict(processed_summary)
         emotion_value = float("{:.6f}".format(emotion_value))
-        copy_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
+        save_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
 
 def url(topic,subtopic,spider_url):
     title_list,URL_list,image_list=grab_yahoo_url(spider_url)
@@ -58,9 +58,10 @@ def url(topic,subtopic,spider_url):
         processed_summary=HanziConv.toSimplified(summary)
         emotion_value=c.predict(processed_summary)
         emotion_value = float("{:.6f}".format(emotion_value))
-        copy_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
+        save_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
 
 if __name__ == '__main__':
+    clean_todaydb()
     kw_topics=["運動","生活"]#
                 
     subtopics = ['足球','排球','田徑','中職','MLB','日職','韓職','中信兄弟','味全龍','統一獅','樂天桃猿','富邦悍將','台鋼雄鷹',
@@ -81,7 +82,7 @@ if __name__ == '__main__':
             kw(topic,"氣象")
 
     
-    url_topics=["運動", "生活","國際","娛樂","社會地方","科技","健康","財經"] #"運動", "生活","國際","娛樂","社會地方","科技","健康","財經"
+    url_topics=["運動", "生活","國際","娛樂","社會地方","科技","健康","財經"] #
     for topic in url_topics:
         if topic in ["運動"]:
             subtopics = ["棒球", "籃球", "網球", "高爾夫球"]
@@ -140,4 +141,4 @@ if __name__ == '__main__':
         for subtopic, spider_url in zip(subtopics, spider_urls):
             print(f"Processing topic: {topic},subtopic: {subtopic}")
             url(topic, subtopic, spider_url)
-    
+    copy_to_db()
