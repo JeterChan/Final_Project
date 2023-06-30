@@ -10,7 +10,7 @@ from Summarize.summarization import *
 #關鍵字
 from Keyword.kw_keyword import kw_get_keyword
 from Keyword.url_keyword import url_get_keyword
-from Keyword.hot_keyword import *
+from Keyword.hot_keyword import find_frequent_word
 # 資料處理
 import pandas as pd
 #資料庫
@@ -27,8 +27,8 @@ def dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotio
     data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Image':image_url,'Keyword':keywords,'Content':content,'Summary':summary,'Emotion_value':emotion_value}) # 創建dataframe    
     return data
 
-def dataframe(topic,subtopic,keywords,date):
-    data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Keyword':keywords,'Date':date}) # 創建dataframe    
+def dataframe(topic,keywords,date):
+    data = pd.DataFrame({'Topic': topic,'Keyword':keywords,'Date':date}) # 創建dataframe    
     return data
 
 def kw(topic,subtopic):
@@ -47,7 +47,7 @@ def kw(topic,subtopic):
         processed_summary=HanziConv.toSimplified(summary)
         emotion_value=c.predict(processed_summary)
         emotion_value = float("{:.6f}".format(emotion_value))
-        save_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
+        save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
 
 def url(topic,subtopic,spider_url):
     title_list,URL_list,image_list=grab_yahoo_url(spider_url)
@@ -65,11 +65,11 @@ def url(topic,subtopic,spider_url):
         processed_summary=HanziConv.toSimplified(summary)
         emotion_value=c.predict(processed_summary)
         emotion_value = float("{:.6f}".format(emotion_value))
-        save_to_db(topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
+        save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value))  #放進資料庫
 
-def hot_kw(subtopic,sentences):
+def hot_kw(topic,sentences):
     keywords=find_frequent_word(sentences)
-    save_to_db("關鍵每一天",dataframe("關鍵每一天",subtopic,keywords,date.today()))
+    save_to_db("關鍵每一天",topic,dataframe(topic,keywords,date.today()))
 
 if __name__ == '__main__':
 
@@ -159,7 +159,7 @@ if __name__ == '__main__':
     copy_to_db()
 
     #做當日熱門關鍵字
-    #全部
+    #熱門
     hot_kw("熱門",get_all_data())
     #主題
     topics=["運動", "生活","國際","娛樂","社會地方","科技","健康","財經"] #

@@ -25,27 +25,25 @@ def check_duplicate(topic,subtopic,title_list,URL_list,image_list): # 過濾掉�
     client.close()
     return filtered_title,filtered_url,filtered_image
 
-def save_to_db(topic,data):
+def save_to_db(db_name,topic,data):
     # 連接到 MongoDB
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
-    db = client["TodayNews"]
+    db = client[db_name]
     collection = db[topic]
 # Send a ping to confirm a successful connection
     try:
-        
         client.admin.command('ping')
         print("Pinged your deployment. You successfully connected to MongoDB!")
-        if topic == "關鍵每一天":
+    
+        if db_name == "關鍵每一天":
             # 获取要插入的数据
             for index,row in data.iterrows():
                 # 取得標題和網址的值
-                topic = row['Topic']  
-                subtopic = row['Subtopic']
+                topic = row['Topic']
                 keyword = row['Keyword']
                 date=row['Date'] 
                 insert_data = {
                 "topic":topic,
-                "subtopic":subtopic,
                 "keyword":keyword,
                 "date":date
                 }
@@ -100,7 +98,11 @@ def copy_to_db():
 
         # 将文档插入到目标集合
         target_collection = target_db[collection_name]
-        target_collection.insert_many(documents)
+        for document in documents:
+            # 刪除 _id
+            del document['_id']
+            # 插入文檔到目標集合
+            target_collection.insert_one(document)
     # 關閉與 MongoDB 的連接
     client.close()
 
