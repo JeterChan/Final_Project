@@ -42,7 +42,7 @@
             <input class="form-control me-2" type="search" placeholder="搜尋" aria-label="Search">
             <button class="btn btn-outline-success btnSearch" type="submit">搜尋</button>
           </form>
-            <a class="nav-link" aria-current="page" href="/index_login">首頁</a>
+            <a class="nav-link" aria-current="page" href="#">首頁</a>
             <a class="btnLogin" href="/log_in" role="button"><p>Login</p></a>
         </div>
       </div>
@@ -52,7 +52,7 @@
   <div class="flex-container"> 
 
     <!-- start of container -->
-    <div class="container bg-secondary-subtle" style="margin-top: 100px;width:45%;border-radius: 15px;">
+    <div class="container bg-secondary-subtle" style="margin-top: 100px;width:30%; border-radius: 15px;">
                             
       <div class="row">
         <!-- 熱門 news -->
@@ -62,7 +62,7 @@
             <span class="topic fs-1"># 熱門 - {{topic}}</span>
           </form>
 
-        <!-- start of card-block -->  
+        <!-- start of column -->  
         <div class="card-block pb-2">
 
           <!-- Card section -->
@@ -70,14 +70,14 @@
             <div class="row">
               <div class="col col-md-4 pb-1">
                 <a href="{{ news_url }}">
-                  <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  <img src="{{news_img_url}}" class="img-fluid rounded-start">
                 </a>         
               </div>
               <!-- card 內容 -->
               <div class="col-md-8 col-sm-12">
                 <div class="card-body">
-                  <a class="card-title" href="{{title_url}}" style="font-size: 22px;">蘋果股價創新高 市值站上3兆美元里程碑</a>
-                  <p class="card-text">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                  <a class="card-title" href="{{title_url}}" style="font-size: 22px;">{{news_title}}</a>
+                  <p class="card-text">{{news_summary}}</p>
                   <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
                 </div>
 
@@ -92,6 +92,7 @@
                 </form>
 
               </div>
+              <!-- end of card -->
               </div>
              <!--end of card row-->
             </div> 
@@ -108,7 +109,7 @@
 
     <!-- 最新新聞 -->
     <!-- start of container -->
-    <div class="container bg-secondary-subtle" style="margin-top: 100px;width:45%; border-radius: 15px;">
+    <div class="container bg-secondary-subtle" style="margin-top: 100px;width:30%; border-radius: 15px;">
                             
       <div class="row">
         <!-- 熱門 news -->
@@ -124,30 +125,32 @@
           <!-- Card section -->
           <div class="card h-100 pb-2" style="width: 675px;">
             <div class="row">
-              <div class="col col-md-4 pb-1">
+              <div class="col pb-1">
                 <a href="{{ news_url }}">
-                  <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
-                </a>         
+                  <img src="{{url_for('static',filename='img/asia.jpg')}}" class="rounded-start login">
+                </a>
+                
+                    <div class="card-body">
+                      <a class="card-title" href="{{title_url}}" style="font-size: 22px;">蘋果股價創新高 市值站上3兆美元里程碑</a>
+                      <p class="card-text">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                      <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                    
+    
+                    <!-- 評分 -->
+                    <form class="{{news_id}} rating">                 
+                        <p class="star">&#9734;</p>
+                        <p class="star">&#9734;</p>
+                        <p class="star">&#9734;</p>
+                        <p class="star">&#9734;</p>
+                        <p class="star">&#9734;</p>
+                        <span class="stars-score"></span>
+                    </form>
+    
+                  </div>
+                  <!-- end of card -->         
               </div>
               <!-- card 內容 -->
-              <div class="col-md-8 col-sm-12">
-                <div class="card-body">
-                  <a class="card-title" href="{{title_url}}" style="font-size: 22px;">蘋果股價創新高 市值站上3兆美元里程碑</a>
-                  <p class="card-text">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
-                  <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
-                </div>
-
-                <!-- 評分 -->
-                <form class="{{news_id}} rating">                 
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <span class="stars-score"></span>
-                </form>
-
-              </div>
+              
               </div>
              <!--end of card row-->
             </div> 
@@ -162,6 +165,61 @@
     </div>
     <!-- end of container -->
     
+    <!-- start of container -->
+    <div class="container bg-secondary-subtle" style="margin-top: 100px;width:30%; border-radius: 15px;">
+                        
+        <div class="row">
+            <!-- 熱門 news -->
+            <div class="col-12 mb-2">
+                <form>
+                    <div class="like like-no"></div>
+                    <span class="topic fs-1"># 收藏 - {{topic}}</span>
+                </form>
+
+            <!-- start of column -->  
+                <div class="card-block pb-2">
+
+            <!-- Card section -->
+                <div class="card h-100 pb-2" style="width: 675px;">
+                    <div class="row">
+                    <div class="col col-md-4 pb-1">
+                        <a href="{{ news_url }}">
+                        <img src="{{news_img_url}}" class="img-fluid rounded-start login">
+                        </a>         
+                    </div>
+                    <!-- card 內容 -->
+                    <div class="col-md-8 col-sm-12">
+                        <div class="card-body">
+                        <a class="card-title" href="{{title_url}}" style="font-size: 22px;">{{news_title}}</a>
+                        <p class="card-text">{{news_summary}}</p>
+                        <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                        </div>
+
+                        <!-- 評分 -->
+                        <form class="{{news_id}} rating">                 
+                            <p class="star">&#9734;</p>
+                            <p class="star">&#9734;</p>
+                            <p class="star">&#9734;</p>
+                            <p class="star">&#9734;</p>
+                            <p class="star">&#9734;</p>
+                            <span class="stars-score"></span>
+                        </form>
+
+                    </div>
+                    <!-- end of card -->
+                    </div>
+                    <!--end of card row-->
+                </div> 
+                <!-- end of card section -->
+                </div>
+                <!-- end of card block -->
+            </div>
+            <!-- end of column -->       
+        </div> 
+        <!-- end of row -->
+    </div>
+    <!-- end of container -->
+
   </div>
   <!-- end of flex-container -->  
   
