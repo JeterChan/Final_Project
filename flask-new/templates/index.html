@@ -7,7 +7,7 @@
   <title>Communews</title>
 
   <!-- Favicons -->
-  <link href="{{url_for('static',filename='img/44300.png')}}" rel="icon">
+  <link href="{{url_for('static',filename='img/44301.jpg')}}" rel="icon">
   
   <!-- Bootstrap css -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -24,11 +24,11 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg ">
       <div class="container-fluid">
         <div>
           <a class="navbar-brand" href="/index">
-            <img src="{{news_img_url}}" class="logo">
+            <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="logo">
             Communews
           </a>
         </div>
@@ -45,125 +45,216 @@
             <a class="nav-link" aria-current="page" href="/index_login">首頁</a>
             <a class="btnLogin" href="/log_in" role="button"><p>Login</p></a>
         </div>
-      </div>
+      </div>      
     </nav>
+
+    <!-- start of tabs -->
+    <ul class="nav nav-tabs d-flex justify-content-center">
+      <li class="nav-item mx-1">
+        <a class="nav-link active" aria-current="page" href="/index">首頁</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/newest">最新</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/hot">熱門</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/collection">收藏</a>
+      </li>
+      <li class="nav-item mx-1">
+        <p class="line"></p>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="#">娛樂</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="#">運動</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="#">科技</a>
+      </li>
+
+    </ul>
+    <!-- end of tabs -->
   </header>
 
-  <div class="flex-container"> 
-
     <!-- start of container -->
-    <div class="container bg-secondary-subtle" style="margin-top: 100px;width:45%;border-radius: 15px;">
+    <div class="container news-container">
                             
       <div class="row">
         <!-- 熱門 news -->
-        <div class="col-12 mb-2">
-          <form>
-            <div class="like like-no"></div>
-            <span class="topic fs-1"># 熱門 - {{topic}}</span>
-          </form>
+        <form>
+          <div class="like like-no"></div>
+          <span class="topic fs-3"># 熱門新聞</span>
+        </form>          
 
-        <!-- start of card-block -->  
-        <div class="card-block pb-2">
+          <!-- start of column -->  
+          <div class="col-6 mb-2 card-block">
 
-          <!-- Card section -->
-          <div class="card h-100 pb-2" style="width: 675px;">
-            <div class="row">
-              <div class="col col-md-4 pb-1">
-                <a href="{{ news_url }}">
-                  <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
-                </a>         
-              </div>
-              <!-- card 內容 -->
-              <div class="col-md-8 col-sm-12">
-                <div class="card-body">
-                  <a class="card-title" href="{{title_url}}" style="font-size: 22px;">蘋果股價創新高 市值站上3兆美元里程碑</a>
-                  <p class="card-text">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
-                  <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+            <!-- Card section -->
+            <div class="card h-100 pb-2" style="width: 675px;">
+              <div class="row">
+                <div class="col col-md-4 pb-1" style="height:fit-content;">
+                  <a href="{{ news_url }}">
+                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  </a>         
+                </div>
+                <!-- card 內容 -->
+                <div class="col-md-8 col-sm-12">
+                  <div class="card-body">
+                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                  </div>
+
+
                 </div>
 
                 <!-- 評分 -->
-                <form class="{{news_id}} rating">                 
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <span class="stars-score"></span>
+                <form class="col-6 ps-4 {{news_id}} rating ">                 
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <span class="stars-score"></span>
                 </form>
 
+                <div class="col-6 ptt-link">
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                </div>
+                
               </div>
-              </div>
-             <!--end of card row-->
+              <!--end of card row-->
             </div> 
-            <!-- end of card section -->
+              <!-- end of card section -->
           </div>
-          <!-- end of card block -->
-        </div>
-        <!-- end of column -->       
-
+            <!-- end of column -->
       </div> 
       <!-- end of row -->
     </div>
     <!-- end of container -->
 
-    <!-- 最新新聞 -->
     <!-- start of container -->
-    <div class="container bg-secondary-subtle" style="margin-top: 100px;width:45%; border-radius: 15px;">
+    <!-- 最新新聞 -->
+    <div class="container news-container">
                             
       <div class="row">
         <!-- 熱門 news -->
-        <div class="col-12 mb-2">
-          <form>
-            <div class="like like-no"></div>
-            <span class="topic fs-1"># 最新 - {{topic}}</span>
-          </form>
+        <form>
+          <div class="like like-no"></div>
+          <span class="topic fs-3"># 最新新聞</span>
+        </form>          
 
-        <!-- start of column -->  
-        <div class="card-block pb-2">
+          <!-- start of column -->  
+          <div class="col-6 mb-2 card-block">
 
-          <!-- Card section -->
-          <div class="card h-100 pb-2" style="width: 675px;">
-            <div class="row">
-              <div class="col col-md-4 pb-1">
-                <a href="{{ news_url }}">
-                  <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
-                </a>         
-              </div>
-              <!-- card 內容 -->
-              <div class="col-md-8 col-sm-12">
-                <div class="card-body">
-                  <a class="card-title" href="{{title_url}}" style="font-size: 22px;">蘋果股價創新高 市值站上3兆美元里程碑</a>
-                  <p class="card-text">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
-                  <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+            <!-- Card section -->
+            <div class="card h-100 pb-2" style="width: 675px;">
+              <div class="row">
+                <div class="col col-md-4 pb-1" style="height:fit-content;">
+                  <a href="{{ news_url }}">
+                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  </a>         
+                </div>
+                <!-- card 內容 -->
+                <div class="col-md-8 col-sm-12">
+                  <div class="card-body">
+                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                  </div>
                 </div>
 
                 <!-- 評分 -->
-                <form class="{{news_id}} rating">                 
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <p class="star">&#9734;</p>
-                    <span class="stars-score"></span>
+                <form class="ps-4 {{news_id}} rating ">                 
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <span class="stars-score"></span>
                 </form>
 
-              </div>
-              </div>
-             <!--end of card row-->
-            </div> 
-            <!-- end of card section -->
-          </div>
-          <!-- end of card block -->
-        </div>
-        <!-- end of column -->       
+                <div class="col-6 ptt-link">
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                </div>
 
+              </div>
+              <!--end of card row-->
+            </div> 
+              <!-- end of card section -->
+          </div>
+            <!-- end of column -->
+      </div> 
+      <!-- end of row -->
+    </div>
+    <!-- end of container -->
+
+   
+    <!-- 推薦新聞 -->
+     <!-- start of container -->
+    <div class="container news-container">
+                            
+      <div class="row">
+        <!-- 熱門 news -->
+        <form>
+          <div class="like like-no"></div>
+          <span class="topic fs-3"># 為您推薦</span>
+        </form>          
+
+          <!-- start of column -->  
+          <div class="col-6 mb-2 card-block">
+
+            <!-- Card section -->
+            <div class="card h-100 pb-2" style="width: 675px;">
+              <div class="row">
+                <div class="col col-md-4 pb-1" style="height:fit-content;">
+                  <a href="{{ news_url }}">
+                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  </a>         
+                </div>
+                <!-- card 內容 -->
+                <div class="col-md-8 col-sm-12">
+                  <div class="card-body">
+                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                  </div>
+                </div>
+
+                <!-- 評分 -->
+                <form class="ps-4 {{news_id}} rating ">                 
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <span class="stars-score"></span>
+                </form>
+
+                <div class="col-6 ptt-link">
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                </div>
+                
+              </div>
+              <!--end of card row-->
+            </div> 
+              <!-- end of card section -->
+          </div>
+            <!-- end of column -->
       </div> 
       <!-- end of row -->
     </div>
     <!-- end of container -->
     
-  </div>
-  <!-- end of flex-container -->  
   
 
   <!-- Bootstrap js -->
