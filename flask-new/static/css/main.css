@@ -25,19 +25,31 @@ header{
 }
 
 .navigation .nav-link {
-    position: relative;
-    font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     font-weight: 500;
-    font-size: 1.2rem;
-    margin-left: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 6px;
 }
 
-.navigation .btnLogin{
+.nav-home,
+.nav-login{
+    height: 50px;
+    text-align: center;
+}
+
+.nav-home{
+    font-size: 1.5rem;
+    width: 80px;
+    margin-right: 40px;
+}
+.nav-login{
+    font-size: 1.5rem;
+    width: 100px;
+}
+/* .navigation .btnLogin{
     width: 130px;
     height: 50px;
-    background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.8);
     outline: none;
     border-radius: 6px;
@@ -46,17 +58,17 @@ header{
     color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     margin-left: 40px;
-    line-height: 50px;
     text-align: center;
     text-decoration: none;
+    background-color: #ff9c1a;
 }
 
 .navigation .btnLogin:hover{
     background: rgba(255, 255, 255, 0.8);
     color: #27374D;
-}
+} */
 
-.navigation .nav-link::after{
+/* .navigation .nav-link::after{
    content: '';
    position: absolute;
    left: 0;
@@ -67,15 +79,15 @@ header{
    border-radius: 5px;
    transform: scaleX(0);
    transition: transform .3s;
-}
+} */
 
-.navigation .nav-link:hover{
+/* .navigation .nav-link:hover{
     color: rgba(255, 255, 255, 0.8);
-}
+} */
 
-.navigation .nav-link:hover::after{
+/* .navigation .nav-link:hover::after{
     transform: scaleX(1);
-}
+} */
 
 .search-block{
     margin: auto;
@@ -119,6 +131,16 @@ ul li .nav-link:hover{
     width: 100%;
 }
 
+.nav-item button:focus{
+    color: #fff;
+    border: none;
+}
+
+.modal-body p{
+    font-size: 1.2rem;
+}
+
+/* news content */
 .news-container{
     margin-top:30px;
     width:100%;
@@ -226,35 +248,48 @@ ul li .nav-link:hover{
 }
 
 /* login-container */
-.login-container{
+.login-container,
+.register-container{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     /* background: url('44301.jpg') no-repeat; */
     background-size: cover;
-    background-position: center;
+    margin-top: 3rem;
 }   
+
+.img-container{
+    width: 480px;
+}
+
+.img-center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: inherit
+}
 
 
 .wrapper{
-    width: 680px;
+    width: 540px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-
     border-radius:15px;
 }
 
-.login-form{
+.login-form,
+.register-form{
     width: 70%;
     align-self: stretch;
     text-align: center;
     padding: 50px 0;
 }
 
-.login-title{
+.login-title,
+.register-title{
     font-size: 3rem;
     font-weight: 550;
     text-align: center;
@@ -262,6 +297,7 @@ ul li .nav-link:hover{
 
 .forget-register{
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
 }
 
@@ -275,4 +311,33 @@ ul li .nav-link:hover{
     height: 50px;
     font-size: 1.3rem;
     font-weight: 550;
+    background-color: #B5594B;
+    border: none;
+}
+
+.login-btn:hover,
+.register-btn:hover{
+    background-color: #B5594B;
+}
+
+.login-register-btn{
+    font-weight: 600;
+    background-color: #526D82;
+    border: none;
+}
+
+.login-register-btn:hover{
+    background-color: #526D82;
+}
+
+.login-btn,
+.register-btn,
+.login-register-btn{
+    color:#fff;
+}
+
+.login-btn:hover,
+.register-btn:hover,
+.login-register-btn:hover{
+    color: #fff;
 }
