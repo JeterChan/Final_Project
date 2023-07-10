@@ -143,15 +143,30 @@
         <p class="line"></p>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="#">娛樂</a>
+        <a class="nav-link" href="/topic/運動">運動</a>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="#">運動</a>
+        <a class="nav-link" href="/topic/生活">生活</a>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="#">科技</a>
+        <a class="nav-link" href="/topic/國際">國際</a>
       </li>
-
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/娛樂">娛樂</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/社會地方">社會地方</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/科技">科技</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/健康">健康</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/財經">財經</a>
+      </li>
+      
     </ul>
     <!-- end of tabs -->
   </header>
@@ -170,23 +185,24 @@
           <div class="col-6 mb-2 card-block">
 
             <!-- Card section -->
+            
             <div class="card h-100 pb-2" style="width: 675px;">
               <div class="row">
+                {% for news in news_list %}
                 <div class="col col-md-4 pb-1" style="height:fit-content;">
-                  <a href="{{ news_url }}">
-                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  <a href="{{ news.url }}">
+                    <img src="{{ news.image_url }}" class="img-fluid rounded-start">
                   </a>         
                 </div>
                 <!-- card 內容 -->
                 <div class="col-md-8 col-sm-12">
                   <div class="card-body">
-                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
-                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a class="card-title" href="{{news.url}}" >{{news.title}}</a>
+                    <p class="card-text mt-2">{{news.summary}}</p>
                     <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
                   </div>
-
-
                 </div>
+                {% endfor %}
 
                 <!-- 評分 -->
                 <form class="col-6 ps-4 {{news_id}} rating ">                 
@@ -228,21 +244,24 @@
           <div class="col-6 mb-2 card-block">
 
             <!-- Card section -->
+            
             <div class="card h-100 pb-2" style="width: 675px;">
               <div class="row">
+                {% for news in news_list %}
                 <div class="col col-md-4 pb-1" style="height:fit-content;">
-                  <a href="{{ news_url }}">
-                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  <a href="{{ news.url }}">
+                    <img src="{{ news.image_url }}" class="img-fluid rounded-start">
                   </a>         
                 </div>
                 <!-- card 內容 -->
                 <div class="col-md-8 col-sm-12">
                   <div class="card-body">
-                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
-                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a class="card-title" href="{{news.url}}" >{{news.title}}</a>
+                    <p class="card-text mt-2">{{news.summary}}</p>
                     <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
                   </div>
                 </div>
+                {% endfor %}
 
                 <!-- 評分 -->
                 <form class="ps-4 {{news_id}} rating ">                 

@@ -44,9 +44,6 @@
           </form>
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link nav-home" aria-current="page" href="/index_login">首頁</a>
-            </li>
-            <li class="nav-item">
               <a class="nav-link nav-login" href="/login" role="button">登入</a>
             </li>
             <li class="nav-item">
@@ -59,9 +56,7 @@
 
     <!-- start of tabs -->
     <ul class="nav nav-tabs d-flex justify-content-center">
-      <li class="nav-item mx-1">
-        <a class="nav-link"  href="/index">首頁</a>
-      </li>
+      
       <li class="nav-item mx-1">
         <a class="nav-link active" aria-current="page" href="/newest">最新</a>
       </li>
@@ -69,22 +64,102 @@
         <a class="nav-link" href="/hot">熱門</a>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="/recommendation">推薦</a>
+        <!-- <a class="nav-link" href="/collection">收藏</a> -->
+        <!-- Button trigger modal -->
+        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          推薦
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <img src="{{url_for('static',filename='img/44300_gray.png')}}" alt="logo" style='height: 20%; width: 20%; object-fit: contain'>
+                <p><h1 class="modal-title fs-5" id="exampleModalLabel">登入後即享有<b>Communews</b>的所有功能</h1></p>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              </div>
+              <div class="modal-body">
+                <ul>
+                  <li>
+                    <p>在「推薦」可查看我們推薦給您的新聞</p>
+                  </li>
+                  <li>
+                    <p>隨時<b>收藏</b>感興趣的主題</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <!-- button 顏色要改 -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">不用了。謝謝</button>
+                <a class="btn btn-primary" href="/login" role="button">登入</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </li>
+      <!-- 登入後才可以看到收藏的頁面 -->
       <li class="nav-item mx-1">
-        <a class="nav-link" href="/collection">收藏</a>
+        <!-- <a class="nav-link" href="/collection">收藏</a> -->
+        <!-- Button trigger modal -->
+        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          收藏
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <img src="{{url_for('static',filename='img/44300_gray.png')}}" alt="logo" style='height: 20%; width: 20%; object-fit: contain'>
+                <p><h1 class="modal-title fs-5" id="exampleModalLabel">登入後即享有<b>Communews</b>的所有功能</h1></p>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              </div>
+              <div class="modal-body">
+                <ul>
+                  <li>
+                    <p>在「推薦」可查看我們推薦給您的新聞</p>
+                  </li>
+                  <li>
+                    <p>隨時<span>收藏</span>感興趣的主題</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <!-- button 顏色要改 -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">不用了。謝謝</button>
+                <a class="btn btn-primary" href="/login" role="button">登入</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </li>
       <li class="nav-item mx-1">
         <p class="line"></p>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="#">娛樂</a>
+        <a class="nav-link" href="/topic/運動">運動</a>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="#">運動</a>
+        <a class="nav-link" href="/topic/生活">生活</a>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="#">科技</a>
+        <a class="nav-link" href="/topic/國際">國際</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/娛樂">娛樂</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/社會地方">社會地方</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/科技">科技</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/健康">健康</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/財經">財經</a>
       </li>
 
     </ul>
@@ -93,37 +168,49 @@
 
     <!-- start of container -->
     <!-- 最新新聞 -->
-    <div class="container news-container">
-                            
+    {% for data in news_data %}
+    <div class="container news-container">                 
       <div class="row">
         <!-- 熱門 news -->
         <form>
           <div class="like like-no"></div>
-          <span class="topic fs-3"># 最新新聞</span>
+          <a class="nav-link" href="/topic/{{data.topic}}">
+            <span class="topic fs-3"># 最新 <b>{{data.topic}}</b> 新聞</span>
+          </a>
         </form>          
 
           <!-- start of column -->  
+          {% for news in data.news_list %}
           <div class="col-6 mb-2 card-block">
-
             <!-- Card section -->
             <div class="card h-100 pb-2" style="width: 675px;">
               <div class="row">
                 <div class="col col-md-4 pb-1" style="height:fit-content;">
-                  <a href="{{ news_url }}">
-                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  <a href="{{ news.url }}">
+                    {% if news.image !="None" %}
+                      <img src="{{ news.image }}" class="img-fluid rounded-start">
+                    {% else %}
+                      <img src="{{url_for('static',filename='img/44301.jpg')}}" class="img-fluid rounded-start">
+                    {% endif %}
                   </a>         
                 </div>
                 <!-- card 內容 -->
                 <div class="col-md-8 col-sm-12">
                   <div class="card-body">
-                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
-                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a class="card-title" href="{{news.url}}" >{{news.title}}</a>
+                    <p class="card-text mt-2">
+                      {% if news.summary|length > 100 %}
+                        {{ news.summary[:100] }}...<a href="{{news.url}}">查看完整內容</a>
+                      {% else %}
+                        {{ news.summary }}
+                      {% endif %}
+                    </p>
                     <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
                   </div>
                 </div>
-
+              
                 <!-- 評分 -->
-                <form class="ps-4 {{news_id}} rating ">                 
+                <form class="ps-4 {{news._id}} rating ">                 
                   <p class="star">&#9734;</p>
                   <p class="star">&#9734;</p>
                   <p class="star">&#9734;</p>
@@ -137,18 +224,20 @@
                   <a href="{{ptt_url}}">PTT-post</a>
                   <a href="{{ptt_url}}">PTT-post</a>
                 </div>
-
               </div>
+              
               <!--end of card row-->
             </div> 
               <!-- end of card section -->
           </div>
             <!-- end of column -->
+          {% endfor %} 
+        
       </div> 
       <!-- end of row -->
     </div>
     <!-- end of container -->  
-  
+    {% endfor %}
   <!-- Bootstrap js -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script src="{{url_for('static',filename='js/index.js')}}" defer></script>
