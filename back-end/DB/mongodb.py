@@ -60,6 +60,8 @@ def save_to_db(db_name,topic,data):
                 content=row['Content']
                 summary=row['Summary'] 
                 emotion_value=row['Emotion_value'] 
+                new_keyword=row['New_keyword']
+                date=row['Date']
                 insert_data = {
                 "topic":topic,
                 "subtopic":subtopic,
@@ -70,7 +72,9 @@ def save_to_db(db_name,topic,data):
                 "content":content,
                 "summary":summary,
                 "emotion_value":emotion_value,
-                "views":0
+                "views":0,
+                "new_keyword":new_keyword,
+                "date":date
                 }
          # 插入数据
             collection.insert_one(insert_data)
@@ -87,9 +91,6 @@ def copy_to_db():
 
     # 获取集合名称列表
     collection_names = source_db.list_collection_names()
-    # 打印集合名称
-    for collection_name in collection_names:
-        print(collection_name)
     
     for collection_name in collection_names:
         # 获取源集合中的所有文档
@@ -105,6 +106,7 @@ def copy_to_db():
             target_collection.insert_one(document)
     # 關閉與 MongoDB 的連接
     client.close()
+    print("DB複製完成!")
 
 def clean_todaydb():
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
@@ -118,29 +120,30 @@ def clean_todaydb():
     # 關閉與 MongoDB 的連接
     client.close()
 
-def get_all_data():
-    title_list=[]
+def get_all_data(clientnm,item):
+    item_list=[]
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
-    db = client["TodayNews"]
+    db = client[clientnm]
     # 获取集合名称列表
     collection_names = db.list_collection_names()
     for collection_name in collection_names:
         # 获取源集合中的所有文档
         collection = db[collection_name]
         for document in collection.find():
-            title_list.append(document['title'])
+            item_list.append(document[item])
     # 關閉與 MongoDB 的連接
     client.close()
-    return title_list
+    return item_list
 
-def get_col_data(collection_name):
-    title_list=[]
+def get_col_data(clientnm,collection_name,item):
+    item_list=[]
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
-    db = client["TodayNews"]
+    db = client[clientnm]
     # 获取源集合中的所有文档
     collection = db[collection_name]
     for document in collection.find():
-        title_list.append(document['title'])
+        item_list.append(document[item])
     # 關閉與 MongoDB 的連接
     client.close()
-    return title_list
+    return item_list
+

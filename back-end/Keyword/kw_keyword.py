@@ -303,3 +303,4 @@ def kw_get_keyword(subtopic, title):
         keywords.append(" ".join(doc_keywords))
 
     return keywords
+

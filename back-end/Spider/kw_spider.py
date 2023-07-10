@@ -6,15 +6,14 @@ from selenium.webdriver.common.keys import Keys
 #爬蟲用
 from bs4 import BeautifulSoup 
 import time
-#資料庫
-from pymongo import MongoClient
+
 
 def grab_yahoo_usersearch(subtopic):
     options = webdriver.ChromeOptions()  
     prefs = {'profile.default_content_setting_values':{'notifications': 2}}
     options.add_experimental_option('prefs', prefs)
     options.add_argument("disable-infobars")
-    driver = webdriver.Chrome(executable_path=r"C:\Users\User\python-workspace\專題\chromedriver.exe",chrome_options=options)
+    driver = webdriver.Chrome(executable_path=r"C:\Users\User\python-workspace\chromedriver.exe",chrome_options=options)
 
 
     driver.get('https://tw.news.yahoo.com/')
