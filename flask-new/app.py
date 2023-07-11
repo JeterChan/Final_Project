@@ -61,12 +61,16 @@ def index():
     topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"]
     news_data = []
     for topic in topics:
-        collection=db[topic]
+        collection = db[topic]
         collection.create_index([("date", -1)])
-        data = list(collection.find({"date":"20230710"}))
-        random_indexes = random.sample(range(len(data)), 2)
-        random_data = [data[i] for i in random_indexes]
-        news_data.append({"topic": topic, "news_list": random_data})
+
+        pipeline = [
+            {"$match": {"date": "20230709", "topic": topic}},
+            {"$sample": {"size": 2}}
+        ]
+
+        topic_news = list(collection.aggregate(pipeline))
+        news_data.append({"topic": topic, "news_list": topic_news})
 
     return render_template('newest.html', news_data=news_data)
 
@@ -80,12 +84,16 @@ def newest():
     topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"]
     news_data = []
     for topic in topics:
-        collection=db[topic]
+        collection = db[topic]
         collection.create_index([("date", -1)])
-        data = list(collection.find({"date":"20230709"}))
-        random_indexes = random.sample(range(len(data)), 2)
-        random_data = [data[i] for i in random_indexes]
-        news_data.append({"topic": topic, "news_list": random_data})
+
+        pipeline = [
+            {"$match": {"date": "20230709", "topic": topic}},
+            {"$sample": {"size": 2}}
+        ]
+
+        topic_news = list(collection.aggregate(pipeline))
+        news_data.append({"topic": topic, "news_list": topic_news})
 
     return render_template('newest.html', news_data=news_data)
 
