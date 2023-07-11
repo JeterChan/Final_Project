@@ -140,11 +140,6 @@ def login():
             # 构造 User 对象
             user = User(result['email'], result['password'])
             login_user(user)  # 登录用户
-            # 设置会话的持久性
-            session.permanent = True
-
-            # 设置会话的过期时间（例如，设置为 30 天）
-            app.permanent_session_lifetime = timedelta(mintues=30)
             flash('Login success.')
             return redirect(url_for('afterlogin'))  # 重定向到主页
 
