@@ -62,7 +62,8 @@ def index():
     news_data = []
     for topic in topics:
         collection=db[topic]
-        data = list(collection.find({"date":"20230709"}))
+        collection.create_index(("date",-1))
+        data = list(collection.find({"date":"20230710"}))
         random_indexes = random.sample(range(len(data)), 2)
         random_data = [data[i] for i in random_indexes]
         news_data.append({"topic": topic, "news_list": random_data})
@@ -105,23 +106,30 @@ def collection():
     return render_template('collection.html')
 
 @app.route("/login",methods=['GET','POST'])
-def log_in():
+def login():
+    db = connect_db()
     if request.method == 'POST':
+        # 获取表单数据
         input_email = request.form['email']
         input_password = request.form['password']
-        
-        #  要去抓資料庫的資料
-        user = User.query.filter_by(email=input_email).first()
 
-        if user.check_password(input_password) and user is not None:
-            login_user(user)  # 登入用戶
+        # 查询数据库以获取用户
+        cursor = db.cursor()
+        query = "SELECT * FROM tb_user WHERE email = %s"
+        cursor.execute(query, (input_email,))
+        result = cursor.fetchone()
+
+        # 验证邮箱和密码
+        if result and check_password_hash(result['password'], input_password):
+            # 构造 User 对象
+            user = User(result['email'], result['password'])
+            login_user(user)  # 登录用户
             flash('Login success.')
-        # 驗證成功跳轉主頁
-            return redirect(url_for('home'))  # 重定向到主頁
-        
-        flash('Invalid email or password.')  # 如果驗證失敗，顯示錯誤消息
-        return redirect(url_for('login'))  # 重定向回登錄頁面
-    
+            return redirect(url_for('homepage'))  # 重定向到主页
+
+        flash('Invalid email or password.')  # 如果验证失败，显示错误消息
+        return redirect(url_for('login'))  # 重定向回登录页
+
     return render_template('login.html')
 
 
@@ -129,17 +137,17 @@ def log_in():
 def register():
     db = connect_db()
     if request.method == 'POST':
-        # 獲取表單數據
+        # 获取表单数据
         input_email = request.form['email']
         input_password = request.form['password']
         input_repeat_password = request.form['password-repeat']
 
-        # 驗證輸入
+        # 验证输入
         if input_password != input_repeat_password:
             flash('Two passwords are different.')
             return redirect(url_for('register'))
-        
-        # 檢查是否已註冊
+
+        # 检查是否已注册
         cursor = db.cursor()
         query = "SELECT * FROM tb_user WHERE email = %s"
         cursor.execute(query, (input_email,))
@@ -147,15 +155,18 @@ def register():
         if result:
             flash('Email has already been registered.')
             return redirect(url_for('register'))
-        
-        # 執行插入操作
+
+        # 生成密码哈希值
+        password_hash = generate_password_hash(input_password)
+
+        # 执行插入操作
         query = "INSERT INTO tb_user (email, password) VALUES (%s, %s)"
-        cursor.execute(query, (input_email, input_password))
+        cursor.execute(query, (input_email, password_hash))
         db.commit()
 
         flash("Thank you for registering.")
         return redirect(url_for('login'))
-    
+
     return render_template('register.html')
 
 @app.route("/index_login")
