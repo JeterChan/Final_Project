@@ -15,7 +15,7 @@ myclient = pymongo.MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongo
 app = Flask( 
     __name__,
     static_folder='static',
-    static_url_path='/newest'
+    static_url_path='/'
 )
 #  會使用到session，故為必設
 app.secret_key = 'NCUMIS' 
@@ -25,19 +25,29 @@ login_manager.login_view = 'login'
 
 class User(UserMixin):
     def __init__(self, email, password):
-        #初始化
         self.email = email
-        # 實際存入的為password_hash，而非password本身
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        #檢查使用者密碼
         return check_password_hash(self.password_hash, password)
+
+    def get_id(self):
+        return self.email  
     
 @login_manager.user_loader  
 def user_loader(user_id):  
-    user = User.query.get(int(user_id)) 
-    return user  # 返回用戶對象
+    db = connect_db()
+    cursor = db.cursor()
+    query = "SELECT * FROM tb_user WHERE email = %s"
+    cursor.execute(query, (user_id,))
+    result = cursor.fetchone()
+    if result:
+        email = result['email']
+        password = result['password']
+        user = User(email, password)
+        return user
+    return None
+
 
 # 建立資料庫連接
 def connect_db():
@@ -74,10 +84,6 @@ def index():
 
     return render_template('newest.html', news_data=news_data)
 
-@app.route("/index")
-def homepage():
-    return redirect(url_for('newest'))
-
 @app.route("/newest")
 def newest():
     db = myclient["News"]
@@ -104,13 +110,13 @@ def hot():
     return render_template('hot.html')
 
 @app.route("/recommendation")
-#@login_required
+@login_required
 def recommendation():
     return render_template('recommendation.html')
 
 
 @app.route("/collection")
-#@login_required
+@login_required
 def collection():
     return render_template('collection.html')
 
@@ -134,7 +140,7 @@ def login():
             user = User(result['email'], result['password'])
             login_user(user)  # 登录用户
             flash('Login success.')
-            return redirect(url_for('homepage'))  # 重定向到主页
+            return redirect(url_for('afterlogin'))  # 重定向到主页
 
         flash('Invalid email or password.')  # 如果验证失败，显示错误消息
         return redirect(url_for('login'))  # 重定向回登录页
@@ -179,8 +185,29 @@ def register():
     return render_template('register.html')
 
 @app.route("/index_login")
+@login_required
 def afterlogin():
-    return render_template('index_login.html')
+    db = myclient["News"]
+    topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"]
+    news_data = []
+    for topic in topics:
+        collection = db[topic]
+        collection.create_index([("date", -1)])
+
+        pipeline = [
+            {"$match": {"date": "20230709", "topic": topic}},
+            {"$sample": {"size": 2}}
+        ]
+
+        topic_news = list(collection.aggregate(pipeline))
+        news_data.append({"topic": topic, "news_list": topic_news})
+
+    return render_template('index_login.html', news_data=news_data)
+
+@app.route("/login_hot")
+@login_required
+def login_hot():
+    return render_template('login_hot.html')
 
 # google sign in
 

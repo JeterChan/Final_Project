@@ -34,7 +34,7 @@
       <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid">
           <div>
-            <a class="navbar-brand" href="/index">
+            <a class="navbar-brand" href="/">
               <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="logo">
               Communews
             </a>
@@ -51,7 +51,7 @@
             </form>
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link nav-home" aria-current="page" href="/index_login">首頁</a>
+                <a class="nav-link nav-home" aria-current="page" href="/">首頁</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link nav-login" href="/login" role="button">登入</a>
@@ -67,13 +67,24 @@
 
     <!-- Sign in block -->
     <div class="login-container">
-
+      
       <div class="mx-5 img-container">
         <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="img-center">
       </div>
 
       <div class="wrapper bg-white">
-        <form class="login-form needs-validation" method="post" novalidate>
+        <!-- Flash 訊息顯示區域 -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for message in messages %}
+                <p></p>
+                <label>{{ message }}</label>
+              {% endfor %}
+            </ul>
+          {% endif %} 
+        {% endwith %}
+        <form class="login-form needs-validation" method="POST" novalidate>
           <p class="login-title">
             Sign In
           </p>
@@ -97,7 +108,7 @@
           <!-- google 帳號登入 -->
 
           <div class="form-floating my-4">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" required>
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email"required>
             <label for="floatingInput">Email address</label>
             <div class="invalid-feedback">
               請輸入電子郵件。
@@ -105,7 +116,7 @@
           </div>
   
           <div class="form-floating mt-4">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password"required>
             <label for="floatingPassword">Password</label>
             <div class="invalid-feedback">
               請輸入密碼。
