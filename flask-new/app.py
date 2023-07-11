@@ -81,6 +81,7 @@ def newest():
     news_data = []
     for topic in topics:
         collection=db[topic]
+        collection.create_index(("date",-1))
         data = list(collection.find({"date":"20230709"}))
         random_indexes = random.sample(range(len(data)), 2)
         random_data = [data[i] for i in random_indexes]
