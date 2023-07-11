@@ -11,13 +11,12 @@ from Summarize.summarization import *
 from Keyword.kw_keyword import kw_get_keyword
 from Keyword.url_keyword import url_get_keyword
 from Keyword.keyword import get_keyword
-#from Keyword.hot_keyword import find_frequent_word
+from Keyword.hot_keyword import calculate_keywords
 # 資料處理
 import pandas as pd
 #資料庫
 from DB.mongodb import *
-#日期
-from datetime import date
+
 #停用詞
 stops = []
 with open('Summarize\stopWord_summar.txt', 'r', encoding='utf-8-sig') as f:
@@ -28,8 +27,8 @@ def dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotio
     data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Image':image_url,'Keyword':keywords,'Content':content,'Summary':summary,'Emotion_value':emotion_value,"New_keyword":new_keyword,"Date":today_date}) # 創建dataframe    
     return data
 
-def kw_dataframe(topic,keywords,date):
-    data = pd.DataFrame({'Topic': topic,'Keyword':keywords,'Date':date}) # 創建dataframe    
+def kw_dataframe(all_keywords,date):
+    data = pd.DataFrame({'ALL_Keyword':all_keywords,'Date':date}) # 創建dataframe    
     return data
 
 def kw(topic,subtopic):
@@ -70,16 +69,21 @@ def url(topic,subtopic,spider_url):
         new_keywords=get_keyword(title,summary)
         save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keywords,today_date))  #放進資料庫
 
+def hot_kw(topic):
+    kw_list,date=get_col_data(topic)
+    all_keywords=calculate_keywords(kw_list)
+    save_to_db("關鍵每一天",topic,dataframe(all_keywords,date))  #放進資料庫
+    #print(all_keywords,date)
 
 if __name__ == '__main__':
 
-    today_date="20230709"
+    today_date="20230711"
 
     #清空前天爬蟲
     clean_todaydb()
 
     #爬蟲
-    kw_topics=["運動","生活" ]#        
+    kw_topics=["運動","生活"]#         
     subtopics = ['足球','排球','田徑','中職','MLB','日職','韓職','中信兄弟','味全龍','統一獅','樂天桃猿','富邦悍將','台鋼雄鷹',
                  'MLB 洋基','MLB 紅襪','MLB 光芒','MLB 金鶯','MLB 藍鳥','MLB 守護者','MLB 白襪','MLB 皇家','MLB 老虎','MLB 雙城','MLB 太空人','MLB 運動家','MLB 水手','MLB 天使',
                  'MLB 遊騎兵','MLB 大都會','MLB 勇士','MLB 費城人','MLB 馬林魚','MLB 國民','MLB 釀酒人','MLB 紅雀','MLB 紅人','MLB 小熊','MLB 海盜','MLB 響尾蛇','MLB 道奇','MLB 落磯','MLB 巨人','MLB 教士',
@@ -97,7 +101,7 @@ if __name__ == '__main__':
             print(f"Processing topic: {topic},subtopic: 氣象")
             kw(topic,"氣象")
     #爬蟲
-    url_topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"] # 
+    url_topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經" ] #
     for topic in url_topics:
         if topic in ["運動"]:
             subtopics = ["棒球", "籃球", "網球", "高爾夫球"]
@@ -160,5 +164,9 @@ if __name__ == '__main__':
     #複製去大資料庫
     copy_to_db()
 
+    #找關鍵每一天
+    topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"] # 
+    for topic in topics:
+        hot_kw(topic)
 
 

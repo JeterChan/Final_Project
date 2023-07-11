@@ -39,13 +39,11 @@ def save_to_db(db_name,topic,data):
             # 获取要插入的数据
             for index,row in data.iterrows():
                 # 取得標題和網址的值
-                topic = row['Topic']
-                keyword = row['Keyword']
+                all_keywords = row['ALL_Keyword']
                 date=row['Date'] 
                 insert_data = {
-                "topic":topic,
-                "keyword":keyword,
-                "date":date
+                'keywords': all_keywords,
+                'date': date
                 }
         else:
             # 获取要插入的数据
@@ -135,15 +133,12 @@ def get_all_data(clientnm,item):
     client.close()
     return item_list
 
-def get_col_data(clientnm,collection_name,item):
-    item_list=[]
+def get_col_data(collection_name):
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
-    db = client[clientnm]
-    # 获取源集合中的所有文档
-    collection = db[collection_name]
+    db_today= client["TodayNews"]
+    kw_list=[]
+    collection = db_today[collection_name]
     for document in collection.find():
-        item_list.append(document[item])
-    # 關閉與 MongoDB 的連接
-    client.close()
-    return item_list
-
+        kw_list.append(document['new_keyword'])
+        date =document['date']
+    return  kw_list,date
