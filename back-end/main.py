@@ -1,10 +1,12 @@
 #情緒分析
+import datetime
 from cemotion import Cemotion
 from hanziconv import HanziConv #將彎彎字體改成簡體字
 c = Cemotion()
 #爬蟲
 from Spider.kw_spider import *
 from Spider.url_spider import *
+from Spider.news_time import *
 #摘要
 from Summarize.summarization import *
 #關鍵字
@@ -23,8 +25,8 @@ with open('Summarize\stopWord_summar.txt', 'r', encoding='utf-8-sig') as f:
     for line in f.readlines():
         stops.append(line.strip())
 
-def dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keyword,today_date):
-    data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Image':image_url,'Keyword':keywords,'Content':content,'Summary':summary,'Emotion_value':emotion_value,"New_keyword":new_keyword,"Date":today_date}) # 創建dataframe    
+def dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keyword,converted_date):
+    data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Image':image_url,'Keyword':keywords,'Content':content,'Summary':summary,'Emotion_value':emotion_value,"New_keyword":new_keyword,"timestamp":converted_date}) # 創建dataframe    
     return data
 
 def kw_dataframe(all_keywords,date):
@@ -48,7 +50,9 @@ def kw(topic,subtopic):
         emotion_value=c.predict(processed_summary)
         emotion_value = float("{:.6f}".format(emotion_value))
         new_keywords=get_keyword(title,summary)
-        save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keywords,today_date))  #放進資料庫
+        spider_date=get_date(URL)
+        converted_date = datetime.fromisoformat(spider_date[:-1])
+        save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keywords,converted_date))  #放進資料庫
 
 def url(topic,subtopic,spider_url):
     title_list,URL_list,image_list=grab_yahoo_url(spider_url)
@@ -67,7 +71,9 @@ def url(topic,subtopic,spider_url):
         emotion_value=c.predict(processed_summary)
         emotion_value = float("{:.6f}".format(emotion_value))
         new_keywords=get_keyword(title,summary)
-        save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keywords,today_date))  #放進資料庫
+        spider_date=get_date(URL)
+        converted_date = datetime.fromisoformat(spider_date[:-1])
+        save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keywords,converted_date))  #放進資料庫
 
 def hot_kw(topic):
     kw_list,date=get_col_data(topic)
@@ -76,8 +82,6 @@ def hot_kw(topic):
     #print(all_keywords,date)
 
 if __name__ == '__main__':
-
-    today_date="20230711"
 
     #清空前天爬蟲
     clean_todaydb()

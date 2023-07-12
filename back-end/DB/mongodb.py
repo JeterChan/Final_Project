@@ -140,5 +140,11 @@ def get_col_data(collection_name):
     collection = db_today[collection_name]
     for document in collection.find():
         kw_list.append(document['new_keyword'])
-        date =document['date']
+        timestamp = document['timestamp']
+
+        # 提取年、月和日
+        year = timestamp.year
+        month = timestamp.month
+        day = timestamp.day
+        date=f"{year}-{month:02d}-{day:02d}"
     return  kw_list,date
