@@ -19,6 +19,8 @@ import pandas as pd
 #資料庫
 from DB.mongodb import *
 
+from datetime import datetime
+
 #停用詞
 stops = []
 with open('Summarize\stopWord_summar.txt', 'r', encoding='utf-8-sig') as f:
