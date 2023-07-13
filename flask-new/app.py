@@ -67,9 +67,15 @@ def connect_db():
 def get_collection_data(topic):
     db = myclient['News']
     collection = db[topic]
-    collection.create_index("timestamp")
-    data = collection.find().sort("timestamp", -1).limit(1000)  # 限制返回的文档数量
+
+    pipeline = [
+        {"$sort": {"timestamp": -1}},
+        {"$limit": 50}
+    ]
+
+    data = collection.aggregate(pipeline)
     return list(data)
+
 
 # 建立網站首頁的回應方式
 @app.route("/")
