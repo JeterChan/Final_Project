@@ -1,13 +1,17 @@
-function getRating(){
-    var  stars = document.querySelectorAll(".{{news_id}} p");
-    console.log(stars);
-    var ratingResult = document.querySelector(".{{news_id}} span");
+function oldgetRating(){
+    var  stars = document.querySelectorAll(".star");
+
+    var ratingResult = document.querySelector(".stars-score");
     printRatingResult(ratingResult);
+    console.log(ratingResult)
     stars.forEach((star,index1)=> {
+
         star.onclick = function() {
+
             let current_star_level = index1+1;
             console.log(index1+1)
             stars.forEach((star,index2) => {
+
                 console.log(index2)
                 if(current_star_level >= index2+1 )
                 {
@@ -20,6 +24,47 @@ function getRating(){
             // 取最後一個 index1 為評分的值 需要+1 因為index從0開始計算
         };
     })
+}
+
+function getRating(){
+    var  rate = document.querySelectorAll(".rating");
+    console.log(rate);
+    for(var i=0; i<rate.length; i++){
+        let stars = document.getElementsByName(rate[i].dataset.id)
+        console.log(stars)
+        let ratingResult = document.getElementById(rate[i].dataset.id)
+        console.log(ratingResult)
+        printRatingResult(ratingResult);
+
+        stars.forEach((star,index1)=> {
+            console.log(star)
+            // star.addEventListener("click",() => {
+            //     stars.forEach((star,index2) => {
+            //     index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
+            //     console.log(index1);
+            // });
+            star.onclick = function() {
+                console.log(star)
+                let current_star_level = index1+1;
+                console.log(index1+1)
+                stars.forEach((star,index2) => {
+
+                    console.log(index2)
+                    if(current_star_level >= index2+1 )
+                    {
+                        star.innerHTML = '&#9733';
+                    } else{
+                        star.innerHTML = '&#9734';
+                    }
+                });
+                printRatingResult(ratingResult,index1+1); 
+            };
+               
+            // 取最後一個 index1 為評分的值 需要+1 因為index從0開始計算
+            
+        });
+    }
+
 }
 
 
@@ -44,7 +89,6 @@ function listenforLike(){
     })
 }
 
-getRating();
 listenforLike();
-
-
+// oldgetRating();
+getRating();
