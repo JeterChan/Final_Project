@@ -1,31 +1,3 @@
-function oldgetRating(){
-    var  stars = document.querySelectorAll(".star");
-
-    var ratingResult = document.querySelector(".stars-score");
-    printRatingResult(ratingResult);
-    console.log(ratingResult)
-    stars.forEach((star,index1)=> {
-
-        star.onclick = function() {
-
-            let current_star_level = index1+1;
-            console.log(index1+1)
-            stars.forEach((star,index2) => {
-
-                console.log(index2)
-                if(current_star_level >= index2+1 )
-                {
-                    star.innerHTML = '&#9733';
-                } else{
-                    star.innerHTML = '&#9734';
-                }
-            });
-            printRatingResult(ratingResult,index1+1);
-            // 取最後一個 index1 為評分的值 需要+1 因為index從0開始計算
-        };
-    })
-}
-
 function getRating(){
     var  rate = document.querySelectorAll(".rating");
     console.log(rate);
@@ -74,21 +46,26 @@ function printRatingResult(result,num=0){
 
 function listenforLike(){
     var likes = document.querySelectorAll(".like");
-    likes.forEach(like => {
-        like.addEventListener("click",(event) => {
-            event.target.classList.toggle("like-no");
-            event.target.classList.toggle("like-yes");
-            if(event.target.classList.contains("like-yes")) {
-                console.log("Saving Favorite...");
-            }
-            else {
-                console.log("Remove Favorite...");
-            }
-        })
+    console.log(likes)
 
-    })
-}
+        likes.forEach(like => {
+            like.addEventListener("click",(event) => {          
+                    event.target.classList.toggle("like-no");
+                    event.target.classList.toggle("like-yes");
+                    if(event.target.classList.contains("like-yes")) {
+                        console.log("Saving Favorite...");
+                    }
+                    else {
+                        console.log("Remove Favorite...");
+                    }
+                    console.log(like.dataset.id)
+                    // 可回傳like.datset.id => 會是收藏的主題名稱 型態為字串
+                })
+                
+            })// end of forEach
+    
+       
+} // end of listenforLike
 
 listenforLike();
-// oldgetRating();
 getRating();
