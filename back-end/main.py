@@ -76,10 +76,15 @@ def url(topic,subtopic,spider_url):
         save_to_db("TodayNews",topic,dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keywords,converted_date))  #放進資料庫
 
 def hot_kw(topic):
-    kw_list,date=get_col_data(topic)
-    all_keywords=calculate_keywords(kw_list)
+    current_date =datetime.now().strftime("%Y-%m-%d")
+    if topic == '綜合全部':
+        kw_list,date=get_tol_col_data(current_date)
+        all_keywords=calculate_keywords(kw_list)
+    else:
+        kw_list,date=get_col_data(topic,current_date)
+        all_keywords=calculate_keywords(kw_list)
     save_to_db("關鍵每一天",topic,dataframe(all_keywords,date))  #放進資料庫
-    #print(all_keywords,date)
+    
 
 if __name__ == '__main__':
 
@@ -169,7 +174,7 @@ if __name__ == '__main__':
     copy_to_db()
 
     #找關鍵每一天
-    topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"] # 
+    topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經","綜合全部"] # 
     for topic in topics:
         hot_kw(topic)
 

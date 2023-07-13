@@ -1,6 +1,8 @@
 #資料庫
 from pymongo import MongoClient
 
+total_topic=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"]
+
 def check_duplicate(topic,subtopic,title_list,URL_list,image_list): # 過濾掉資料庫內已經有的
     # 連接到 MongoDB
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
@@ -133,12 +135,12 @@ def get_all_data(clientnm,item):
     client.close()
     return item_list
 
-def get_col_data(collection_name):
+def get_col_data(collection_name,date):
     client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
     db_today= client["TodayNews"]
     kw_list=[]
     collection = db_today[collection_name]
-    for document in collection.find():
+    for document in collection.find({"date": date}):
         kw_list.append(document['new_keyword'])
         timestamp = document['timestamp']
 
@@ -148,3 +150,16 @@ def get_col_data(collection_name):
         day = timestamp.day
         date=f"{year}-{month:02d}-{day:02d}"
     return  kw_list,date
+
+def get_tol_col_data(date):
+    client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
+    db_today= client["TodayNews"]
+    kw_list = []
+    for collection_name in total_topic:
+        collection = db_today[collection_name]
+        for document in collection.find({"date": date}):
+            kw_list.append(document['new_keyword'])
+            date = document['date']
+    return kw_list, date
+
+
