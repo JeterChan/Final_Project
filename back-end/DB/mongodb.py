@@ -61,7 +61,7 @@ def save_to_db(db_name,topic,data):
                 summary=row['Summary'] 
                 emotion_value=row['Emotion_value'] 
                 new_keyword=row['New_keyword']
-                date=row['Date']
+                date=row['Timestamp']
                 insert_data = {
                 "topic":topic,
                 "subtopic":subtopic,
@@ -74,7 +74,7 @@ def save_to_db(db_name,topic,data):
                 "emotion_value":emotion_value,
                 "views":0,
                 "new_keyword":new_keyword,
-                "date":date
+                "timestamp":date
                 }
          # 插入数据
             collection.insert_one(insert_data)

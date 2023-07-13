@@ -18,7 +18,6 @@ from Keyword.hot_keyword import calculate_keywords
 import pandas as pd
 #資料庫
 from DB.mongodb import *
-
 from datetime import datetime
 
 #停用詞
@@ -28,7 +27,7 @@ with open('Summarize\stopWord_summar.txt', 'r', encoding='utf-8-sig') as f:
         stops.append(line.strip())
 
 def dataframe(topic,subtopic,title,URL,image_url,keywords,content,summary,emotion_value,new_keyword,converted_date):
-    data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Image':image_url,'Keyword':keywords,'Content':content,'Summary':summary,'Emotion_value':emotion_value,"New_keyword":new_keyword,"timestamp":converted_date}) # 創建dataframe    
+    data = pd.DataFrame({'Topic': topic, 'Subtopic': subtopic,'Title': title, 'URL': URL,'Image':image_url,'Keyword':keywords,'Content':content,'Summary':summary,'Emotion_value':emotion_value,"New_keyword":new_keyword,"Timestamp":converted_date}) # 創建dataframe    
     return data
 
 def kw_dataframe(all_keywords,date):
