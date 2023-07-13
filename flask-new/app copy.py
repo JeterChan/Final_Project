@@ -64,33 +64,32 @@ def connect_db():
     connection = pymysql.connect(**db_settings)
     return connection
 
-def get_collection_data(topic):
-    db = myclient['News']
-    collection = db[topic]
-    collection.create_index("timestamp")
-    data = collection.find().sort("timestamp", -1).limit(1000)  # 限制返回的文档数量
-    return list(data)
 
 # 建立網站首頁的回應方式
 @app.route("/")
 def index():
+    db = myclient["News"]
     topics=["運動","生活","國際","娛樂","社會地方","科技","健康","財經"]
+    news_data = []
+    for topic in topics:
+        collection = db[topic]
+        collection.create_index([("date", -1)])
 
-    combined_data = []
-    # 使用线程池并行处理获取数据
-    with ThreadPoolExecutor() as executor:
-        # 并行获取各个主题的数据
-        futures = [executor.submit(get_collection_data, topic) for topic in topics]
+        pipeline = [
+            {"$match": {"date": "20230709", "topic": topic}},
+            {"$sample": {"size": 2}}
+        ]
 
-        # 收集各个主题的数据
-        for future in futures:
-            combined_data.extend(future.result())
+        topic_news = list(collection.aggregate(pipeline))
+        news_data.append({"topic": topic, "news_list": topic_news})
 
-    # 按照timestamp字段排序
-    sorted_data = sorted(combined_data, key=lambda x: x['timestamp'], reverse=True)
+    return render_template('newest.html', news_data=news_data)
 
-    return render_template('newest.html', news_list=sorted_data)
-
+def get_collection_data(topic):
+    db = myclient['News']
+    collection = db[topic]
+    data = collection.find().sort("timestamp", -1).limit(1000)  # 限制返回的文档数量
+    return list(data)
 
 @app.route("/newest")
 def newest():
