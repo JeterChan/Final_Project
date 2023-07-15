@@ -154,11 +154,7 @@ ul li .nav-link:hover{
     background-color: #fff;
 }
 
-/* column */
-.col img{
-    object-position: 20px 10px;
-    object-fit: contain;
-}
+
 
 /* index_login */
 .col .login{
@@ -172,11 +168,28 @@ ul li .nav-link:hover{
 }
 
 /* Card */
-.card-block{
+/* .card-block{
     display:flex;
     align-items:center;
     justify-content: center;
-}
+} */
+
+/* column */
+/* .col img{
+    object-position: 20px 10px;
+    object-fit: contain;
+} */
+
+
+/* .img-block{
+   border-left: 2px solid #F9F8F7;
+   border-bottom: 2px solid lightgray;
+} */
+
+/* .img-block img {
+    flex-shrink: 0;
+    object-fit: contain;
+} */
 
 .card-link{
     text-decoration: none;
@@ -191,6 +204,18 @@ ul li .nav-link:hover{
 .card-title:hover{
     text-decoration: underline;
 }
+
+/* rating */
+/* .rating i{
+    color: #e6e6e6;
+    font-size: 30px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.rating i.active{
+    color: #ff9c1a;
+} */
 
 /* rating */
 .rating{
