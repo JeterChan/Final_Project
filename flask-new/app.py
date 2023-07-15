@@ -1,5 +1,6 @@
 
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 from flask import Flask,render_template,url_for,redirect,request, flash,session
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +11,7 @@ from google.auth.transport import requests
 from flask import jsonify
 import pymysql
 from authlib.integrations.flask_client import OAuth
-import search_news
+from search_news import *
 myclient = pymongo.MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
 
 app = Flask( 
@@ -64,7 +65,7 @@ def connect_db():
     connection = pymysql.connect(**db_settings)
     return connection
 
-def get_collection_data(topic):
+def get_DB_News_data(topic):
     db = myclient['News']
     collection = db[topic]
 
@@ -86,7 +87,7 @@ def index():
     # 使用线程池并行处理获取数据
     with ThreadPoolExecutor() as executor:
         # 并行获取各个主题的数据
-        futures = [executor.submit(get_collection_data, topic) for topic in topics]
+        futures = [executor.submit(get_DB_News_data, topic) for topic in topics]
 
         # 收集各个主题的数据
         for future in futures:
@@ -106,7 +107,7 @@ def newest():
     # 使用线程池并行处理获取数据
     with ThreadPoolExecutor() as executor:
         # 并行获取各个主题的数据
-        futures = [executor.submit(get_collection_data, topic) for topic in topics]
+        futures = [executor.submit(get_DB_News_data, topic) for topic in topics]
 
         # 收集各个主题的数据
         for future in futures:
@@ -117,10 +118,23 @@ def newest():
 
     return render_template('newest.html', news_list=sorted_data)
 
+def get_DB_KW_data(topic):
+    db = myclient['關鍵每一天']
+    collection = db[topic]
+    today_date =datetime.now().strftime("%Y-%m-%d")
+    pipeline = [
+        {"$match": {"date": "2023-07-14"}}
+    ]
+
+    data = collection.aggregate(pipeline)
+    return list(data)
+
 @app.route("/hot")
 def hot():
-    search_news("綜合全部")
-    return render_template('hot.html')
+    result=get_DB_KW_data("綜合全部")
+    keywords_list = [item['keywords'] for item in result]
+    news_list=search_total_news(keywords_list)
+    return render_template('hot.html',news_list=news_list)
 
 @app.route("/recommendation")
 @login_required

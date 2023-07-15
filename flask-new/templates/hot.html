@@ -173,26 +173,37 @@
       <div class="row">
         <!-- 熱門 news -->
         <form>
-          <div class="like like-no"></div>
+          <p></p>
           <span class="topic fs-3"># 熱門新聞</span>
         </form>          
 
           <!-- start of column -->  
+          {% for news in news_list %}
           <div class="col-6 mb-2 card-block">
 
             <!-- Card section -->
             <div class="card h-100 pb-2" style="width: 675px;">
               <div class="row">
                 <div class="col col-md-4 pb-1" style="height:fit-content;">
-                  <a href="{{ news_url }}">
-                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  <a href="{{ news.url }}">
+                    {% if news.image !="None" %}
+                      <img src="{{ news.image }}" class="img-fluid rounded-start">
+                    {% else %}
+                      <img src="{{url_for('static',filename='img/44301.jpg')}}" class="img-fluid rounded-start">
+                    {% endif %}
                   </a>         
                 </div>
                 <!-- card 內容 -->
                 <div class="col-md-8 col-sm-12">
                   <div class="card-body">
-                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
-                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a class="card-title" href="{{news.url}}" >{{news.title}}</a>
+                    <p class="card-text mt-2">
+                      {% if news.summary|length > 100 %}
+                        {{ news.summary[:100] }}...<a href="{{news.url}}">查看完整內容</a>
+                      {% else %}
+                        {{ news.summary }}
+                      {% endif %}
+                  </p>
                     <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
                   </div>
                 </div>
@@ -219,6 +230,7 @@
               <!-- end of card section -->
           </div>
             <!-- end of column -->
+          {% endfor %} 
       </div> 
       <!-- end of row -->
     </div>
