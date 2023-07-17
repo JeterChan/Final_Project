@@ -167,7 +167,8 @@
   </header>
 
     <!-- 關鍵字新聞結果 -->  
-    <!-- start of container -->      
+    <!-- start of container -->
+          
     {% for item in data %}
       <div class="container news-container">
       
@@ -241,7 +242,8 @@
     <!-- end of container -->  
     
     
-    <!-- 延伸關鍵字 --> 
+    <!-- 延伸關鍵字 -->
+    {% if extend_data != "None" %} 
     {% for item in extend_data %}
       <div class="container news-container">
       
@@ -310,6 +312,7 @@
         
       </div>
       {% endfor %}
+      {% endif %}
     <!-- end of container -->
     </div>
     <!-- end of container -->  
