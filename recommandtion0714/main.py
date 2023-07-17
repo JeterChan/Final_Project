@@ -9,6 +9,7 @@ from json import load
 
 import kmeans
 import recommand_by_news_rating 
+import recommand_by_keyword_favorite
 #import recommand_by_
 import choose_ptt_title
 
@@ -41,6 +42,9 @@ user_search = "大谷"
 #將此關鍵字拿去做偕同過濾
 #input：關鍵字 (string)
 #output：協同過濾的推薦關鍵字 (string list)
+#0717更新
+hashtag_id = recommand_by_keyword_favorite.find_user_recent_favorite_keyword(user_id)
+recommand_by_keyword_favorite.find_recommand(hashtag_id,"from_all_hashtag")
 
 ##將關鍵字協同過濾的結果與關鍵字延伸的結果進行比對，如果有配對到，則優先輸出
 
