@@ -11,7 +11,7 @@ from google.auth.transport import requests
 from flask import jsonify
 import pymysql
 from authlib.integrations.flask_client import OAuth
-from search_news import *
+# from search_news import *
 myclient = pymongo.MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
 
 app = Flask( 
@@ -54,7 +54,7 @@ def user_loader(user_id):
 # 建立資料庫連接
 def connect_db():
     db_settings = {
-        "host": "finalproject.cluster-cnfzqwsf4fd2.ap-southeast-2.rds.amazonaws.com",
+        "host": "127.0.0.1",
         "port": 3306,
         "user": "ncumis",
         "password": "ncumis12345",
@@ -129,12 +129,25 @@ def get_DB_KW_data(topic):
     data = collection.aggregate(pipeline)
     return list(data)
 
+# 熱門頁面-每日
 @app.route("/hot")
 def hot():
-    result=get_DB_KW_data("綜合全部")
-    keywords_list = [item['keywords'] for item in result]
-    news_list=search_total_news(keywords_list)
+    # result=get_DB_KW_data("綜合全部")
+    # keywords_list = [item['keywords'] for item in result]
+    # news_list=search_total_news(keywords_list)
+    return render_template('hot.html')
     return render_template('hot.html',news_list=news_list)
+
+# 熱門頁面-每週
+@app.route("/hot/evevyweek")
+def evevyweek():
+    return render_template('hot_everyweek.html')
+
+# 熱門頁面-每月
+@app.route("/hot/evevymonth")
+def evevymonth():
+    return render_template('hot_everymonth.html')
+
 
 @app.route("/recommendation")
 @login_required
@@ -251,7 +264,21 @@ def logout():
     # 重定向到登录页或其他页面
     return redirect(url_for('login'))
 
+@app.route("/show")
+def show():
+    # 回傳user搜尋的關鍵字的相關新聞到前端
+    keyword = request.args.get("keyword","")
+    return keyword
 
+# topic頁面預設是最新新聞
+@app.route("/topic/<topicname>")
+def topic(topicname):
+    return render_template('topic.html',topicname=topicname)
+
+# topic的熱門新聞頁面
+@app.route("/topic/<topicname>/熱門")
+def topicHot(topicname):
+    return render_template('topic_hot.html',topicname=topicname)
 
 # 啟動網站伺服器
 if __name__ == '__main__':
