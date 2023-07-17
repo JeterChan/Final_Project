@@ -81,7 +81,7 @@ function openMenu(evt, menuName, cardname) {
     document.getElementById(cardname).style.display = "flex";
     evt.currentTarget.firstElementChild.className += " w3-dark-grey";
   }
-  document.getElementById("myLink").click();
+  
 
 listenforLike();
 getRating();
