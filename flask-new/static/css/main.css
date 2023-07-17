@@ -121,13 +121,48 @@ header{
     border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
-ul li .nav-link{
+.nav-tabs .nav-link{
     color: white;
 }
 
-ul li .nav-link:hover{
+.nav-tabs .nav-link:hover{
     color:#fff;
     /* background-color: #fff; */
+}
+
+/* 最新&熱門 */
+.nav-pills .nav-link,
+.nav-pills .nav-link{
+    color: black;
+    background-color: #E5E7E9;
+}
+
+.nav-pills .nav-link:hover{
+    background-color: lightgray;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .nav-link.active
+{
+    background-color: #526D82;
+}
+
+.newest-tab,
+.hot-tab{
+    flex-grow: 1;
+}
+
+/* 每日、週、月 */
+.evevyday .nav-link,
+.evevyweek .nav-link,
+.evevymonth .nav-link{
+    color: black;
+}
+
+.evevyday .nav-link:hover,
+.evevyweek .nav-link:hover,
+.evevymonth .nav-link:hover{
+    color: black;
 }
 
 
@@ -144,6 +179,11 @@ ul li .nav-link:hover{
 
 .modal-body p{
     font-size: 1.2rem;
+}
+
+/* dropdown */
+.dropdown {
+    
 }
 
 /* news content */
