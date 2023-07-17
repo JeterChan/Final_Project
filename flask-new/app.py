@@ -11,7 +11,8 @@ from google.auth.transport import requests
 from flask import jsonify
 import pymysql
 from authlib.integrations.flask_client import OAuth
-# from search_news import *
+from search_news import *
+from word2vec import *
 myclient = pymongo.MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
 
 app = Flask( 
@@ -54,7 +55,7 @@ def user_loader(user_id):
 # 建立資料庫連接
 def connect_db():
     db_settings = {
-        "host": "127.0.0.1",
+        "host": "finalproject.cluster-cnfzqwsf4fd2.ap-southeast-2.rds.amazonaws.com",
         "port": 3306,
         "user": "ncumis",
         "password": "ncumis12345",
@@ -123,20 +124,17 @@ def get_DB_KW_data(topic):
     collection = db[topic]
     today_date =datetime.now().strftime("%Y-%m-%d")
     pipeline = [
-        {"$match": {"date": "2023-07-14"}}
+        {"$match": {"date": today_date}}
     ]
 
     data = collection.aggregate(pipeline)
     return list(data)
 
-# 熱門頁面-每日
 @app.route("/hot")
 def hot():
-    # result=get_DB_KW_data("綜合全部")
-    # keywords_list = [item['keywords'] for item in result]
-    # news_list=search_total_news(keywords_list)
-    return render_template('hot.html')
-    return render_template('hot.html',news_list=news_list)
+    result = get_DB_KW_data("綜合全部")
+    data = [{'keyword': keyword, 'news_list': search_total_news([keyword],10)} for item in result for keyword in item['keywords']]
+    return render_template('hot.html', data=data)
 
 # 熱門頁面-每週
 @app.route("/hot/evevyweek")
@@ -159,6 +157,7 @@ def recommendation():
 # @login_required
 def collection():
     return render_template('collection.html')
+
 
 @app.route("/login",methods=['GET','POST'])
 def login():
@@ -264,11 +263,17 @@ def logout():
     # 重定向到登录页或其他页面
     return redirect(url_for('login'))
 
-@app.route("/show")
+@app.route("/show",  methods=['POST'])
 def show():
-    # 回傳user搜尋的關鍵字的相關新聞到前端
-    keyword = request.args.get("keyword","")
-    return keyword
+    if request.method == 'POST':
+        keyword = request.form.get("keyword", "")
+        data = [{'keyword': keyword, 'news_list': search_total_news([keyword], 10)}]
+        extend_keywords=word2vec(keyword)
+        extend_data=[{'keyword': extend_keyword, 'news_list': search_total_news([extend_keyword], 10)} for extend_keyword in extend_keywords]
+        return render_template('show.html', data=data,extend_data=extend_data)
+    
+    return redirect(url_for('index'))  
+
 
 # topic頁面預設是最新新聞
 @app.route("/topic/<topicname>")
@@ -278,7 +283,9 @@ def topic(topicname):
 # topic的熱門新聞頁面
 @app.route("/topic/<topicname>/熱門")
 def topicHot(topicname):
-    return render_template('topic_hot.html',topicname=topicname)
+    news_list=search_news(topicname)
+    return render_template('topic_hot.html',topicname=topicname,news_list=news_list)
+
 
 # 啟動網站伺服器
 if __name__ == '__main__':

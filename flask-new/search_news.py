@@ -3,7 +3,7 @@ from difflib import SequenceMatcher
 from pymongo import MongoClient
 
 client = MongoClient("mongodb+srv://user1:user1@cluster0.ronm576.mongodb.net/?retryWrites=true&w=majority")
-db_today= client["TodayNews"]
+db_today= client["News"]
 db_daily = client['關鍵每一天']
 total_subject = ['健康', '國際', '娛樂', '生活', '社會地方', '科技', '財經', '運動']
 def fuzzy_match(keywords, title):
@@ -15,7 +15,7 @@ def fuzzy_match(keywords, title):
 
 def search_news(collection_name):
     keywords = db_daily[collection_name].find_one({}, {'keywords': 1})['keywords']  # 提取关键字字段
-    news_items = db_today[collection_name].find({}, {'title': 1})  # 提取标题字段
+    news_items = db_today[collection_name].find({}, {'title': 1,'url':1,'image':1,'summary':1})  # 提取标题字段
 
     results = []
     for item in news_items:
@@ -32,7 +32,7 @@ def search_news(collection_name):
         avg_match_count = total_match_count / len(keywords)
         avg_similarity = total_similarity / len(keywords)
 
-        results.append({'title': title, 'match_count': avg_match_count, 'similarity': avg_similarity})
+        results.append({'title': title,'url': item['url'] ,'image':item['image'],'summary':item['summary'],'match_count': avg_match_count, 'similarity': avg_similarity})
 
     # 根据相似度进行排序
     sorted_results = sorted(results, key=lambda x: x['similarity'], reverse=True)
@@ -55,55 +55,77 @@ def search_news(collection_name):
 
     return unique_results
 
-def search_total_news(all_keywords):
-    results = []
+def search_total_news(all_keywords,num):
+    selected_news = []  # 存储最相似的新闻
+
     for collection_name in total_subject:
-        news_items = db_today[collection_name].find({}, {'title': 1, 'content': 1})  # 提取标题和内容字段
-        for item in news_items:
-            title = item['title']
-            content = item['content']
-            combined_text = title + " " + content  # 将标题和内容拼接在一起
-            total_match_count = 0
-            total_similarity = 0
+        # 聚合查询，筛选出包含关键字的新闻并计算相似度
+        pipeline = [
+        {
+            '$match': {
+                '$or': [
+                    {'title': {'$regex': f'.*{kw}.*', '$options': 'i'}} for kw in all_keywords
+                ]
+            }
+        },
+        {
+            '$addFields': {
+                'combined_text': {'$concat': ['$title', ' ', '$content']}
+            }
+        },
+        {
+            '$project': {
+                '_id': 0,
+                'title': 1,
+                'url': 1,
+                'image': 1,
+                'content': 1,
+                'summary': 1,
+                'match_count': {
+                    '$size': {
+                        '$setIntersection': [
+                            {'$split': ['$combined_text', ' ']},
+                            all_keywords
+                        ]
+                    }
+                },
+                'similarity': {
+                    '$cond': {
+                        'if': {
+                            '$and': [
+                                {'$gt': [{'$size': {'$split': ['$combined_text', ' ']}} , 0]},
+                                {'$ne': ['$combined_text', None]}
+                            ]
+                        },
+                        'then': {
+                            '$divide': [
+                                {'$ifNull': ['$match_count', 0]},
+                                {'$size': {'$split': ['$combined_text', ' ']}}
+                            ]
+                        },
+                        'else': 0
+                    }
+                }
+            }
+        },
+        {
+            '$sort': {'similarity': -1, 'timestamp': -1}
+        },
+        {
+            '$limit': num
+        }
+        ]
 
-            for keywords in all_keywords:
-                for keyword in keywords:
-                    match_count, similarity = fuzzy_match(keyword, combined_text)  # 对拼接后的文本进行模糊匹配
-                    total_match_count += match_count
-                    total_similarity += similarity
+        news_data = list(db_today[collection_name].aggregate(pipeline))
 
-            avg_match_count = total_match_count / len(all_keywords)
-            avg_similarity = total_similarity / len(all_keywords)
+        # 将结果添加到 selected_news 列表中
+        selected_news.extend(news_data)
 
-            results.append({'title': title, 'content': content, 'match_count': avg_match_count, 'similarity': avg_similarity})
 
-    # 根据相似度进行排序
-    sorted_results = sorted(results, key=lambda x: x['similarity'], reverse=True)
-    
-    unique_results = []
-    seen_titles = set()
-    for result in sorted_results:
-        title = result['title']
-        if title not in seen_titles:
-            unique_results.append(result)
-            seen_titles.add(title)
-        # 如果已经找到了10个唯一的结果，提前结束循环
-        if len(unique_results) == 100:
-            break
+    # 将全部主题的新闻按照相似度排序
+    selected_news.sort(key=lambda x: x['similarity'], reverse=True)
+    # 仅保留前4个结果
+    selected_news = selected_news[:4]
 
-    # 获取新闻的详细内容
-    news_data = []
-    
-    for result in unique_results:
-        title = result['title']
-        for collection in total_subject:
-          news_item = db_today[collection].find_one({'title': title})
-          if news_item:
-              news_data.append(news_item)
+    return selected_news
 
-    #for data in news_data:
-        #print(data)
-
-    return news_data
-
-#print(search_total_news("綜合全部"))

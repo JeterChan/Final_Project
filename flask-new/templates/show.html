@@ -27,7 +27,7 @@
     <nav class="navbar navbar-expand-lg ">
       <div class="container-fluid">
         <div>
-          <a class="navbar-brand" href="/index_login">
+          <a class="navbar-brand" href="/">
             <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="logo">
             Communews
           </a>
@@ -44,10 +44,11 @@
           </form>
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link nav-home" aria-current="page" href="/index_login">首頁</a>
+              <a class="nav-link nav-login" href="/login" role="button">登入</a>
             </li>
-            <!-- 登入後就不會有登入button -->
-            <!-- 可以顯示使用者的帳號or使用者名稱?? -->
+            <li class="nav-item">
+              <a class="nav-link nav-register" href="/register" role="button">註冊</a>
+            </li>
           </ul>
         </div>
       </div>      
@@ -63,10 +64,75 @@
         <a class="nav-link" href="/login_hot">熱門</a>
       </li>
       <li class="nav-item mx-1">
-        <a class="nav-link" href="/recommendation">推薦</a>
+        <!-- <a class="nav-link" href="/collection">收藏</a> -->
+        <!-- Button trigger modal -->
+        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          推薦
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <img src="{{url_for('static',filename='img/44300_gray.png')}}" alt="logo" style='height: 20%; width: 20%; object-fit: contain'>
+                <p><h1 class="modal-title fs-5" id="exampleModalLabel">登入後即享有<b>Communews</b>的所有功能</h1></p>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              </div>
+              <div class="modal-body">
+                <ul>
+                  <li>
+                    <p>在「推薦」可查看我們推薦給您的新聞</p>
+                  </li>
+                  <li>
+                    <p>隨時<b>收藏</b>感興趣的主題</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <!-- button 顏色要改 -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">不用了。謝謝</button>
+                <a class="btn btn-primary" href="/login" role="button">登入</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </li>
+      <!-- 登入後才可以看到收藏的頁面 -->
       <li class="nav-item mx-1">
-        <a class="nav-link" href="/collection">收藏</a>
+        <!-- <a class="nav-link" href="/collection">收藏</a> -->
+        <!-- Button trigger modal -->
+        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          收藏
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <img src="{{url_for('static',filename='img/44300_gray.png')}}" alt="logo" style='height: 20%; width: 20%; object-fit: contain'>
+                <p><h1 class="modal-title fs-5" id="exampleModalLabel">登入後即享有<b>Communews</b>的所有功能</h1></p>
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+              </div>
+              <div class="modal-body">
+                <ul>
+                  <li>
+                    <p>在「推薦」可查看我們推薦給您的新聞</p>
+                  </li>
+                  <li>
+                    <p>隨時<span>收藏</span>感興趣的主題</p>
+                  </li>
+                </ul>
+              </div>
+              <div class="modal-footer">
+                <!-- button 顏色要改 -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">不用了。謝謝</button>
+                <a class="btn btn-primary" href="/login" role="button">登入</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </li>
       <li class="nav-item mx-1">
         <p class="line"></p>
@@ -102,132 +168,151 @@
 
     <!-- 關鍵字新聞結果 -->  
     <!-- start of container -->      
-    <div class="container news-container">                 
-      <div class="row">
-        <!-- 關鍵字 from user search-->
-        <p class="topic fs-2 mt-2"># {{keyword}}</p>        
-
-          <!-- start of column -->  
-          {% for news in news_list %}
-          <div class="col-6 mb-2 d-flex align-items-center justify-content-center">
+    {% for item in data %}
+      <div class="container news-container">
+      
+        <div class="row">
+          <!-- Keyword -->
+          <p></p>
+          <a class="nav-link" href="">
+            <span class="topic fs-3"># {{ item.keyword }}</span>
+          </a>
+    
+          <!-- News for the keyword -->
+          {% for news in item.news_list %}
+          <div class="col-6 mb-2 card-block">
             <!-- Card section -->
             <div class="card h-100 pb-2" style="width: 675px;">
-              <div class="row g-0">
-                <div class="h-75 col col-md-4 pb-1 d-flex align-items-center justify-content-center rounded-start">
+              <div class="row">
+                <div class="col col-md-4 pb-1" style="height: fit-content;">
                   <a href="{{ news.url }}">
-                    {% if news.image !="None" %}
-                      <img src="{{ news.image }}" class="img-fluid rounded">
+                    {% if news.image != "None" %}
+                      <img src="{{ news.image }}" class="img-fluid rounded-start">
                     {% else %}
-                      <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="img-fluid rounded" style="object-fit: cover;">
+                      <img src="{{ url_for('static', filename='img/44301.jpg') }}" class="img-fluid rounded-start">
                     {% endif %}
-                  </a>         
+                  </a>
                 </div>
                 <!-- card 內容 -->
-                <div class="col-md-8 col-sm-12 h-75 rounded-bottom" style="background-color: #C2C8C6;">
+                <div class="col-md-8 col-sm-12">
                   <div class="card-body">
-                    <a class="card-title" href="{{news.url}}" >{{news.title}}</a>
+                    <a class="card-title" href="{{ news.url }}">{{ news.title }}</a>
                     <p class="card-text mt-2">
                       {% if news.summary|length > 100 %}
-                        {{ news.summary[:100] }}...<a href="{{news.url}}">查看完整內容</a>
+                        {{ news.summary[:100] }}...<a href="{{ news.url }}">查看完整內容</a>
                       {% else %}
                         {{ news.summary }}
                       {% endif %}
                     </p>
-                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                    <a href="{{ ptt_url }}" class="card-link" target="_blank">{{ ptt_title }}</a>
                   </div>
                 </div>
-              
+      
                 <!-- 評分 -->
-                <form class="rating" data-id="{{news._id}}">
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <span class="stars-score" id="{{news._id}}"></span>
+                <form class="ps-4 {{ news_id }} rating ">
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <span class="stars-score"></span>
                 </form>
-
+      
                 <div class="col-6 ptt-link">
-                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
                 </div>
+      
               </div>
-              
               <!--end of card row-->
-            </div> 
-              <!-- end of card section -->
+            </div>
+            <!-- end of card section -->
           </div>
-            <!-- end of column -->
-          {% endfor %} 
-      </div> 
-      <!-- end of row -->
-    </div>
+          <!-- end of column -->
+          {% endfor %}
+        </div>
+        <!-- end of row -->
+        
+      </div>
+      {% endfor %}
     <!-- end of container -->
+    </div>
+    <!-- end of container -->  
     
     
     <!-- 延伸關鍵字 --> 
-    <!-- start of container -->   
-    <div class="container news-container">                 
-      <div class="row">
-        <!-- 從user search的延伸關鍵字-->
-        <p class="topic fs-2 mt-2"># {{延伸關鍵字}}</p>        
-
-          <!-- start of column -->  
-          {% for news in news_list %}
-          <div class="col-6 mb-2 d-flex align-items-center justify-content-center">
+    {% for item in extend_data %}
+      <div class="container news-container">
+      
+        <div class="row">
+          <!-- Keyword -->
+          <p></p>
+          <a class="nav-link" href="">
+            <span class="topic fs-3"># {{ item.keyword }}</span>
+          </a>
+    
+          <!-- News for the keyword -->
+          {% for news in item.news_list %}
+          <div class="col-6 mb-2 card-block">
             <!-- Card section -->
             <div class="card h-100 pb-2" style="width: 675px;">
-              <div class="row g-0">
-                <div class="h-75 col col-md-4 pb-1 d-flex align-items-center justify-content-center rounded-start">
+              <div class="row">
+                <div class="col col-md-4 pb-1" style="height: fit-content;">
                   <a href="{{ news.url }}">
-                    {% if news.image !="None" %}
-                      <img src="{{ news.image }}" class="img-fluid rounded">
+                    {% if news.image != "None" %}
+                      <img src="{{ news.image }}" class="img-fluid rounded-start">
                     {% else %}
-                      <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="img-fluid rounded" style="object-fit: cover;">
+                      <img src="{{ url_for('static', filename='img/44301.jpg') }}" class="img-fluid rounded-start">
                     {% endif %}
-                  </a>         
+                  </a>
                 </div>
                 <!-- card 內容 -->
-                <div class="col-md-8 col-sm-12 h-75 rounded-bottom" style="background-color: #C2C8C6;">
+                <div class="col-md-8 col-sm-12">
                   <div class="card-body">
-                    <a class="card-title" href="{{news.url}}" >{{news.title}}</a>
+                    <a class="card-title" href="{{ news.url }}">{{ news.title }}</a>
                     <p class="card-text mt-2">
                       {% if news.summary|length > 100 %}
-                        {{ news.summary[:100] }}...<a href="{{news.url}}">查看完整內容</a>
+                        {{ news.summary[:100] }}...<a href="{{ news.url }}">查看完整內容</a>
                       {% else %}
                         {{ news.summary }}
                       {% endif %}
                     </p>
-                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                    <a href="{{ ptt_url }}" class="card-link" target="_blank">{{ ptt_title }}</a>
                   </div>
                 </div>
-              
+      
                 <!-- 評分 -->
-                <form class="rating" data-id="{{news._id}}">
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <p class="star" name="{{news._id}}">&#9734;</p>
-                  <span class="stars-score" id="{{news._id}}"></span>
+                <form class="ps-4 {{ news_id }} rating ">
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <span class="stars-score"></span>
                 </form>
-
+      
                 <div class="col-6 ptt-link">
-                  <a href="{{ptt_url}}">PTT-post</a>
-                  <a href="{{ptt_url}}">PTT-post</a>
-                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
                 </div>
+      
               </div>
-              
               <!--end of card row-->
-            </div> 
-              <!-- end of card section -->
+            </div>
+            <!-- end of card section -->
           </div>
-            <!-- end of column -->
-          {% endfor %} 
-      </div> 
-      <!-- end of row -->
-    </div>
+          <!-- end of column -->
+          {% endfor %}
+        </div>
+        <!-- end of row -->
+        
+      </div>
+      {% endfor %}
     <!-- end of container -->
+    </div>
+    <!-- end of container -->  
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="{{url_for('static',filename='js/index.js')}}" defer></script>

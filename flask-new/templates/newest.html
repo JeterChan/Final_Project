@@ -38,8 +38,8 @@
         </button>   
   
         <div class="d-flex justify-content-end collapse navbar-collapse navigation" id="navbarSupportedContent">
-          <form class="search-block d-flex m-auto" role="search">
-            <input class="form-control me-2" type="search" placeholder="搜尋" aria-label="Search">
+          <form class="search-block d-flex m-auto" role="search" action="{{ url_for('show') }}" method="POST">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="搜尋" aria-label="Search">
             <button class="btn btn-outline-success btnSearch" type="submit">搜尋</button>
           </form>
           <ul class="navbar-nav">
@@ -171,8 +171,8 @@
     
     <div class="container news-container">                 
       <div class="row">
-    
-        <p class="topic fs-2 mt-2"># 最新新聞</p>         
+        <p></p>
+        <span class="topic fs-3"># 最新新聞</span>     
 
           <!-- start of column -->  
           {% for news in news_list %}

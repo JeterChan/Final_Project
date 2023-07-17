@@ -39,8 +39,8 @@
   
         <div class="d-flex justify-content-end collapse navbar-collapse navigation" id="navbarSupportedContent">
           <!-- 搜尋欄 -->
-          <form class="search-block d-flex m-auto" role="search" action="/show">
-            <input class="form-control me-2" type="search" placeholder="搜尋" aria-label="Search" name="keyword">
+          <form class="search-block d-flex m-auto" role="search" action="{{ url_for('show') }}" method="POST">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="搜尋" aria-label="Search">
             <button class="btn btn-outline-success btnSearch" type="submit">搜尋</button>
           </form>
           <!-- 搜尋欄 -->
@@ -196,7 +196,7 @@
                 <option value="3">當月熱門</option>
             </select>
         </div>
-
+          
           <!-- start of column -->  
           {% for news in news_list %}
           <div class="col-6 mb-2 d-flex align-items-center justify-content-center">
@@ -208,7 +208,7 @@
                     {% if news.image !="None" %}
                       <img src="{{ news.image }}" class="img-fluid rounded">
                     {% else %}
-                      <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="img-fluid rounded" style="object-fit: cover;">
+                      <img src="{{ url_for('static', filename='img/44301.jpg') }}" class="img-fluid rounded" style="object-fit: cover;">
                     {% endif %}
                   </a>         
                 </div>

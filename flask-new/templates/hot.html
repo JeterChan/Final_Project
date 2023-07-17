@@ -38,8 +38,8 @@
         </button>   
   
         <div class="d-flex justify-content-end collapse navbar-collapse navigation" id="navbarSupportedContent">
-          <form class="search-block d-flex m-auto" role="search">
-            <input class="form-control me-2" type="search" placeholder="搜尋" aria-label="Search">
+          <form class="search-block d-flex m-auto" role="search" action="{{ url_for('show') }}" method="POST">
+            <input class="form-control me-2" type="search" name="keyword" placeholder="搜尋" aria-label="Search">
             <button class="btn btn-outline-success btnSearch" type="submit">搜尋</button>
           </form>
           <ul class="navbar-nav">
@@ -171,11 +171,6 @@
     <div class="container news-container">
                             
       <div class="row">
-        <!-- 熱門 news -->
-        <form>
-          <p></p>
-          <span class="topic fs-3"># 熱門新聞</span>
-        </form>          
 
         <ul class="nav nav-tabs">
           <li class="nav-item evevyday">
@@ -189,39 +184,48 @@
           </li>
         </ul>
 
-          <!-- start of column -->  
-          {% for news in news_list %}
+      {% for item in data %}
+      <div class="container news-container">
+      
+        <div class="row">
+          <!-- Keyword -->
+          <p></p>
+          <a class="nav-link" href="">
+            <span class="topic fs-3"># {{ item.keyword }}</span>
+          </a>
+    
+          <!-- News for the keyword -->
+          {% for news in item.news_list %}
           <div class="col-6 mb-2 card-block">
-
             <!-- Card section -->
             <div class="card h-100 pb-2" style="width: 675px;">
               <div class="row">
-                <div class="col col-md-4 pb-1" style="height:fit-content;">
+                <div class="col col-md-4 pb-1" style="height: fit-content;">
                   <a href="{{ news.url }}">
-                    {% if news.image !="None" %}
+                    {% if news.image != "None" %}
                       <img src="{{ news.image }}" class="img-fluid rounded-start">
                     {% else %}
-                      <img src="{{url_for('static',filename='img/44301.jpg')}}" class="img-fluid rounded-start">
+                      <img src="{{ url_for('static', filename='img/44301.jpg') }}" class="img-fluid rounded-start">
                     {% endif %}
-                  </a>         
+                  </a>
                 </div>
                 <!-- card 內容 -->
                 <div class="col-md-8 col-sm-12">
                   <div class="card-body">
-                    <a class="card-title" href="{{news.url}}" >{{news.title}}</a>
+                    <a class="card-title" href="{{ news.url }}">{{ news.title }}</a>
                     <p class="card-text mt-2">
                       {% if news.summary|length > 100 %}
-                        {{ news.summary[:100] }}...<a href="{{news.url}}">查看完整內容</a>
+                        {{ news.summary[:100] }}...<a href="{{ news.url }}">查看完整內容</a>
                       {% else %}
                         {{ news.summary }}
                       {% endif %}
-                  </p>
-                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                    </p>
+                    <a href="{{ ptt_url }}" class="card-link" target="_blank">{{ ptt_title }}</a>
                   </div>
                 </div>
-
+      
                 <!-- 評分 -->
-                <form class="ps-4 {{news_id}} rating ">                 
+                <form class="ps-4 {{ news_id }} rating ">
                   <p class="star">&#9734;</p>
                   <p class="star">&#9734;</p>
                   <p class="star">&#9734;</p>
@@ -229,22 +233,26 @@
                   <p class="star">&#9734;</p>
                   <span class="stars-score"></span>
                 </form>
-
+      
                 <div class="col-6 ptt-link">
-                  <a href="{{ptt_url}}">PTT-post</a>
-                  <a href="{{ptt_url}}">PTT-post</a>
-                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
+                  <a href="{{ ptt_url }}">PTT-post</a>
                 </div>
-
+      
               </div>
               <!--end of card row-->
-            </div> 
-              <!-- end of card section -->
+            </div>
+            <!-- end of card section -->
           </div>
-            <!-- end of column -->
-          {% endfor %} 
-      </div> 
-      <!-- end of row -->
+          <!-- end of column -->
+          {% endfor %}
+        </div>
+        <!-- end of row -->
+        
+      </div>
+      {% endfor %}
+    <!-- end of container -->
     </div>
     <!-- end of container -->  
   
