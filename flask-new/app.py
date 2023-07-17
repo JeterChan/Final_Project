@@ -156,7 +156,7 @@ def recommendation():
 
 
 @app.route("/collection")
-@login_required
+# @login_required
 def collection():
     return render_template('collection.html')
 
