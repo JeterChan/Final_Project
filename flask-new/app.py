@@ -66,13 +66,13 @@ def connect_db():
     connection = pymysql.connect(**db_settings)
     return connection
 
-def get_DB_News_data(topic):
+def get_DB_News_data(topic,num):
     db = myclient['News']
     collection = db[topic]
 
     pipeline = [
         {"$sort": {"timestamp": -1}},
-        {"$limit": 50}
+        {"$limit": num}
     ]
 
     data = collection.aggregate(pipeline)
@@ -88,7 +88,7 @@ def index():
     # 使用线程池并行处理获取数据
     with ThreadPoolExecutor() as executor:
         # 并行获取各个主题的数据
-        futures = [executor.submit(get_DB_News_data, topic) for topic in topics]
+        futures = [executor.submit(get_DB_News_data, topic,50) for topic in topics]
 
         # 收集各个主题的数据
         for future in futures:
@@ -108,7 +108,7 @@ def newest():
     # 使用线程池并行处理获取数据
     with ThreadPoolExecutor() as executor:
         # 并行获取各个主题的数据
-        futures = [executor.submit(get_DB_News_data, topic) for topic in topics]
+        futures = [executor.submit(get_DB_News_data, topic,50) for topic in topics]
 
         # 收集各个主题的数据
         for future in futures:
@@ -267,9 +267,9 @@ def logout():
 def show():
     if request.method == 'POST':
         keyword = request.form.get("keyword", "")
-        data = [{'keyword': keyword, 'news_list': search_total_news([keyword], 10)}]
+        data = [{'keyword': keyword, 'news_list': gen_kw_search_news([keyword], 10)}]
         extend_keywords=word2vec(keyword)
-        extend_data=[{'keyword': extend_keyword, 'news_list': search_total_news([extend_keyword], 10)} for extend_keyword in extend_keywords]
+        extend_data=[{'keyword': extend_keyword, 'news_list': gen_kw_search_news([extend_keyword], 10)} for extend_keyword in extend_keywords]
         return render_template('show.html', data=data,extend_data=extend_data)
     
     return redirect(url_for('index'))  
@@ -278,12 +278,13 @@ def show():
 # topic頁面預設是最新新聞
 @app.route("/topic/<topicname>")
 def topic(topicname):
-    return render_template('topic.html',topicname=topicname)
+    news_list=get_DB_News_data(topicname,100)
+    return render_template('topic.html',topicname=topicname,news_list=news_list)
 
 # topic的熱門新聞頁面
 @app.route("/topic/<topicname>/熱門")
 def topicHot(topicname):
-    news_list=search_news(topicname)
+    news_list=hot_topic_search_news(topicname)
     return render_template('topic_hot.html',topicname=topicname,news_list=news_list)
 
 
