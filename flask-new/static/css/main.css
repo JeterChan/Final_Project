@@ -130,6 +130,29 @@ ul li .nav-link:hover{
     /* background-color: #fff; */
 }
 
+/* 最新&熱門 */
+.newest-tab .nav-link,
+.hot-tab .nav-link{
+    color: black;
+}
+
+.newest-tab .nav-link:hover,
+.hot-tab .nav-link:hover{
+    color: black;
+}
+
+.evevyday .nav-link,
+.evevyweek .nav-link,
+.evevymonth .nav-link{
+    color: black;
+}
+
+.evevyday .nav-link:hover,
+.evevyweek .nav-link:hover,
+.evevymonth .nav-link:hover{
+    color: black;
+}
+
 
 .line{
     border-right: 2px solid #dadce0;
@@ -141,6 +164,8 @@ ul li .nav-link:hover{
     color: #fff;
     border: none;
 }
+
+
 
 .modal-body p{
     font-size: 1.2rem;
