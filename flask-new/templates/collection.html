@@ -1,456 +1,371 @@
-body{
-    margin: 0;
-    padding: 0;
-    font-family: 'Open Sans Condensed', sans-serif;
-    background-color: #E5E7E9;
-}
-
-/* navbar */
-.logo{
-    width: 50px;
-    height: 100%;
-}
-
-header{
-    background-color: #27374D;
-}
-
-.navbar-brand{
-    font-size: 32px;
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.navbar-brand:hover{
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.navigation .nav-link {
-    position: relative;
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.5rem;
-    /* border: 2px solid rgba(255, 255, 255, 0.8);
-    border-radius: 6px; */
-}
-
-.nav-home,
-.nav-login,
-.nav-register{
-    height: 50px;
-    text-align: center;
-}
-
-.nav-home,
-.nav-login{
-    font-size: 1.5rem;
-    width: 80px;
-    margin-right: 20px;
-}
-
-.nav-register{
-    font-size: 1.5rem;
-    width: 80px;
-}
-
-
-.navigation .btnLogin{
-    width: 130px;
-    height: 50px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-    margin-left: 40px;
-    text-align: center;
-    text-decoration: none;
-}
-
-.navigation .btnLogin:hover{
-    background: rgba(255, 255, 255, 0.8);
-    color: #27374D;
-}
-
-.navigation .nav-link::after{
-   content: '';
-   position: absolute;
-   left: 0;
-   bottom: -6px;
-   width: 100%;
-   height: 3px;
-   background: rgba(255, 255, 255, 0.8);
-   border-radius: 5px;
-   transform: scaleX(0);
-   transition: transform .3s;
-}
-
-/* .navigation .nav-link:hover{
-    color: rgba(255, 255, 255, 0.8);
-} */
-
-.navigation .nav-link:hover::after{
-    transform: scaleX(1);
-}
-
-.search-block{
-    margin: auto;
-    width: 50%;
-    padding: 5px;
-}
-
-.search-block input::placeholder{
-    font-size: 1.1rem;
-}
-
-.btnSearch{
-    background: transparent;
-    border:2px solid rgba(255, 255, 255, 0.8);
-    color: rgba(255, 255, 255, 0.8);
-    outline: none;
-    transform: 0.3s;
-    width: 100px;
-    font-size: 1.1rem;
-}
-
-.navigation .btnSearch:hover{
-    background: rgba(255, 255, 255, 0.8);
-    color: #27374D;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-}
-
-ul li .nav-link{
-    color: white;
-}
-
-ul li .nav-link:hover{
-    color:#fff;
-    /* background-color: #fff; */
-}
-
-
-.line{
-    border-right: 2px solid #dadce0;
-    height: 100%;
-    width: 100%;
-}
-
-.nav-item button:focus{
-    color: #fff;
-    border: none;
-}
-
-.modal-body p{
-    font-size: 1.2rem;
-}
-
-/* news content */
-.news-container{
-    margin-top:30px;
-    width:100%;
-    border-radius: 15px;
-    background-color: #fff;
-}
-
-
-
-/* index_login */
-.col .login{
-    aspect-ratio: 5/3;
-    max-height: 200px;
-    object-position: 5px 5px;
-    object-fit: cover;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-/* Card */
-/* .card-block{
-    display:flex;
-    align-items:center;
-    justify-content: center;
-} */
-
-/* column */
-/* .col img{
-    object-position: 20px 10px;
-    object-fit: contain;
-} */
-
-
-/* .img-block{
-   border-left: 2px solid #F9F8F7;
-   border-bottom: 2px solid lightgray;
-} */
-
-/* .img-block img {
-    flex-shrink: 0;
-    object-fit: contain;
-} */
-
-.card-link{
-    text-decoration: none;
-}
-
-.card-title{
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 550;
-}
-
-.card-title:hover{
-    text-decoration: underline;
-}
-
-/* rating */
-/* .rating i{
-    color: #e6e6e6;
-    font-size: 30px;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.rating i.active{
-    color: #ff9c1a;
-} */
-
-/* rating */
-.rating{
-    position: relative;
-    display: flex;
-    align-items: center;
-    user-select: none;
-    width: fit-content;
-    height: fit-content;
-}
-
-.star{
-    color: #ff9c1a;
-    font-size: 3rem;
-    background-color: unset;
-    border: none;
-}
-
-.star:hover{
-    cursor: pointer;
-}
-
-/* PTT-link */
-.ptt-link{
-    text-align: center;
-    margin: auto;
-}
-
-.ptt-link a{
-    margin-right: 10px;
-}
-
-.like {
-    width: 48px;
-    height: 48px;
-    position: relative;
-    top: 5px;
-    cursor: pointer;
-    display: inline-block;
-    user-select: none;
-}
-
-.like-no {
-    background: url("../img/dislike.svg") no-repeat;
-}
-
-.like-yes {
-    background: url("../img/like.svg") no-repeat;
-}
-
-.topic{
-    position: relative;
-    bottom: 5px;
-}
-
-.topic-keyword{
-    position: relative;
-    bottom: 5px;
-    margin-top: 14px;
-    margin-left: 5px;
-}
-
-/* flex-container */
-.flex-container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-/* login-container */
-.login-container,
-.register-container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    /* background: url('44301.jpg') no-repeat; */
-    background-size: cover;
-    margin-top: 3rem;
-}   
-
-.img-container{
-    width: 480px;
-}
-
-.img-center{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: inherit
-}
-
-
-.wrapper{
-    width: 540px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    border-radius:15px;
-}
-
-.login-form,
-.register-form{
-    width: 70%;
-    align-self: stretch;
-    text-align: center;
-    padding: 50px 0;
-}
-
-.login-title,
-.register-title{
-    font-size: 3rem;
-    font-weight: 550;
-    text-align: center;
-}
-
-.forget-register{
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-}
-
-.forget a,
-.register{
-    font-size: 1.1rem;
-}
-
-.login-btn,
-.register-btn{
-    height: 50px;
-    font-size: 1.3rem;
-    font-weight: 550;
-    background-color: #B5594B;
-    border: none;
-}
-
-.login-btn:hover,
-.register-btn:hover{
-    background-color: #B5594B;
-}
-
-.login-register-btn{
-    font-weight: 600;
-    background-color: #526D82;
-    border: none;
-}
-
-.login-register-btn:hover{
-    background-color: #526D82;
-}
-
-.login-btn,
-.register-btn,
-.login-register-btn{
-    color:#fff;
-}
-
-.login-btn:hover,
-.register-btn:hover,
-.login-register-btn:hover{
-    color: #fff;
-}
-
-.select-keyword {
-    margin-top: auto;
-    margin-left: 3px;
-    display: block;
-    width: 14%;
-    height: 45px;
-    padding: 6px 12px;
-    font-size: 1.5rem;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-
-.select-hottime {
-    margin-left: 3px;
-    display: block;
-    width: 14%;
-    height: 45px;
-    padding: 6px 12px;
-    font-size: 1.5rem;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-
-.collection-padding{
-    padding-top: 24px;
-    padding-bottom: 24px;
-}
-
-.collection-column{
-    width: 50%;
-    display: flex!important;
-    flex-wrap: wrap;
-}
-
-#hot-card{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-#newest-card{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.mb-2{margin-bottom:.5rem!important}
-
-.collection-container{
-    content:"";
-    display:flex;
-    clear:both
-}
-
-
-.collection-card{
-    box-shadow:0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12)
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Communews</title>
+
+  <!-- Favicons -->
+  <link href="{{url_for('static',filename='img/44300.png')}}" rel="icon">
+  
+  <!-- Bootstrap css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="{{url_for('static',filename='css/main.css')}}" rel="stylesheet">
+
+  <!-- GoogleFont -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg ">
+      <div class="container-fluid">
+        <div>
+          <a class="navbar-brand" href="/index_login">
+            <img src="{{url_for('static',filename='img/44300_nobg.png')}}" class="logo">
+            Communews
+          </a>
+        </div>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>   
+  
+        <div class="d-flex justify-content-end collapse navbar-collapse navigation" id="navbarSupportedContent">
+          <form class="search-block d-flex m-auto" role="search">
+            <input class="form-control me-2" type="search" placeholder="搜尋" aria-label="Search">
+            <button class="btn btn-outline-success btnSearch" type="submit">搜尋</button>
+          </form>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link nav-home" aria-current="page" href="/index_login">首頁</a>
+            </li>
+            <!-- 登入後就不會有登入button -->
+            <!-- 可以顯示使用者的帳號or使用者名稱?? -->
+          </ul>
+          </ul>
+        </div>
+      </div>      
+    </nav>
+
+    <!-- start of tabs -->
+    <ul class="nav nav-tabs d-flex justify-content-center">
+      <li class="nav-item mx-1">
+        <a class="nav-link"  href="/index_login">最新</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link"  href="/login_hot">熱門</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/recommendation">推薦</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link active" aria-current="page" href="/collection">收藏</a>
+      </li>
+      <li class="nav-item mx-1">
+        <p class="line"></p>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/運動">運動</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/生活">生活</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/國際">國際</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/娛樂">娛樂</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/社會地方">社會地方</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/科技">科技</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/健康">健康</a>
+      </li>
+      <li class="nav-item mx-1">
+        <a class="nav-link" href="/topic/財經">財經</a>
+      </li>
+
+    </ul>
+    <!-- end of tabs -->
+    </header>
+
+    <!-- start of container -->
+    <!-- 收藏 -->
+    <div class="container news-container">
+                            
+      <div class="row">
+        <!-- 關鍵字選取 news -->
+        <form>
+          <div class="like like-no"></div>
+          <span class="topic fs-3"># 收藏</span>
+          <select class="select-keyword info-select">
+            <option selected="selected">三百轟</option>
+            <option>防彈少年團</option>
+            <option>貓咪</option>
+            <option>青蛙呱呱呱</option>
+          </select>
+          <br>
+        </form> 
+
+        <!--選熱門最新新聞按鈕-->
+        <div class="w3-row w3-center w3-card w3-padding">
+          <a href="javascript:void(0)" onclick="openMenu(event, 'hot', 'hot-card');" id="myLink">
+            <div class="w3-col s6 tablink">熱門新聞</div>
+          </a>
+          <a href="javascript:void(0)" onclick="openMenu(event, 'newest', 'newest-card');">
+            <div class="w3-col s6 tablink">最新新聞</div>
+          </a>
+        </div>
+
+        <div id="hot" class="collection-container menu collection-padding collection-card">
+          <select class="select-hottime info-select">
+            <option selected="selected">當日熱門</option>
+            <option>當週熱門</option>
+            <option>當月熱門</option>
+          </select>
+          <br>
+
+          <div id = "hot-card">
+            <div class="collection-column mb-2">
+              <!-- Card section -->
+              <div class="card h-100 pb-2" style="width: auto;">
+                <div class="row">
+                  <div class="col col-md-4 pb-1" style="height:fit-content;">
+                    <a href="{{ news_url }}">
+                      <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                    </a>         
+                  </div>
+                  <!-- card 內容 -->
+                  <div class="col-md-8 col-sm-12">
+                    <div class="card-body">
+                      <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                      <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                      <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                    </div>
+                  </div>
+  
+                  <!-- 評分 -->
+                  <form class="ps-4 {{news_id}} rating ">                 
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <span class="stars-score"></span>
+                  </form>
+  
+                  <div class="col-6 ptt-link">
+                    <a href="{{ptt_url}}">PTT-post</a>
+                    <a href="{{ptt_url}}">PTT-post</a>
+                    <a href="{{ptt_url}}">PTT-post</a>
+                  </div>
+  
+                </div>
+                <!--end of card row-->
+              </div> 
+              <!-- end of card section -->
+            </div>
+            <!-- end of column --> 
+  
+            <!--card column-->
+            <div class="collection-column mb-2">
+              <!-- Card section -->
+              <div class="card h-100 pb-2" style="width: auto;">
+                <div class="row">
+                  <div class="col col-md-4 pb-1" style="height:fit-content;">
+                    <a href="{{ news_url }}">
+                      <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                    </a>         
+                  </div>
+                  <!-- card 內容 -->
+                  <div class="col-md-8 col-sm-12">
+                    <div class="card-body">
+                      <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                      <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                      <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                    </div>
+                  </div>
+  
+                  <!-- 評分 -->
+                  <form class="ps-4 {{news_id}} rating ">                 
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <span class="stars-score"></span>
+                  </form>
+  
+                  <div class="col-6 ptt-link">
+                    <a href="{{ptt_url}}">PTT-post</a>
+                    <a href="{{ptt_url}}">PTT-post</a>
+                    <a href="{{ptt_url}}">PTT-post</a>
+                  </div>
+  
+                </div>
+                <!--end of card row-->
+              </div> 
+              <!-- end of card section -->
+            </div>
+            <!-- end of column -->
+
+            <!--card column-->
+            <div class="collection-column mb-2">
+              <!-- Card section -->
+              <div class="card h-100 pb-2" style="width: auto;">
+                <div class="row">
+                  <div class="col col-md-4 pb-1" style="height:fit-content;">
+                    <a href="{{ news_url }}">
+                      <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                    </a>         
+                  </div>
+                  <!-- card 內容 -->
+                  <div class="col-md-8 col-sm-12">
+                    <div class="card-body">
+                      <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                      <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                      <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                    </div>
+                  </div>
+  
+                  <!-- 評分 -->
+                  <form class="ps-4 {{news_id}} rating ">                 
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <p class="star">&#9734;</p>
+                    <span class="stars-score"></span>
+                  </form>
+  
+                  <div class="col-6 ptt-link">
+                    <a href="{{ptt_url}}">PTT-post</a>
+                    <a href="{{ptt_url}}">PTT-post</a>
+                    <a href="{{ptt_url}}">PTT-post</a>
+                  </div>
+  
+                </div>
+                <!--end of card row-->
+              </div> 
+              <!-- end of card section -->
+            </div>
+            <!-- end of column -->
+
+            
+          </div>
+           
+        </div>
+    
+        <div id="newest" class="collection-container menu collection-padding collection-card">
+          <div id="newest-card">
+            <!--card column-->
+          <div class="collection-column mb-2">
+            <!-- Card section -->
+            <div class="card h-100 pb-2" style="width: 675px;">
+              <div class="row">
+                <div class="col col-md-4 pb-1" style="height:fit-content;">
+                  <a href="{{ news_url }}">
+                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  </a>         
+                </div>
+                <!-- card 內容 -->
+                <div class="col-md-8 col-sm-12">
+                  <div class="card-body">
+                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                  </div>
+                </div>
+
+                <!-- 評分 -->
+                <form class="ps-4 {{news_id}} rating ">                 
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <span class="stars-score"></span>
+                </form>
+
+                <div class="col-6 ptt-link">
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                </div>
+
+              </div>
+              <!--end of card row-->
+            </div> 
+            <!-- end of card section -->
+          </div>
+          <!-- end of column --> 
+
+          <!--card column-->
+            <div class="collection-column mb-2">
+            <!-- Card section -->
+            <div class="card h-100 pb-2" style="width: 675px;">
+              <div class="row">
+                <div class="col col-md-4 pb-1" style="height:fit-content;">
+                  <a href="{{ news_url }}">
+                    <img src="{{url_for('static',filename='img/asia.jpg')}}" class="img-fluid rounded-start">
+                  </a>         
+                </div>
+                <!-- card 內容 -->
+                <div class="col-md-8 col-sm-12">
+                  <div class="card-body">
+                    <a class="card-title" href="{{title_url}}" >蘋果股價創新高 市值站上3兆美元里程碑</a>
+                    <p class="card-text mt-2">iPhone製造商蘋果公司（Apple Inc.）股價今天開盤站上歷史新高，市值達到突破3兆美元的歷史里程碑。多虧獲利及產品銷售表現維持優異，原已居世界之首的蘋果市值繼續茁壯。</p>
+                    <a href="{{ptt_url}}" class="card-link" target="_blank">{{ptt_title}}</a>
+                  </div>
+                </div>
+
+                <!-- 評分 -->
+                <form class="ps-4 {{news_id}} rating ">                 
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <p class="star">&#9734;</p>
+                  <span class="stars-score"></span>
+                </form>
+
+                <div class="col-6 ptt-link">
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                  <a href="{{ptt_url}}">PTT-post</a>
+                </div>
+
+              </div>
+              <!--end of card row-->
+            </div> 
+            <!-- end of card section -->
+            </div>
+          <!-- end of column -->
+          </div>
+        </div>  
+        
+        
+
+      </div> 
+      <!-- end of row -->
+    </div>
+    <!-- end of container -->  
+  
+  <!-- Bootstrap js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  <script src="{{url_for('static',filename='js/index.js')}}" defer></script>
+</body>
+
+</html>
