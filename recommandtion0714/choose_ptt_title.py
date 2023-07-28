@@ -10,6 +10,33 @@ import time
 from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 from gensim.models import Word2Vec
+import jieba
+
+
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
+
+
+def find_most_similar_title(summary, titles):
+    print("符合的PTT標題如下：")
+    count_list = []
+    # 使用jieba進行分詞
+    for title in titles:
+        count = 0
+        seg_list = jieba.cut(title)
+        # 將分詞結果存入陣列
+        word_list = []
+        for word in seg_list:
+            word_list.append(word)    
+        for word in word_list:
+            if word in summary:
+                count += 1
+        if(count>3):
+            count_list.append([title,count])
+            print(title)
+
 
 current_dir = os.getcwd()
 driver_name = "chromedriver.exe"
@@ -58,35 +85,29 @@ def edit_distance(str1, str2):
                 
     return dp[m][n]
 
-def compute_distance(df_ptt,yahoo_news):
+def compute_similarity(df_ptt,news_list):
     
     ptt_title_list = [] #[['新聞一的ptt1','新聞一的ptt2','新聞一的ptt3'],['新聞二的ptt1','新聞二的ptt2','新聞二的ptt3']]
     ptt_link_list = []
+    ptt_list = df_ptt['Title'].tolist()
 
-    for yahoo_news_summary in yahoo_news:
+    for yahoo_news_summary in news_list:
         temp_ptt_title_list = []
         temp_ptt_link_list = []
-        for index, row in df_ptt.iterrows():
-            ptt_community_title = row['Title']
-            ptt_community_link = row['Link']
-            distance = edit_distance(ptt_community_title, yahoo_news_summary)
-            if distance < 200:
-                temp_ptt_title_list.append(ptt_community_title)
-                temp_ptt_link_list.append(ptt_community_link)
-
-            if len(temp_ptt_title_list) == 3 or index==len(df_ptt)-1:
-                ptt_title_list.append(temp_ptt_title_list)
-                ptt_link_list.append(temp_ptt_link_list)
-                break
+        print("進入PTT篩選的摘要如下："+yahoo_news_summary[0])
+        most_similar_title = find_most_similar_title(yahoo_news_summary[0], ptt_list)
+        print("相似度最高的標題：", most_similar_title,"\n")
 
     return ptt_title_list
 
 
 def choose_ptt_data(news_list,user_keyword,user_subtopic):
+    print(news_list)
     df_ptt = open_ptt_url_fillter_subtopic(user_subtopic)
     df_ptt = fillter_user_keyword(df_ptt,user_keyword)
     df_ptt = time_sort(df_ptt)
-    df_ptt = compute_distance(df_ptt,news_list)
+    df_ptt = compute_similarity(df_ptt,news_list)
+
 
     return df_ptt
     
