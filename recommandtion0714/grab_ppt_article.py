@@ -1,4 +1,10 @@
-# 導入 模組(module) 
+#注意事項 第一次執行時請幫我先執行
+#create_table
+#read_ptt_link_search_data_from_excel()
+#read_ptt_subtopic_id_data_from_excel()
+#這兩個funtion(在程式最下面三行) 以便建立基本資料 執行完確定資料庫有資料就幫我command掉
+#接著只要執行update_ptt_data() 就可以進行ptt的爬蟲了
+ 
 import requests 
 import pandas as pd
 from selenium import webdriver
@@ -19,26 +25,14 @@ driver_path = current_dir+"\\"+driver_name
 
 host = 'localhost'
 user = 'root'
-password = '你的mysql密碼'
+password = 'ab04261218'
 database = 'mydb'
 charset =  "utf8"
 
-#這一邊要改成讀資料庫的 需要讀的是 ptt版面跟次主題的那個配對表
-def open_ptt_url():
-    ptt_url_data = 'data/ptt.xlsx'
-    df = pd.read_excel(ptt_url_data)
-    return df
 
 #這一邊要改成輸出到資料庫 需要輸出到 存放ptt內容的資料庫
 def transfer_dictionary(sub_topics,titles,links,dates,page_indexes,emotion_scores):
-    """
-    data_list =[]
-    for sub_topic,title,link,date,page_index,emotion_score in zip(sub_topics,titles,links,dates,page_indexes,emotion_scores):
-        data_list.append([sub_topic,title,link,date,page_index,emotion_score])
-    df_ptt_output = pd.DataFrame(data_list)
-    print(data_list)
-    df_ptt_output.to_excel("data/ptt_data.xlsx", index=False)
-    """
+   
     data_list = []
     for sub_topic,title,link,date,page_index in zip(sub_topics,titles,links,dates,page_indexes):
         data_list.append({'subtopic':sub_topic,'title':title,'link':link,'date':date,'page':int(page_index)},)
@@ -58,12 +52,7 @@ def split_ptt_link(URL,already_get_index):
         return True,page_index
     else:
         return False,page_index
-"""  
-# 這一邊要改成讀資料庫的 需要讀的是 ptt版面跟次主題的那個配對表 更新ptt subtopic的配對表的index ***記得要等所有都做完才能更新
-def output_ptt_data_to_database(subtopic,URL,page_index):
-    data_list =[subtopic,URL,page_index]
-    return data_list
-""" 
+
 
 def renew_ptt_subtopic_table_to_database(ptt_renewed_link_list):
     connection = mysql.connector.connect(host=host, user=user, password=password, database=database, charset=charset)
@@ -111,7 +100,6 @@ def grab_ptt_article_everyday(df_ptt_subtopic):
     page_indexes=[]
     emotion_scores=[]
 
-    #df_ptt_subtopic = open_ptt_url()
     new_list_ptt_subtopic = []
     
     options = webdriver.ChromeOptions()  
@@ -185,8 +173,31 @@ def read_ptt_data():
     
 
 def update_ptt_data():
-
     ptt_link_df = read_ptt_data()
+
+    connection = mysql.connector.connect(host=host, user=user, password=password, database=database, charset=charset)
+
+    cursor = connection.cursor()
+
+    messages,new_list_ptt_subtopic = grab_ptt_article_everyday(ptt_link_df)
+    
+    for message in messages:
+        insert_query = '''
+            INSERT INTO tb_ptt_data (subtopic, title, link, date, page)
+            VALUES (%s, %s, %s, %s, %s)
+        '''
+        data = (message['subtopic'], message['title'], message['link'], message['date'], message['page'])
+
+        cursor.execute(insert_query, data)
+
+    connection.commit()
+
+    connection.close()
+
+    renew_ptt_subtopic_table_to_database(new_list_ptt_subtopic)
+
+
+def create_table():
     
     connection = mysql.connector.connect(host=host, user=user, password=password, database=database, charset=charset)
 
@@ -219,32 +230,75 @@ def update_ptt_data():
 
     '''
 
-    #測試
-    #cursor.execute(create_table_query)
+    cursor.execute(create_table_query)
+    connection.commit()
+    connection.close()
 
-    messages,new_list_ptt_subtopic = grab_ptt_article_everyday(ptt_link_df)
+
+def read_ptt_link_search_data_from_excel():
+    ptt_url_data = 'data/ptt_search_link.xlsx'
+    df = pd.read_excel(ptt_url_data)
+    selected_columns = ['ID_PTT_URL', 'ID_Sub_Topic', 'PTT_URL','Sub_Topic','Page']
+    ptt_link_data_list = df[selected_columns].values.tolist()
+    
+    messages = []
+
+    for ptt_link_data in ptt_link_data_list:
+        messages.append({'ptt_link_id':ptt_link_data[0],'subtopic_id':int(ptt_link_data[1]),'ptt_url':ptt_link_data[2],'subtopic':ptt_link_data[3],'page':int(ptt_link_data[4])},)
+
+    print(messages)
+
+    connection = mysql.connector.connect(host=host, user=user, password=password, database=database, charset=charset)
+
+    cursor = connection.cursor()
 
     for message in messages:
         insert_query = '''
-            INSERT INTO tb_ptt_data (subtopic, title, link, date, page)
+            INSERT INTO tb_ptt_search_link (ptt_link_id,subtopic_id, ptt_url, subtopic, page)
             VALUES (%s, %s, %s, %s, %s)
         '''
-        data = (message['subtopic'], message['title'], message['link'], message['date'], message['page'])
+        data = (message['ptt_link_id'], message['subtopic_id'], message['ptt_url'], message['subtopic'], message['page'])
 
         cursor.execute(insert_query, data)
 
     connection.commit()
-
     connection.close()
 
-    renew_ptt_subtopic_table_to_database(new_list_ptt_subtopic)
+def read_ptt_subtopic_id_data_from_excel():
+    subtopic_data = 'data/subtopic_id.xlsx'
+    df = pd.read_excel(subtopic_data)
+    selected_columns = ['subtopic_id', 'subtopic_value']
+    subtopic_data_list = df[selected_columns].values.tolist()
+    messages = []
 
-#update_ptt_data()
+    for subtopic_data in subtopic_data_list:
+        messages.append({'subtopic_id':int(subtopic_data[0]),'subtopic_value':subtopic_data[1]})
 
+    print(messages)
 
-def read_ptt_link_search_data_from_excel():
-    ptt_link_df = read_ptt_data()
-    
     connection = mysql.connector.connect(host=host, user=user, password=password, database=database, charset=charset)
 
     cursor = connection.cursor()
+
+    for message in messages:
+        insert_query = '''
+            INSERT INTO tb_subtopic_id (subtopic_id,subtopic_value)
+            VALUES (%s, %s)
+        '''
+        data = (message['subtopic_id'], message['subtopic_value'])
+
+        cursor.execute(insert_query, data)
+
+    connection.commit()
+    connection.close()
+
+#爬取ptt資料
+#update_ptt_data()
+    
+    
+#第一次在執行時 幫我讀取下面三行 以方便建立基本的資料
+#create_table()
+#read_ptt_link_search_data_from_excel()
+#read_ptt_subtopic_id_data_from_excel()
+
+    
