@@ -25,8 +25,8 @@ driver_path = current_dir+"\\"+driver_name
 
 host = 'localhost'
 user = 'root'
-password = 'ab04261218'
-database = 'mydb'
+password = '你的資料庫密碼'
+database = '你的資料庫名稱'
 charset =  "utf8"
 
 
