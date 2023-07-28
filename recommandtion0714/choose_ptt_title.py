@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 from openpyxl import load_workbook
 from gensim.models import Word2Vec
 import jieba
+import mysql.connector
 
 
 
@@ -44,11 +45,31 @@ driver_path = current_dir+"\\"+driver_name
 
 
 def open_ptt_url_fillter_subtopic(sub_topic):
-    ptt_data = 'data/ptt_all_data.xlsx'
-    df = pd.read_excel(ptt_data)
-    filtered_df = df[df['Sub_Topic'] == sub_topic]
 
-    return filtered_df
+    host = 'localhost'
+    user = '你的資料庫使用者'
+    password = '你的資料庫密碼'
+    database = '你的資料庫名稱'
+    charset =  "utf8"
+    
+    connection = mysql.connector.connect(host=host, user=user, password=password, database=database, charset=charset)
+    
+    cursor = connection.cursor()
+    # SQL查询语句
+    select_query = "SELECT * FROM tb_ptt_search_link"
+    # 执行查询
+    cursor.execute(select_query)
+    # 获取所有结果
+    result = cursor.fetchall()
+    df = pd.DataFrame(result, columns=[desc[0] for desc in cursor.description])
+    print(df)
+
+    filtered_df = df[df['subtopic'] == sub_topic]
+
+    #return filtered_df
+
+open_ptt_url_fillter_subtopic("棒球")
+
 
 def fillter_user_keyword(df,user_keyword):
     filtered_df = df[df['Title'].str.contains(user_keyword)]
