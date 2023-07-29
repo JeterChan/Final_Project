@@ -26,7 +26,7 @@ driver_path = current_dir+"\\"+driver_name
 host = 'localhost'
 user = 'root'
 password = '你的資料庫密碼'
-database = '你的資料庫名稱'
+database = 'mydb'
 charset =  "utf8"
 
 
@@ -91,6 +91,13 @@ def renew_ptt_subtopic_table_index(ptt_link_id,subtopic_id,subtopic,URL,page_ind
     dic = {'ptt_link_id':ptt_link_id,'subtopic_id':subtopic_id,'subtopic':subtopic,'ptt_url':URL,'page':page_index}
     return dic
 
+def is_gossiping(subtopic_id):
+    if subtopic_id==30:
+        return True
+    
+    return False
+
+
 
 def grab_ptt_article_everyday(df_ptt_subtopic):
     sub_topics=[]
@@ -114,6 +121,13 @@ def grab_ptt_article_everyday(df_ptt_subtopic):
         time.sleep(2)
         is_search_next_page = True
         while(is_search_next_page==True):
+            if count==1 and is_gossiping(subtopic_id) :
+                time.sleep(1)
+                elem_yes = (driver.find_element(By.XPATH, '//html/body/div[2]/form/div[1]/button'))
+                time.sleep(1)
+                ActionChains(driver).click(elem_yes).perform()
+                time.sleep(1)
+
             elem_last_page =  driver.find_element(By.XPATH, '//*[@id="action-bar-container"]/div/div[2]/a[2]')
             time.sleep(1)
             ActionChains(driver).click(elem_last_page).perform()
@@ -302,3 +316,9 @@ def read_ptt_subtopic_id_data_from_excel():
 #read_ptt_subtopic_id_data_from_excel()
 
     
+
+
+
+
+
+
